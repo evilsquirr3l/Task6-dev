@@ -6,9 +6,7 @@ namespace Data.Entities
     {
         public string Title { get; set; }
         public int Year { get; set; }
-
-        public int AuthorId { get; set; }
-        public Author Author { get; set; }
+        public string Author { get; set; }
 
         public ICollection<BookCard> Cards { get; set; } = new List<BookCard>();
     }
