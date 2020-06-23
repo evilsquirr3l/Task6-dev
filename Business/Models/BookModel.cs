@@ -12,6 +12,6 @@ namespace Business.Models
         
         public string Author { get; set; }
 
-        public ICollection<int> Cards { get; set; } = new List<int>();
+        public ICollection<int> CardsIds { get; set; } = new List<int>();
     }
 }
