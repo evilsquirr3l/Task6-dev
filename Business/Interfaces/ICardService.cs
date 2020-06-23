@@ -10,7 +10,7 @@ namespace Business.Interfaces
 
         CardModel GetById(int id);
 
-        void Create(CardModel card);
+        void Add(CardModel card);
 
         void Update(int cardId, CardModel card);
 
