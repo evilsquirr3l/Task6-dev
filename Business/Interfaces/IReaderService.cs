@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using Business.Models;
 using Data.Entities;
 
 namespace Business.Interfaces
 {
     public interface IReaderService
     {
-        IEnumerable<Reader> GetAll();
+        IEnumerable<ReaderModel> GetAll();
 
-        Reader GetById(int id);
+        ReaderModel GetById(int id);
 
-        void Add(Reader reader);
+        void Add(ReaderModel reader);
 
-        void Update(int readerId, Reader reader);
+        void Update(int readerId, ReaderModel reader);
 
         void Delete(int id);
     }
