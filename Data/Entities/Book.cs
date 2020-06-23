@@ -10,11 +10,6 @@ namespace Data.Entities
         public int AuthorId { get; set; }
         public Author Author { get; set; }
 
-        public ICollection<BookCard> Cards { get; set; }
-
-        public Book()
-        {
-            Cards = new List<BookCard>();
-        }
+        public ICollection<BookCard> Cards { get; set; } = new List<BookCard>();
     }
 }
