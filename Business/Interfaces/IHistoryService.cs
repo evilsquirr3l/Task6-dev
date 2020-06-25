@@ -9,7 +9,5 @@ namespace Business.Interfaces
         IEnumerable<ReaderModel> GetReadersThatDontReturnBooks();
 
         IEnumerable<BookModel> GetTheMostPopularBooks();
-
-        DateTime GetBookReturningDate(int bookId);
     }
 }

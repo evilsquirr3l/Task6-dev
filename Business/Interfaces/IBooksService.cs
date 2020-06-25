@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Business.Models;
 using Data.Entities;
@@ -9,6 +10,8 @@ namespace Business.Interfaces
         IEnumerable<BookModel> GetAll();
         
         IEnumerable<BookModel> GetByFilter(FilterModel filter);
+        
+        DateTime GetBookReturningDate(int bookId);
         
         Book GetById(int id);
 
