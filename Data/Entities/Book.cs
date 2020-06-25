@@ -8,6 +8,6 @@ namespace Data.Entities
         public int Year { get; set; }
         public string Author { get; set; }
 
-        public ICollection<BookCard> Cards { get; set; } = new List<BookCard>();
+        public ICollection<History> Cards { get; set; } = new List<History>();
     }
 }

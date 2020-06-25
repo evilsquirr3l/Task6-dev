@@ -10,6 +10,6 @@ namespace Data.Entities
         public int ReaderId { get; set; }
         public Reader Reader { get; set; }
 
-        public ICollection<BookCard> Books { get; set; } = new List<BookCard>();
+        public ICollection<History> Books { get; set; } = new List<History>();
     }
 }
