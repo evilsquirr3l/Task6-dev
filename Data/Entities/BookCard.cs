@@ -11,6 +11,6 @@ namespace Data.Entities
         public Card Card { get; set; }
 
         public DateTime TakeDate { get; set; }
-        public DateTime ReturnDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
     }
 }
