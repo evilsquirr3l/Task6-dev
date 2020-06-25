@@ -9,5 +9,7 @@ namespace Business.Interfaces
         IEnumerable<ReaderModel> GetReadersThatDontReturnBooks();
 
         IEnumerable<BookModel> GetTheMostPopularBooks();
+
+        IEnumerable<ReaderActivityModel> GetReadersWhoTookTheMostBooks(int readersCount);
     }
 }
