@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Business.Models
 {
     public class ReaderModel
@@ -6,6 +8,6 @@ namespace Business.Models
         
         public string Name { get; set; }
 
-        public int CardId { get; set; }
+        public ICollection<int> CardsIds { get; set; }
     }
 }
