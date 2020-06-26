@@ -18,8 +18,8 @@ namespace Business.Interfaces
 
         IEnumerable<BookModel> GetBooksByCardId(int cardId);
 
-        void AddBookToCard(int cartId, int bookId);
+        void TakeBook(int cartId, int bookId);
 
-        void DeleteBookFromCard(int cartId, int bookId);
+        void HandOverBook(int cartId, int bookId);
     }
 }

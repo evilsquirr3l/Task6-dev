@@ -1,6 +1,6 @@
 namespace Business.Models
 {
-    public class FilterModel
+    public class FilterSearchModel
     {
         public string Author { get; set; }
 
