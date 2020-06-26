@@ -6,10 +6,8 @@ namespace Business.Interfaces
 {
     public interface IHistoryService
     {
-        IEnumerable<ReaderModel> GetReadersThatDontReturnBooks();
-
-        IEnumerable<BookModel> GetTheMostPopularBooks();
-
-        IEnumerable<ReaderActivityModel> GetReadersWhoTookTheMostBooks(int readersCount);
+        IEnumerable<BookModel> GetMostPopularBooks(int bookCount);
+        
+        IEnumerable<ReaderActivityModel> GetReadersWhoTookTheMostBooks(int readersCount, DateTime firstDate, DateTime lastDate);
     }
 }

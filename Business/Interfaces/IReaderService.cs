@@ -7,6 +7,8 @@ namespace Business.Interfaces
     public interface IReaderService
     {
         IEnumerable<ReaderModel> GetAll();
+        
+        IEnumerable<ReaderModel> GetReadersThatDontReturnBooks();
 
         ReaderModel GetById(int id);
 

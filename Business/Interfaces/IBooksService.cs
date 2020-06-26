@@ -7,13 +7,15 @@ namespace Business.Interfaces
 {
     public interface IBooksService
     {
-        IEnumerable<BookModel> GetAll();
-        
-        IEnumerable<BookModel> GetByFilter(FilterModel filter);
+        IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch);
         
         DateTime GetBookReturningDate(int bookId);
+
+        bool IsBookReturned(int bookId);
         
-        Book GetById(int id);
+        IEnumerable<BookModel> GetAll();
+        
+        BookModel GetById(int id);
 
         void Add(BookModel book);
 
