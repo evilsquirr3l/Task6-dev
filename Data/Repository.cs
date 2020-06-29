@@ -41,5 +41,15 @@ namespace Data
         {
             _dbSet.Remove(entity);
         }
+
+        public async Task DeleteById(int id)
+        {
+            var entity = await _dbSet.FindAsync(id);
+
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+            }
+        }
     }
 }

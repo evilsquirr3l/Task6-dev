@@ -17,5 +17,7 @@ namespace Data.Interfaces
         void Update(TEntity entity);
         
         void Delete(TEntity entity);
+
+        Task DeleteById(int id);
     }
 }
