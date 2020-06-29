@@ -39,9 +39,9 @@ namespace Tests
             {
                 var booksRepository = new Repository<Book>(context);
 
-                var books = booksRepository.FindAll().ToList();
+                var books = booksRepository.FindAll();
 
-                Assert.AreEqual(1, books.Count);
+                Assert.AreEqual(1, books.Count());
             }
         }
 
@@ -72,6 +72,24 @@ namespace Tests
                 await context.SaveChangesAsync();
                 
                 Assert.AreEqual(0, context.Books.Count());
+            }
+        }
+
+        [Test]
+        public async Task BookRepository_Update_UpdatesEntity()
+        {
+            using (var context = new LibraryDbContext(_options))
+            {
+                var booksRepository = new Repository<Book>(context);
+                var book = new Book(){ Id = 1, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994};
+
+                booksRepository.Update(book);
+                await context.SaveChangesAsync();
+
+                Assert.AreEqual(1, book.Id);
+                Assert.AreEqual("John Travolta", book.Author);
+                Assert.AreEqual("Pulp Fiction", book.Title);
+                Assert.AreEqual(1994, book.Year);
             }
         }
     }
