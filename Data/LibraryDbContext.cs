@@ -10,16 +10,6 @@ namespace Data
             
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // modelBuilder.Entity<ReaderProfile>()
-            //     .HasOne(rp => rp.Reader)
-            //     .WithOne(r => r.ReaderProfile)
-            //     .HasForeignKey(s => s.)
-        }
-
         public DbSet<Book> Books { get; set; }
 
         public DbSet<Card> Cards { get; set; }
