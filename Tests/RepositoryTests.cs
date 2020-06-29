@@ -67,7 +67,6 @@ namespace Tests
             using (var context = new LibraryDbContext(_options))
             {
                 var bookRepository = new Repository<Book>(context);
-                var book = new Book(){Id = 1};
                 
                 await bookRepository.DeleteById(1);
                 await context.SaveChangesAsync();
