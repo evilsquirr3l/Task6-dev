@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Busine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{307D1197-59A8-4A86-8737-E2E1465E5EAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{599DA754-F5A0-4B88-BBBD-9462775A906B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task6-dev.Tests", "Task6-dev.Tests\Task6-dev.Tests.csproj", "{599DA754-F5A0-4B88-BBBD-9462775A906B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

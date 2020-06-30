@@ -7,7 +7,7 @@ using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace Tests
+namespace Task6
 {
     public class Tests
     {
@@ -46,7 +46,7 @@ namespace Tests
         }
 
         [Test]
-        public void BookRepository_GetById_ReturnsSingleValue()
+        public void BookRepository_FindByCondition_ReturnsSingleValue()
         {
             using (var context = new LibraryDbContext(_options))
             {
