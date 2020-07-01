@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Business;
 using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +33,9 @@ namespace WebApi
 
             services.AddDbContextPool<LibraryDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("Library")));
+
+            var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
