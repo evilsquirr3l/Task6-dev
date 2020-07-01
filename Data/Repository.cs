@@ -27,7 +27,7 @@ namespace Data
             return _dbSet.Where(expression);
         }
  
-        public async Task Create(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
         }

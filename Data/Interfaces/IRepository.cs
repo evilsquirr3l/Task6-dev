@@ -12,7 +12,7 @@ namespace Data.Interfaces
         
         IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression);
         
-        Task Create(TEntity entity);
+        Task AddAsync(TEntity entity);
         
         void Update(TEntity entity);
         
