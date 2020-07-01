@@ -11,7 +11,6 @@ namespace Task6
 {
     public class Tests
     {
-        private LibraryDbContext _context;
         private DbContextOptions<LibraryDbContext> _options;
         
         [SetUp]
@@ -62,6 +61,21 @@ namespace Task6
         }
 
         [Test]
+        public async Task BookRepository_AddAsync_AddsValueToDatabase()
+        {
+            using (var context = new LibraryDbContext(_options))
+            {
+                var booksRepository = new Repository<Book>(context);
+                var book = new Book(){Id = 2};
+
+                await booksRepository.AddAsync(book);
+                await context.SaveChangesAsync();
+                
+                Assert.AreEqual(2, context.Books.Count());
+            }
+        }
+
+        [Test]
         public async Task BookRepository_Delete_DeletesEntity()
         {
             using (var context = new LibraryDbContext(_options))
@@ -81,6 +95,7 @@ namespace Task6
             using (var context = new LibraryDbContext(_options))
             {
                 var booksRepository = new Repository<Book>(context);
+
                 var book = new Book(){ Id = 1, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994};
 
                 booksRepository.Update(book);
