@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Business.Interfaces
 {
@@ -8,7 +9,7 @@ namespace Business.Interfaces
 
         TModel GetById(int id);
 
-        void Add(TModel model);
+        Task Add(TModel model);
 
         void Update(int modelId, TModel model);
 
