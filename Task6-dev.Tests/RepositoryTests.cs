@@ -1,11 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Business;
+using Business.Interfaces;
+using Business.Models;
+using Business.Services;
 using Data;
 using Data.Entities;
 using Data.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
+using WebApi.Controllers;
 
 namespace Task6
 {
@@ -106,6 +115,67 @@ namespace Task6
                 Assert.AreEqual("Pulp Fiction", book.Title);
                 Assert.AreEqual(1994, book.Year);
             }
+        }
+
+        [Test]
+        public void BooksController_GetAll_ReturnsBooksModels()
+        {
+            //Arrange
+            var mockBookService = new Mock<IBooksService>();
+            mockBookService
+                .Setup(repo => repo.GetAll())
+                .Returns(GetTestBookModels());
+            var bookController = new BooksController(mockBookService.Object);
+            
+            //Act
+            var result = bookController.GetBooks();
+            var values = result.Result as OkObjectResult;
+            
+            //Assert
+            Assert.IsInstanceOf<ActionResult<IEnumerable<BookModel>>>(result);
+            Assert.NotNull(values.Value);
+        }
+
+        private IEnumerable<BookModel> GetTestBookModels()
+        {
+            return new List<BookModel>()
+            {
+                new BookModel(){ Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
+                new BookModel(){ Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994}
+            };
+        }
+
+        [Test]
+        public void BooksService_GetAll_ReturnsBookModels()
+        {
+            var expected = GetTestBookModels().ToList();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(m => m.BookRepository.FindAll())
+                .Returns(GetTestBookEntities());
+            var bookService = new BooksService(mockUnitOfWork.Object, GetAutomapperProfile());
+
+            var actual = bookService.GetAll().ToList();
+            
+            Assert.IsInstanceOf<IEnumerable<BookModel>>(actual);
+            Assert.AreEqual(expected[0].Author, actual[0].Author);
+            Assert.AreEqual(expected[1].Author, actual[1].Author);
+        }
+
+        private Mapper GetAutomapperProfile()
+        {
+            var myProfile = new AutomapperProfile();
+            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(myProfile));
+            
+            return new Mapper(configuration);
+        }
+        
+        private IQueryable<Book> GetTestBookEntities()
+        {
+            return new List<Book>()
+            {
+                new Book(){ Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
+                new Book(){ Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994}
+            }.AsQueryable();
         }
     }
 }
