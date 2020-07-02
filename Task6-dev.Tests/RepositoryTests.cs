@@ -123,7 +123,7 @@ namespace Task6
             //Arrange
             var mockBookService = new Mock<IBooksService>();
             mockBookService
-                .Setup(repo => repo.GetAll())
+                .Setup(x => x.GetAll())
                 .Returns(GetTestBookModels());
             var bookController = new BooksController(mockBookService.Object);
             
@@ -150,7 +150,8 @@ namespace Task6
         {
             var expected = GetTestBookModels().ToList();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.BookRepository.FindAll())
+            mockUnitOfWork
+                .Setup(m => m.BookRepository.FindAll())
                 .Returns(GetTestBookEntities());
             var bookService = new BooksService(mockUnitOfWork.Object, GetAutomapperProfile());
 
@@ -158,7 +159,9 @@ namespace Task6
             
             Assert.IsInstanceOf<IEnumerable<BookModel>>(actual);
             Assert.AreEqual(expected[0].Author, actual[0].Author);
+            Assert.AreEqual(expected[0].Title, actual[0].Title);
             Assert.AreEqual(expected[1].Author, actual[1].Author);
+            Assert.AreEqual(expected[1].Title, actual[1].Title);
         }
 
         private Mapper GetAutomapperProfile()
