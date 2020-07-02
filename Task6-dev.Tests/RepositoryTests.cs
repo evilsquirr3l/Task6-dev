@@ -117,25 +117,25 @@ namespace Task6
             }
         }
 
-        // [Test]
-        // public void BooksController_GetAll_ReturnsBooksModels()
-        // {
-        //     //Arrange
-        //     var mockBookService = new Mock<IBooksService>();
-        //     mockBookService
-        //         .Setup(repo => repo.GetAll())
-        //         .Returns(GetTestBookModels());
-        //     var bookController = new BooksController(mockBookService.Object);
-        //     
-        //     //Act
-        //     var result = bookController.GetBooks();
-        //     var values = result.Result as OkObjectResult;
-        //     
-        //     //Assert
-        //     Assert.IsInstanceOf<ActionResult<IEnumerable<BookModel>>>(result);
-        //     Assert.NotNull(values.Value);
-        // }
-        //
+        [Test]
+        public void BooksController_GetAll_ReturnsBooksModels()
+        {
+            //Arrange
+            var mockBookService = new Mock<IBooksService>();
+            mockBookService
+                .Setup(repo => repo.GetAll())
+                .Returns(GetTestBookModels());
+            var bookController = new BooksController(mockBookService.Object);
+            
+            //Act
+            var result = bookController.GetBooks();
+            var values = result.Result as OkObjectResult;
+            
+            //Assert
+            Assert.IsInstanceOf<ActionResult<IEnumerable<BookModel>>>(result);
+            Assert.NotNull(values.Value);
+        }
+
         private IEnumerable<BookModel> GetTestBookModels()
         {
             return new List<BookModel>()
