@@ -10,8 +10,6 @@ namespace Data.Entities
 
         public ReaderProfile ReaderProfile { get; set; }
         
-        public int ReaderProfileId { get; set; }
-
         public ICollection<Card> Card { get; set; }
     }
 }

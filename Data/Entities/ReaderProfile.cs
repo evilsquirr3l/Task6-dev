@@ -1,6 +1,6 @@
 namespace Data.Entities
 {
-    public class ReaderProfile
+    public class ReaderProfile : BaseEntity
     {
         public Reader Reader { get; set; }
         

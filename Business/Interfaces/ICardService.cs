@@ -4,18 +4,8 @@ using Data.Entities;
 
 namespace Business.Interfaces
 {
-    public interface ICardService
+    public interface ICardService : ICrudInterface<CardModel>
     {
-        IEnumerable<CardModel> GetAll();
-
-        CardModel GetById(int id);
-
-        void Add(CardModel card);
-
-        void Update(int cardId, CardModel card);
-
-        void Delete(int id);
-
         IEnumerable<BookModel> GetBooksByCardId(int cardId);
 
         void TakeBook(int cartId, int bookId);
