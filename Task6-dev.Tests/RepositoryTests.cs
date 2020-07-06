@@ -148,8 +148,10 @@ namespace Task6
             Assert.IsInstanceOf<IEnumerable<BookModel>>(actual);
             Assert.AreEqual(expected[0].Author, actual[0].Author);
             Assert.AreEqual(expected[0].Title, actual[0].Title);
+            Assert.AreEqual(expected[0].Year, actual[0].Year);
             Assert.AreEqual(expected[1].Author, actual[1].Author);
             Assert.AreEqual(expected[1].Title, actual[1].Title);
+            Assert.AreEqual(expected[1].Year, actual[1].Year);
         }
 
         private IQueryable<Book> GetTestBookEntities()
