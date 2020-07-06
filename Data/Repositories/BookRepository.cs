@@ -13,7 +13,7 @@ namespace Data.Repositories
         {
         }
 
-        public IEnumerable<Book> GetAllWithDetails()
+        public IQueryable<Book> GetAllWithDetails()
         {
             return FindAll().Include(b => b.Cards);
         }
