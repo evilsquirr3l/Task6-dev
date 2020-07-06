@@ -33,6 +33,15 @@ namespace Task6.BooksTests
                 Assert.AreEqual(expected[i].Title, actual[i].Title);
             }
         }
+        
+        private IEnumerable<BookModel> GetTestBookModels()
+        {
+            return new List<BookModel>()
+            {
+                new BookModel(){ Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
+                new BookModel(){ Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994}
+            };
+        }
 
         [Test]
         public async Task BooksService_GetByIdAsync_ReturnsBookModel()
@@ -106,16 +115,6 @@ namespace Task6.BooksTests
             //Assert
             mockUnitOfWork.Verify(x => x.BookRepository.Update(It.IsAny<Book>()), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
-        }
-
-
-        private IEnumerable<BookModel> GetTestBookModels()
-        {
-            return new List<BookModel>()
-            {
-                new BookModel(){ Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
-                new BookModel(){ Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994}
-            };
         }
     }
 }
