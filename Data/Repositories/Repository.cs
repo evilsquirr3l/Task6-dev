@@ -6,7 +6,7 @@ using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Data
+namespace Data.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
@@ -21,12 +21,12 @@ namespace Data
         {
             return _dbSet;
         }
- 
-        public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
+
+        public TEntity GetById(int id)
         {
-            return _dbSet.Where(expression);
+            return _dbSet.Find(id);
         }
- 
+
         public async Task AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
