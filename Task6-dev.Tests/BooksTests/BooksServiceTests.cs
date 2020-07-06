@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Task6.BooksTests
 {
-    public class Tests
+    public class BooksServiceTests
     {
         [Test]
         public void BooksService_GetAll_ReturnsBookModels()
