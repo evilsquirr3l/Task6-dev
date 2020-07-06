@@ -51,9 +51,9 @@ namespace Business.Services
             await _unit.SaveAsync();
         }
 
-        public async Task DeleteAsync(int modelId)
+        public async Task DeleteByIdAsync(int modelId)
         {
-            await _unit.BookRepository.DeleteById(modelId);
+            await _unit.BookRepository.DeleteByIdAsync(modelId);
             await _unit.SaveAsync();
         }
 

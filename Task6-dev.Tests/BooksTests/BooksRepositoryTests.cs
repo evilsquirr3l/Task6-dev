@@ -30,7 +30,7 @@ namespace Task6.BooksTests
             {
                 var booksRepository = new BookRepository(context);
 
-                var book = await booksRepository.GetById(1);
+                var book = await booksRepository.GetByIdAsync(1);
 
                 Assert.AreEqual(1, book.Id);
                 Assert.AreEqual("Jon Snow", book.Author);
@@ -61,7 +61,7 @@ namespace Task6.BooksTests
             {
                 var bookRepository = new BookRepository(context);
                 
-                await bookRepository.DeleteById(1);
+                await bookRepository.DeleteByIdAsync(1);
                 await context.SaveChangesAsync();
                 
                 Assert.AreEqual(0, context.Books.Count());
