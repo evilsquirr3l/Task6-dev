@@ -55,7 +55,7 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public async Task BookRepository_DeleteById_DeletesEntity()
+        public async Task BookRepository_DeleteByIdAsync_DeletesEntity()
         {
             using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
