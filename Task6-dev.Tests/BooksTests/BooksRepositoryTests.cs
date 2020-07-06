@@ -1,37 +1,19 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Business;
-using Business.Interfaces;
-using Business.Models;
-using Business.Services;
 using Data;
 using Data.Entities;
-using Data.Interfaces;
 using Data.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
-using WebApi.Controllers;
 
-namespace Task6
+namespace Task6.BooksTests
 {
-    public class Tests
+    [TestFixture]
+    public class BooksRepositoryTests
     {
-        private DbContextOptions<LibraryDbContext> _options;
-        
-        [SetUp]
-        public void Setup()
-        {
-            _options = UnitTestHelper.SeedData();
-        }
-
         [Test]
         public void BookRepository_FindAll_ReturnsAllValues()
         {
-            using (var context = new LibraryDbContext(_options))
+            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
                 var booksRepository = new BookRepository(context);
 
@@ -44,7 +26,7 @@ namespace Task6
         [Test]
         public async Task BookRepository_GetById_ReturnsSingleValue()
         {
-            using (var context = new LibraryDbContext(_options))
+            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
                 var booksRepository = new BookRepository(context);
 
@@ -60,7 +42,7 @@ namespace Task6
         [Test]
         public async Task BookRepository_AddAsync_AddsValueToDatabase()
         {
-            using (var context = new LibraryDbContext(_options))
+            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
                 var booksRepository = new BookRepository(context);
                 var book = new Book(){Id = 2};
@@ -75,7 +57,7 @@ namespace Task6
         [Test]
         public async Task BookRepository_Delete_DeletesEntity()
         {
-            using (var context = new LibraryDbContext(_options))
+            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
                 var bookRepository = new BookRepository(context);
                 
@@ -89,7 +71,7 @@ namespace Task6
         [Test]
         public async Task BookRepository_Update_UpdatesEntity()
         {
-            using (var context = new LibraryDbContext(_options))
+            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
                 var booksRepository = new BookRepository(context);
 
@@ -108,7 +90,7 @@ namespace Task6
         [Test]
         public async Task BooksRepository_GetByIdWithDetails_ReturnsWithIncludedEntities()
         {
-            using (var context = new LibraryDbContext(_options))
+            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
@@ -123,7 +105,7 @@ namespace Task6
         [Test]
         public void BooksRepository_GetAllWithDetails_ReturnsWithIncludedEntities()
         {
-            using (var context = new LibraryDbContext(_options))
+            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
@@ -133,64 +115,6 @@ namespace Task6
                 
                 Assert.AreEqual(expectedCardsInBook, actual);
             }
-        }
-
-        [Test]
-        public void BooksController_GetBooks_ReturnsBooksModels()
-        {
-            //Arrange
-            var mockBookService = new Mock<IBooksService>();
-            mockBookService
-                .Setup(x => x.GetAll())
-                .Returns(GetTestBookModels());
-            var bookController = new BooksController(mockBookService.Object);
-            
-            //Act
-            var result = bookController.GetBooks();
-            var values = result.Result as OkObjectResult;
-            
-            //Assert
-            Assert.IsInstanceOf<ActionResult<IEnumerable<BookModel>>>(result);
-            Assert.NotNull(values.Value);
-        }
-
-        private IEnumerable<BookModel> GetTestBookModels()
-        {
-            return new List<BookModel>()
-            {
-                new BookModel(){ Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
-                new BookModel(){ Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994}
-            };
-        }
-
-        [Test]
-        public void BooksService_GetAll_ReturnsBookModels()
-        {
-            var expected = GetTestBookModels().ToList();
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork
-                .Setup(m => m.BookRepository.FindAll())
-                .Returns(GetTestBookEntities());
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
-
-            var actual = bookService.GetAll().ToList();
-            
-            Assert.IsInstanceOf<IEnumerable<BookModel>>(actual);
-            Assert.AreEqual(expected[0].Author, actual[0].Author);
-            Assert.AreEqual(expected[0].Title, actual[0].Title);
-            Assert.AreEqual(expected[0].Year, actual[0].Year);
-            Assert.AreEqual(expected[1].Author, actual[1].Author);
-            Assert.AreEqual(expected[1].Title, actual[1].Title);
-            Assert.AreEqual(expected[1].Year, actual[1].Year);
-        }
-
-        private IQueryable<Book> GetTestBookEntities()
-        {
-            return new List<Book>()
-            {
-                new Book(){ Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
-                new Book(){ Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994}
-            }.AsQueryable();
         }
     }
 }
