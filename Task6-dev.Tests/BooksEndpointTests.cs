@@ -33,7 +33,7 @@ namespace Task6
         {
             using (var context = new LibraryDbContext(_options))
             {
-                var booksRepository = new Repository<Book>(context);
+                var booksRepository = new BookRepository(context);
 
                 var books = booksRepository.FindAll();
 
@@ -42,11 +42,11 @@ namespace Task6
         }
 
         [Test]
-        public async Task BookRepository_FindByCondition_ReturnsSingleValue()
+        public async Task BookRepository_GetById_ReturnsSingleValue()
         {
             using (var context = new LibraryDbContext(_options))
             {
-                var booksRepository = new Repository<Book>(context);
+                var booksRepository = new BookRepository(context);
 
                 var book = await booksRepository.GetById(1);
 
@@ -62,7 +62,7 @@ namespace Task6
         {
             using (var context = new LibraryDbContext(_options))
             {
-                var booksRepository = new Repository<Book>(context);
+                var booksRepository = new BookRepository(context);
                 var book = new Book(){Id = 2};
 
                 await booksRepository.AddAsync(book);
@@ -77,7 +77,7 @@ namespace Task6
         {
             using (var context = new LibraryDbContext(_options))
             {
-                var bookRepository = new Repository<Book>(context);
+                var bookRepository = new BookRepository(context);
                 
                 await bookRepository.DeleteById(1);
                 await context.SaveChangesAsync();
@@ -91,7 +91,7 @@ namespace Task6
         {
             using (var context = new LibraryDbContext(_options))
             {
-                var booksRepository = new Repository<Book>(context);
+                var booksRepository = new BookRepository(context);
 
                 var book = new Book(){ Id = 1, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994};
 
@@ -102,6 +102,17 @@ namespace Task6
                 Assert.AreEqual("John Travolta", book.Author);
                 Assert.AreEqual("Pulp Fiction", book.Title);
                 Assert.AreEqual(1994, book.Year);
+            }
+        }
+
+        [Test]
+        public void BooksRepository()
+        {
+            using (var context = new LibraryDbContext(_options))
+            {
+                var booksRepository = new BookRepository(context);
+
+                var bookWithIncludes = booksRepository.GetAllWithDetails();
             }
         }
 
