@@ -9,8 +9,8 @@ namespace Data.Interfaces
     public interface IRepository<TEntity> where TEntity : BaseEntity
     {
         IQueryable<TEntity> FindAll();
-        
-        IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression);
+
+        TEntity GetById(int id);
         
         Task AddAsync(TEntity entity);
         
