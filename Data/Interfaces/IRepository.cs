@@ -10,7 +10,7 @@ namespace Data.Interfaces
     {
         IQueryable<TEntity> FindAll();
 
-        TEntity GetById(int id);
+        Task<TEntity> GetById(int id);
         
         Task AddAsync(TEntity entity);
         

@@ -22,9 +22,9 @@ namespace Data.Repositories
             return _dbSet;
         }
 
-        public TEntity GetById(int id)
+        public async Task<TEntity> GetById(int id)
         {
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
 
         public async Task AddAsync(TEntity entity)
