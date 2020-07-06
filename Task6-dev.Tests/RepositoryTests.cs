@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +9,7 @@ using Business.Services;
 using Data;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -25,19 +25,7 @@ namespace Task6
         [SetUp]
         public void Setup()
         {
-            _options = new DbContextOptionsBuilder<LibraryDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            using (var context = new LibraryDbContext(_options))
-            {
-                context.Books.Add(new Book(){ Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996});
-                context.Cards.Add(new Card(){ Id = 1, ReaderId = 1, Created = DateTime.Now});
-                context.Readers.Add(new Reader(){Id = 1, Email = "jon_snow@epam.com", Name = "Jon Snow"});
-                context.ReaderProfiles.Add(new ReaderProfile(){ Id = 1, ReaderId = 1, Address = "The night's watch", Phone = "golub"});
-                context.Histories.Add(new History(){BookId = 1, CardId = 1, Id = 1, TakeDate = DateTime.Now.AddDays(-2), ReturnDate = DateTime.Now.AddDays(-1)});
-                context.SaveChanges();
-            }
+            _options = UnitTestHelper.SeedData();
         }
 
         [Test]
@@ -60,7 +48,7 @@ namespace Task6
             {
                 var booksRepository = new Repository<Book>(context);
 
-                var book = booksRepository.FindByCondition(g => g.Id == 1).SingleOrDefault();
+                var book = booksRepository.GetById(1);
 
                 Assert.AreEqual(1, book.Id);
                 Assert.AreEqual("Jon Snow", book.Author);
@@ -118,7 +106,7 @@ namespace Task6
         }
 
         [Test]
-        public void BooksController_GetAll_ReturnsBooksModels()
+        public void BooksController_GetBooks_ReturnsBooksModels()
         {
             //Arrange
             var mockBookService = new Mock<IBooksService>();
@@ -153,7 +141,7 @@ namespace Task6
             mockUnitOfWork
                 .Setup(m => m.BookRepository.FindAll())
                 .Returns(GetTestBookEntities());
-            var bookService = new BooksService(mockUnitOfWork.Object, GetAutomapperProfile());
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             var actual = bookService.GetAll().ToList();
             
@@ -164,14 +152,6 @@ namespace Task6
             Assert.AreEqual(expected[1].Title, actual[1].Title);
         }
 
-        private Mapper GetAutomapperProfile()
-        {
-            var myProfile = new AutomapperProfile();
-            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(myProfile));
-            
-            return new Mapper(configuration);
-        }
-        
         private IQueryable<Book> GetTestBookEntities()
         {
             return new List<Book>()
