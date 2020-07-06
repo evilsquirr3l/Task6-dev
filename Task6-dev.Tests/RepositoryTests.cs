@@ -42,13 +42,13 @@ namespace Task6
         }
 
         [Test]
-        public void BookRepository_FindByCondition_ReturnsSingleValue()
+        public async Task BookRepository_FindByCondition_ReturnsSingleValue()
         {
             using (var context = new LibraryDbContext(_options))
             {
                 var booksRepository = new Repository<Book>(context);
 
-                var book = booksRepository.GetById(1);
+                var book = await booksRepository.GetById(1);
 
                 Assert.AreEqual(1, book.Id);
                 Assert.AreEqual("Jon Snow", book.Author);
