@@ -55,7 +55,7 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public async Task BookRepository_Delete_DeletesEntity()
+        public async Task BookRepository_DeleteById_DeletesEntity()
         {
             using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
@@ -88,13 +88,13 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public async Task BooksRepository_GetByIdWithDetails_ReturnsWithIncludedEntities()
+        public async Task BooksRepository_GetByIdWithDetailsAsync_ReturnsWithIncludedEntities()
         {
             using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
-                var bookWithIncludes = await booksRepository.GetByIdWithDetails(1);
+                var bookWithIncludes = await booksRepository.GetByIdWithDetailsAsync(1);
                 
                 var actual = bookWithIncludes.Cards.Count;
                 

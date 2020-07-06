@@ -9,6 +9,6 @@ namespace Data.Interfaces
     {
         IQueryable<Book> GetAllWithDetails();
 
-        Task<Book> GetByIdWithDetails(int id);
+        Task<Book> GetByIdWithDetailsAsync(int id);
     }
 }

@@ -18,7 +18,7 @@ namespace Data.Repositories
             return FindAll().Include(b => b.Cards);
         }
 
-        public async Task<Book> GetByIdWithDetails(int id)
+        public async Task<Book> GetByIdWithDetailsAsync(int id)
         {
             return await FindAll()
                 .Include(b => b.Cards)
