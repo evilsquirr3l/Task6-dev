@@ -106,13 +106,32 @@ namespace Task6
         }
 
         [Test]
-        public void BooksRepository()
+        public async Task BooksRepository_GetByIdWithDetails_ReturnsWithIncludedEntities()
         {
             using (var context = new LibraryDbContext(_options))
             {
+                var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
+                var bookWithIncludes = await booksRepository.GetByIdWithDetails(1);
+                
+                var actual = bookWithIncludes.Cards.Count;
+                
+                Assert.AreEqual(expectedCardsInBook, actual);
+            }
+        }
 
+        [Test]
+        public void BooksRepository_GetAllWithDetails_ReturnsWithIncludedEntities()
+        {
+            using (var context = new LibraryDbContext(_options))
+            {
+                var expectedCardsInBook = 1;
+                var booksRepository = new BookRepository(context);
                 var bookWithIncludes = booksRepository.GetAllWithDetails();
+
+                var actual = bookWithIncludes.FirstOrDefault().Cards.Count;
+                
+                Assert.AreEqual(expectedCardsInBook, actual);
             }
         }
 
