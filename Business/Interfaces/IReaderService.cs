@@ -4,7 +4,7 @@ using Data.Entities;
 
 namespace Business.Interfaces
 {
-    public interface IReaderService : ICrudInterface<ReaderModel>
+    public interface IReaderService : ICrud<ReaderModel>
     {
         IEnumerable<ReaderModel> GetReadersThatDontReturnBooks();
     }

@@ -4,7 +4,7 @@ using Data.Entities;
 
 namespace Business.Interfaces
 {
-    public interface ICardService : ICrudInterface<CardModel>
+    public interface ICardService : ICrud<CardModel>
     {
         IEnumerable<BookModel> GetBooksByCardId(int cardId);
 

@@ -5,7 +5,7 @@ using Data.Entities;
 
 namespace Business.Interfaces
 {
-    public interface IBooksService : ICrudInterface<BookModel>
+    public interface IBooksService : ICrud<BookModel>
     {
         IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch);
         

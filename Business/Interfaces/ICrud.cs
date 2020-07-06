@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Business.Interfaces
 {
-    public interface ICrudInterface<TModel> where TModel : class
+    public interface ICrud<TModel> where TModel : class
     {
         IEnumerable<TModel> GetAll();
 
