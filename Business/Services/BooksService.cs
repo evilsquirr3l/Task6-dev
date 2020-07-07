@@ -87,7 +87,7 @@ namespace Business.Services
 
             if (history == null)
             {
-                return false;
+                return true;
             }
             
             return history.ReturnDate < DateTime.Now;
