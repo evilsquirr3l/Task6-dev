@@ -14,7 +14,6 @@ namespace Task6.BooksTests
 {
     public class BooksServiceTests
     {
-        //TODO: is book returned, saveasync
         [Test]
         public void BooksService_GetAll_ReturnsBookModels()
         {
