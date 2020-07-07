@@ -89,6 +89,11 @@ namespace Business.Services
             {
                 return false;
             }
+
+            if (history.TakeDate == default)
+            {
+                return true;
+            }
             
             return history.ReturnDate < DateTime.Now;
         }

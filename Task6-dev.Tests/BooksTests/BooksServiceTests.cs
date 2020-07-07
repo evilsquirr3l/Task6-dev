@@ -159,6 +159,7 @@ namespace Task6.BooksTests
 
         [TestCase(1, true)]
         [TestCase(2, false)]
+        [TestCase(3, true)]
         [TestCase(999, false)]
         public void BookService_IsBookReturned_ReturnsCorrectValue(int bookId, bool expectedResult)
         {
@@ -176,7 +177,8 @@ namespace Task6.BooksTests
             return new List<History>
             {
                 new History{BookId = 1, CardId = 1, TakeDate = DateTime.Now.AddDays(-3), ReturnDate = DateTime.Now.AddDays(-1)},
-                new History{BookId = 2, CardId = 2, TakeDate = DateTime.Now.AddDays(-3)}
+                new History{BookId = 2, CardId = 2, TakeDate = DateTime.Now.AddDays(-3)},
+                new History{BookId = 3, CardId = 3}
             };
         }
     }
