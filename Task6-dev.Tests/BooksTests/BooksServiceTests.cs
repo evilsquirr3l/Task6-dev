@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -147,7 +148,6 @@ namespace Task6.BooksTests
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Year = 1994};
             
-            //Act
             var filteredBooks = bookService.GetByFilter(filter).ToList();
             
             Assert.AreEqual(2, filteredBooks.Count);
@@ -155,6 +155,29 @@ namespace Task6.BooksTests
             {
                 Assert.AreEqual(filter.Year, book.Year);
             }
+        }
+
+        [TestCase(1, true)]
+        [TestCase(2, false)]
+        [TestCase(999, false)]
+        public void BookService_IsBookReturned_ReturnsCorrectValue(int bookId, bool expectedResult)
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(GetTestHistories().AsQueryable);
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+
+            var actual = bookService.IsBookReturned(bookId);
+            
+            Assert.AreEqual(expectedResult, actual);
+        }
+
+        private IEnumerable<History> GetTestHistories()
+        {
+            return new List<History>
+            {
+                new History{BookId = 1, CardId = 1, TakeDate = DateTime.Now.AddDays(-3), ReturnDate = DateTime.Now.AddDays(-1)},
+                new History{BookId = 2, CardId = 2, TakeDate = DateTime.Now.AddDays(-3)}
+            };
         }
     }
 }
