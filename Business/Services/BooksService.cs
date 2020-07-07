@@ -28,7 +28,7 @@ namespace Business.Services
             return _mapper.Map<IEnumerable<BookModel>>(books);
         }
 
-        public async Task Add(BookModel model)
+        public async Task AddAsync(BookModel model)
         {
             var book = _mapper.Map<Book>(model);
 
@@ -36,17 +36,17 @@ namespace Business.Services
             await _unit.SaveAsync();
         }
 
-        public BookModel GetById(int id)
+        public Task<BookModel> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(int modelId, BookModel model)
+        public Task UpdateAsync(int modelId, BookModel model)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(int modelId)
+        public Task DeleteAsync(int modelId)
         {
             throw new NotImplementedException();
         }

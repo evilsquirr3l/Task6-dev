@@ -29,7 +29,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateBook([FromBody] BookModel bookModel)
         {
-            await _booksService.Add(bookModel);
+            await _booksService.AddAsync(bookModel);
 
             return Ok();
         }

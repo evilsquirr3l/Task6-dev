@@ -9,6 +9,8 @@ namespace Business
         public AutomapperProfile()
         {
             CreateMap<Book, BookModel>().ReverseMap();
+            CreateMap<Reader, ReaderModel>().ReverseMap();
+            CreateMap<Card, CardModel>().ReverseMap();
         }
     }
 }
