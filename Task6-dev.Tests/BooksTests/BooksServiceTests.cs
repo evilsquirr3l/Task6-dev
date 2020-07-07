@@ -13,7 +13,7 @@ namespace Task6.BooksTests
 {
     public class BooksServiceTests
     {
-        //TODO: get by filter, is book returned
+        //TODO: is book returned, saveasync
         [Test]
         public void BooksService_GetAll_ReturnsBookModels()
         {
@@ -38,8 +38,10 @@ namespace Task6.BooksTests
         {
             return new List<BookModel>()
             {
-                new BookModel(){ Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
-                new BookModel(){ Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994}
+                new BookModel {Id = 1, Author = "Jack London", Title = "Martin Eden", Year = 1909},
+                new BookModel {Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994},
+                new BookModel {Id = 3, Author = "Jack London", Title = "The Call of the Wild", Year = 1903},
+                new BookModel {Id = 4, Author = "Robert Jordan", Title = "Lord of Chaos", Year = 1994}
             };
         }
 
@@ -64,11 +66,13 @@ namespace Task6.BooksTests
         {
             return new List<Book>()
             {
-                new Book() {Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
-                new Book() {Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994}
+                new Book {Id = 1, Author = "Jack London", Title = "Martin Eden", Year = 1909},
+                new Book {Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994},
+                new Book {Id = 3, Author = "Jack London", Title = "The Call of the Wild", Year = 1903},
+                new Book {Id = 4, Author = "Robert Jordan", Title = "Lord of Chaos", Year = 1994}
             };
         }
-
+        
         [Test]
         public async Task BooksService_AddAsync_AddsModel()
         {
@@ -115,6 +119,42 @@ namespace Task6.BooksTests
             //Assert
             mockUnitOfWork.Verify(x => x.BookRepository.Update(It.IsAny<Book>()), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
+        }
+
+        [Test]
+        public void BooksService_GetByFilter_ReturnsBooksByAuthor()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.GetAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var filter = new FilterSearchModel{Author = "Jack London"};
+            
+            //Act
+            var filteredBooks = bookService.GetByFilter(filter).ToList();
+            
+            Assert.AreEqual(2, filteredBooks.Count);
+            foreach (var book in filteredBooks)
+            {
+                Assert.AreEqual(filter.Author, book.Author);
+            }
+        }
+        
+        [Test]
+        public void BooksService_GetByFilter_ReturnsBooksByYear()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.GetAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var filter = new FilterSearchModel{Year = 1994};
+            
+            //Act
+            var filteredBooks = bookService.GetByFilter(filter).ToList();
+            
+            Assert.AreEqual(2, filteredBooks.Count);
+            foreach (var book in filteredBooks)
+            {
+                Assert.AreEqual(filter.Year, book.Year);
+            }
         }
     }
 }
