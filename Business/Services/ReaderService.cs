@@ -51,23 +51,29 @@ namespace Business.Services
 
         public IEnumerable<ReaderModel> GetAll()
         {
-            var readers = _unit.ReaderRepository.FindAll().ToList();
+            var readers = _unit.ReaderRepository.GetAllWithDetails().ToList();
             return _mapper.Map<IEnumerable<ReaderModel>>(readers);
         }
 
         public IEnumerable<ReaderModel> GetReadersThatDontReturnBooks()
         {
+            var allReaders = this.GetAll();
             var listOfCards = _unit.HistoryRepository
                 .FindAll()
                 .Where(history => history.ReturnDate == null)
                 .Select(history => history.CardId);
-            var listOfReaders = _unit.CardRepository
+            var listOfReadersId = _unit.CardRepository
                 .FindAll()
                 .Join(listOfCards,
                     card => card.Id,
                     history => history,
-                    (card, history) => card.ReaderId);
-            return _mapper.Map<IEnumerable<ReaderModel>>(listOfReaders);
+                    (card, history) => card.ReaderId).ToList();
+
+
+            return allReaders.Join(listOfReadersId,
+                    reader => reader.Id,
+                    readerId => readerId,
+                    (reader, readerId) => reader).ToList();
         }      
     }
 }

@@ -14,6 +14,6 @@ namespace Business.Models
 
         public string Address { get; set; }
 
-        public ICollection<CardModel> CardsIds { get; set; }
+        public ICollection<CardModel> Card { get; set; }
     }
 }

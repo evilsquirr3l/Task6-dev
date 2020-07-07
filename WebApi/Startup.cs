@@ -40,11 +40,13 @@ namespace WebApi
                 opt.UseSqlServer(Configuration.GetConnectionString("Library")));
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IReaderRepository), typeof(ReaderRepository));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
             services.AddSingleton(mapper);
             services.AddTransient<IBooksService, BooksService>();
+            services.AddTransient<IReaderService, ReaderService>();
 
             services.AddSwaggerGen(c =>
             {

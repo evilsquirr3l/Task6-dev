@@ -11,7 +11,6 @@ namespace Business
             CreateMap<Book, BookModel>().ReverseMap();
             CreateMap<Card, CardModel>().ReverseMap();
 
-
             CreateMap<Reader, ReaderModel>()
                 .ForMember(destination => destination.Phone,
                     map => map.MapFrom(source => source.ReaderProfile.Phone))
@@ -22,6 +21,7 @@ namespace Business
                     map => map.MapFrom(
                         source => new ReaderProfile
                         {
+                            Id = source.Id,
                             Phone = source.Phone,
                             Address = source.Address
                         }));

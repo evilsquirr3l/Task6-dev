@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class ReaderController : ControllerBase
@@ -28,20 +29,20 @@ namespace WebApi.Controllers
             return Ok(readers);
         }
 
-        // GET: api/Reader/5
-        [HttpGet("{id}", Name = "Get")]
-        public ActionResult<ReaderModel> Get(int id)
-        {
-            var reader = _readerService.GetByIdAsync(id);
-            return Ok(reader);
-        }
-
-        // GET: api/Reader/5
-        [HttpGet("/DontReturnBooks", Name = "Get")]
+        //GET: api/Reader/DontReturnBooks
+        [HttpGet("/DontReturnBooks", Name = "GetReadersThatDontReturnBooks")]
         public ActionResult<IEnumerable<ReaderModel>> GetReadersThatDontReturnBooks()
         {
             var readers = _readerService.GetReadersThatDontReturnBooks();
             return Ok(readers);
+        }
+
+        // GET: api/Reader/5
+        [HttpGet("{id}", Name = "Get")]
+        public async Task<ActionResult<ReaderModel>> Get(int id)
+        {
+            var reader = await _readerService.GetByIdAsync(id);
+            return Ok(reader);
         }
 
         // POST: api/Reader
