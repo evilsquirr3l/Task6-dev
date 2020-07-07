@@ -36,6 +36,14 @@ namespace WebApi.Controllers
             return Ok(reader);
         }
 
+        // GET: api/Reader/5
+        [HttpGet("/DontReturnBooks", Name = "Get")]
+        public ActionResult<IEnumerable<ReaderModel>> GetReadersThatDontReturnBooks()
+        {
+            var readers = _readerService.GetReadersThatDontReturnBooks();
+            return Ok(readers);
+        }
+
         // POST: api/Reader
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ReaderModel value)
