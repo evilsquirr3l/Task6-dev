@@ -80,17 +80,20 @@ namespace Task6.BooksTests
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var book = new BookModel {Id = 100, Author = "@squirr3l"};
             
             //Act
-            await bookService.AddAsync(new BookModel(){Id = 100, Author = "@squirr3l"});
+            await bookService.AddAsync(book);
             
             //Assert
-            mockUnitOfWork.Verify(x => x.BookRepository.AddAsync(It.IsAny<Book>()), Times.Once);
+            mockUnitOfWork.Verify(x => x.BookRepository.AddAsync(It.Is<Book>(b => b.Author == book.Author && b.Id == book.Id)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
-        [Test]
-        public async Task BooksService_DeleteByIdAsync_DeletesBook()
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(100)]
+        public async Task BooksService_DeleteByIdAsync_DeletesBook(int bookId)
         {
             //Arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -98,10 +101,10 @@ namespace Task6.BooksTests
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             
             //Act
-            await bookService.DeleteByIdAsync(1);
+            await bookService.DeleteByIdAsync(bookId);
             
             //Assert
-            mockUnitOfWork.Verify(x => x.BookRepository.DeleteByIdAsync(1), Times.Once);
+            mockUnitOfWork.Verify(x => x.BookRepository.DeleteByIdAsync(bookId), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
         
@@ -109,15 +112,16 @@ namespace Task6.BooksTests
         public async Task BooksService_UpdateAsync_UpdatesBook()
         {
             //Arrange
+            var book = new BookModel{Id = 1, Author = "Jack London"};
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             
             //Act
-            await bookService.UpdateAsync(new BookModel());
+            await bookService.UpdateAsync(book);
             
             //Assert
-            mockUnitOfWork.Verify(x => x.BookRepository.Update(It.IsAny<Book>()), Times.Once);
+            mockUnitOfWork.Verify(x => x.BookRepository.Update(It.Is<Book>(b => b.Author == book.Author && b.Id == book.Id)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
