@@ -8,7 +8,7 @@ namespace Business.Models
     {
         public int ReaderId { get; set; }
 
-        public int ReaderName { get; set; }
+        public string ReaderName { get; set; }
 
         public int BooksCount { get; set; }
     }
