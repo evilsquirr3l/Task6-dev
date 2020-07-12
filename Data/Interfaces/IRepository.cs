@@ -10,7 +10,7 @@ namespace Data.Interfaces
     {
         IQueryable<TEntity> FindAll();
 
-        TEntity GetById(int id);
+        Task<TEntity> GetByIdAsync(int id);
         
         Task AddAsync(TEntity entity);
         
@@ -18,6 +18,6 @@ namespace Data.Interfaces
         
         void Delete(TEntity entity);
 
-        Task DeleteById(int id);
+        Task DeleteByIdAsync(int id);
     }
 }

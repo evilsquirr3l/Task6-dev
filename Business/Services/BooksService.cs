@@ -36,34 +36,74 @@ namespace Business.Services
             await _unit.SaveAsync();
         }
 
-        public Task<BookModel> GetByIdAsync(int id)
+        public async Task<BookModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var book = await _unit.BookRepository.GetByIdWithDetailsAsync(id);
+
+            return _mapper.Map<BookModel>(book);
         }
 
-        public Task UpdateAsync(int modelId, BookModel model)
+        public async Task UpdateAsync(BookModel model)
         {
-            throw new NotImplementedException();
+            var book = _mapper.Map<Book>(model);
+            
+            _unit.BookRepository.Update(book);
+            await _unit.SaveAsync();
         }
 
-        public Task DeleteAsync(int modelId)
+        public async Task DeleteByIdAsync(int modelId)
         {
-            throw new NotImplementedException();
+            await _unit.BookRepository.DeleteByIdAsync(modelId);
+            await _unit.SaveAsync();
         }
 
         public IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch)
         {
-            throw new NotImplementedException();
+            var books = _unit.BookRepository.GetAllWithDetails();
+
+            if (!string.IsNullOrEmpty(filterSearch.Author))
+            {
+                books = books.Where(b => b.Author == filterSearch.Author);
+            }
+
+            if (filterSearch.Year != null)
+            {
+                books = books.Where(b => b.Year == filterSearch.Year);
+            }
+
+            return _mapper.Map<IEnumerable<BookModel>>(books);
         }
 
         public DateTime GetBookReturningDate(int bookId)
         {
-            throw new NotImplementedException();
+            var history = GetLastHistoryWhenBookWasTaken(bookId);
+
+            return history.ReturnDate ?? history.TakeDate.AddMonths(1);
         }
 
         public bool IsBookReturned(int bookId)
         {
-            throw new NotImplementedException();
+            var history = GetLastHistoryWhenBookWasTaken(bookId);
+
+            if (history == null)
+            {
+                return false;
+            }
+
+            if (history.TakeDate == default)
+            {
+                return true;
+            }
+            
+            return history.ReturnDate < DateTime.Now;
+        }
+
+        private History GetLastHistoryWhenBookWasTaken(int bookId)
+        {
+            return _unit.HistoryRepository
+                .FindAll()
+                .OrderByDescending(h => h.Id)
+                .FirstOrDefault(h => h.BookId == bookId);
         }
     }
 }

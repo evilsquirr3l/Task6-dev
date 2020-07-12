@@ -22,9 +22,9 @@ namespace Data.Repositories
             return _dbSet;
         }
 
-        public TEntity GetById(int id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
 
         public async Task AddAsync(TEntity entity)
@@ -42,7 +42,7 @@ namespace Data.Repositories
             _dbSet.Remove(entity);
         }
 
-        public async Task DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var entity = await _dbSet.FindAsync(id);
 

@@ -8,16 +8,18 @@ namespace Data
     {
         private readonly LibraryDbContext _context;
 
-        public UnitOfWork(LibraryDbContext context, IRepository<Book> bookRepository, IRepository<Card> cardRepository, IRepository<History> historyRepository, IReaderRepository readerRepository)
+        public UnitOfWork(LibraryDbContext context, IBookRepository bookRepository, 
+            IRepository<Card> cardRepository, IRepository<History> historyRepository, 
+            IReaderRepository readerRepository)
         {
             _context = context;
-            BookRepository = bookRepository;
             CardRepository = cardRepository;
             HistoryRepository = historyRepository;
             ReaderRepository = readerRepository;
+            BookRepository = bookRepository;
         }
 
-        public IRepository<Book> BookRepository { get; }
+        public IBookRepository BookRepository { get; }
         public IRepository<Card> CardRepository { get; }
         public IRepository<History> HistoryRepository { get; }
         public IReaderRepository ReaderRepository { get; }
