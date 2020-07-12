@@ -55,9 +55,9 @@ namespace WebApi.Controllers
 
         // PUT: api/Reader/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ReaderModel value)
+        public async Task<ActionResult> Put([FromBody] ReaderModel value)
         {
-            await _readerService.UpdateAsync(id, value);
+            await _readerService.UpdateAsync(value);
             return Ok();
         }
 

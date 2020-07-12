@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Business.Interfaces;
 using Business.Models;
@@ -194,6 +193,7 @@ namespace Task6
         //TODO: ask about ok() and propose to make like in msdn
         #endregion
 
+        #region data for tests
         private IEnumerable<ReaderModel> GetTestReaderModels()
         {
             return new List<ReaderModel>()
@@ -214,5 +214,6 @@ namespace Task6
                     ReaderProfile = new ReaderProfile{ ReaderId = 2, Phone = "123456789", Address = "Kyiv, 1" } },
             }.AsQueryable();
         }
+        #endregion
     }
 }

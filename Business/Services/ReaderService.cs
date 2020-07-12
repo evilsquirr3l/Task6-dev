@@ -29,7 +29,7 @@ namespace Business.Services
             await _unit.SaveAsync();
         }
 
-        public async Task UpdateAsync(int modelId, ReaderModel model)
+        public async Task UpdateAsync(ReaderModel model)
         {
             var reader = _mapper.Map<Reader>(model);
 

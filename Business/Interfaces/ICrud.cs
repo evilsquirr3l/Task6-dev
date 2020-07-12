@@ -11,7 +11,7 @@ namespace Business.Interfaces
 
         Task AddAsync(TModel model);
 
-        Task UpdateAsync(int modelId, TModel model);
+        Task UpdateAsync(TModel model);
 
         Task DeleteAsync(int modelId);
     }
