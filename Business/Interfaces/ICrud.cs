@@ -7,12 +7,12 @@ namespace Business.Interfaces
     {
         IEnumerable<TModel> GetAll();
 
-        TModel GetById(int id);
+        Task<TModel> GetByIdAsync(int id);
 
-        Task Add(TModel model);
+        Task AddAsync(TModel model);
 
-        void Update(int modelId, TModel model);
+        Task UpdateAsync(TModel model);
 
-        void Delete(int modelId);
+        Task DeleteByIdAsync(int modelId);
     }
 }
