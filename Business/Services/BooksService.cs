@@ -59,11 +59,19 @@ namespace Business.Services
 
         public IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch)
         {
-            var filteredBooks = _unit.BookRepository
-                .GetAllWithDetails()
-                .Where(b => b.Author == filterSearch.Author && b.Year == filterSearch.Year);
+            var books = _unit.BookRepository.GetAllWithDetails();
 
-            return _mapper.Map<IEnumerable<BookModel>>(filteredBooks);
+            if (!string.IsNullOrEmpty(filterSearch.Author))
+            {
+                books = books.Where(b => b.Author == filterSearch.Author);
+            }
+
+            if (filterSearch.Year != null)
+            {
+                books = books.Where(b => b.Year == filterSearch.Year);
+            }
+
+            return _mapper.Map<IEnumerable<BookModel>>(books);
         }
 
         public DateTime GetBookReturningDate(int bookId)
@@ -80,6 +88,11 @@ namespace Business.Services
             if (history == null)
             {
                 return false;
+            }
+
+            if (history.TakeDate == default)
+            {
+                return true;
             }
             
             return history.ReturnDate < DateTime.Now;

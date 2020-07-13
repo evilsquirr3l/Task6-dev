@@ -31,6 +31,7 @@ namespace WebApi.Controllers
         {
             await _booksService.AddAsync(bookModel);
 
+            //return CreatedAtRoute("DefaultApi", new { id = bookModel.Id}, bookModel);
             return Ok();
         }
     }
