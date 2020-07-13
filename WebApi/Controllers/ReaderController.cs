@@ -65,7 +65,7 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await _readerService.DeleteAsync(id);
+            await _readerService.DeleteByIdAsync(id);
             return Ok();
         }
     }

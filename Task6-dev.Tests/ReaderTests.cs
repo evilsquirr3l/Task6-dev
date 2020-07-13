@@ -146,7 +146,7 @@ namespace Task6
             var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //act
-            await readerService.UpdateAsync(1, new ReaderModel());
+            await readerService.UpdateAsync(new ReaderModel());
 
             //assert
             mockUnitOfWork.Verify(x => x.ReaderRepository.Update(It.IsAny<Reader>()), Times.Once);
@@ -158,14 +158,14 @@ namespace Task6
         {
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.ReaderRepository.DeleteById(It.IsAny<int>()));
+            mockUnitOfWork.Setup(m => m.ReaderRepository.DeleteByIdAsync(It.IsAny<int>()));
             var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //act
-            await readerService.DeleteAsync(1);
+            await readerService.DeleteByIdAsync(1);
 
             //assert
-            mockUnitOfWork.Verify(x => x.ReaderRepository.DeleteById(It.IsAny<int>()), Times.Once);
+            mockUnitOfWork.Verify(x => x.ReaderRepository.DeleteByIdAsync(It.IsAny<int>()), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
