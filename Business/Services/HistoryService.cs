@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Business.Interfaces;
 using Business.Models;
+using Data.Entities;
 using Data.Interfaces;
 
 namespace Business.Services
@@ -21,19 +23,53 @@ namespace Business.Services
 
         public IEnumerable<BookModel> GetMostPopularBooks(int bookCount) =>
             _unit.HistoryRepository
-                .FindAll()
+                .GetAllWithDetails()
                 .GroupBy(x => x.BookId)
                 .OrderBy(x => x.Count())
                 .Take(bookCount)
-                .Select(x => _mapper.Map<BookModel>(x.FirstOrDefault().Book));
+                .Select(x => _mapper.Map<Book, BookModel>(x.FirstOrDefault().Book));
            
 
         public IEnumerable<ReaderActivityModel> GetReadersWhoTookTheMostBooks(int readersCount, DateTime firstDate, DateTime lastDate) =>
-            _unit.HistoryRepository.FindAll()
+            _unit.HistoryRepository
+                .GetAllWithDetails()
                 .Where(x => x.TakeDate >= firstDate && x.ReturnDate <= lastDate)
                 .GroupBy(x => x.Card.Reader).OrderBy(x => x.Count())
                 .Take(readersCount)
                 .Select(x => new ReaderActivityModel { BooksCount = x.Count(), ReaderId = x.Key.Id, ReaderName = x.Key.Name});
-            
+
+        public IEnumerable<HistoryModel> GetAll() =>
+            _mapper.Map<IEnumerable<History>, IEnumerable<HistoryModel>>(
+                _unit.HistoryRepository.FindAll()
+                );
+
+        public async Task<HistoryModel> GetByIdAsync(int id)
+        {
+            var history = await _unit.HistoryRepository.GetByIdWithDetailsAsync(id);
+
+            return _mapper.Map<History, HistoryModel>(history);
+        }
+
+        public async Task AddAsync(HistoryModel model)
+        {
+            var history = _mapper.Map<HistoryModel, History>(model);
+
+            await _unit.HistoryRepository.AddAsync(history);
+            await _unit.SaveAsync();
+        }
+
+        public async Task UpdateAsync(HistoryModel model)
+        {
+            var history = _mapper.Map<HistoryModel, History>(model);
+
+            _unit.HistoryRepository.Update(history);
+            await _unit.SaveAsync();
+        }
+
+        public async Task DeleteByIdAsync(int modelId)
+        {
+            await _unit.HistoryRepository.DeleteByIdAsync(modelId);
+            await _unit.SaveAsync();
+        }
     }
 }

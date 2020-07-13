@@ -45,6 +45,7 @@ namespace WebApi
             var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
             services.AddSingleton(mapper);
             services.AddTransient<IBooksService, BooksService>();
+            services.AddTransient<IHistoryService, HistoryService>();
 
             services.AddSwaggerGen(c =>
             {

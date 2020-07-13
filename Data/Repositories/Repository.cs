@@ -10,14 +10,14 @@ namespace Data.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        protected readonly DbSet<TEntity> _dbSet;
+        private readonly DbSet<TEntity> _dbSet;
         
         public Repository(LibraryDbContext context)
         {
             _dbSet = context.Set<TEntity>();
         }
  
-        public virtual IQueryable<TEntity> FindAll()
+        public IQueryable<TEntity> FindAll()
         {
             return _dbSet;
         }

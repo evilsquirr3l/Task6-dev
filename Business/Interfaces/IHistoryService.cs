@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Business.Models;
+using Data.Entities;
 
 namespace Business.Interfaces
 {
-    public interface IHistoryService
+    public interface IHistoryService : ICrud<HistoryModel>
     {
         IEnumerable<BookModel> GetMostPopularBooks(int bookCount);
         

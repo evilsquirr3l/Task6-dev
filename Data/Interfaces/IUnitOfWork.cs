@@ -9,7 +9,7 @@ namespace Data.Interfaces
         
         IRepository<Card> CardRepository { get; }
         
-        IRepository<History> HistoryRepository { get; }
+        IHistoryRepository HistoryRepository { get; }
         
         IRepository<Reader> ReaderRepository { get; }
 
