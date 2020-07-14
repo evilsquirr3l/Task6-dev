@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20200707110914_Initial_Create")]
-    partial class Initial_Create
+    [Migration("20200714161348_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -268,10 +268,8 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.ReaderProfile", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ReaderId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -279,44 +277,34 @@ namespace Data.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReaderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReaderId")
-                        .IsUnique();
+                    b.HasKey("ReaderId");
 
                     b.ToTable("ReaderProfiles");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            ReaderId = 1,
                             Address = "Kyiv, 1",
-                            Phone = "123456789",
-                            ReaderId = 1
+                            Phone = "123456789"
                         },
                         new
                         {
-                            Id = 2,
+                            ReaderId = 2,
                             Address = "Kyiv, 2",
-                            Phone = "456789123",
-                            ReaderId = 2
+                            Phone = "456789123"
                         },
                         new
                         {
-                            Id = 3,
+                            ReaderId = 3,
                             Address = "Kyiv, 3",
-                            Phone = "789123456",
-                            ReaderId = 3
+                            Phone = "789123456"
                         },
                         new
                         {
-                            Id = 4,
+                            ReaderId = 4,
                             Address = "Kyiv, 4",
-                            Phone = "326159487",
-                            ReaderId = 4
+                            Phone = "326159487"
                         });
                 });
 

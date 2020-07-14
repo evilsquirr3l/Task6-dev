@@ -21,7 +21,7 @@ namespace Business
                     map => map.MapFrom(
                         source => new ReaderProfile
                         {
-                            Id = source.Id,
+                            ReaderId = source.Id,
                             Phone = source.Phone,
                             Address = source.Address
                         }));

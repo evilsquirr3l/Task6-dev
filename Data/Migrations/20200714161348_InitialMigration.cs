@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class Initial_Create : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,15 +60,13 @@ namespace Data.Migrations
                 name: "ReaderProfiles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     ReaderId = table.Column<int>(nullable: false),
                     Phone = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReaderProfiles", x => x.Id);
+                    table.PrimaryKey("PK_ReaderProfiles", x => x.ReaderId);
                     table.ForeignKey(
                         name: "FK_ReaderProfiles_Readers_ReaderId",
                         column: x => x.ReaderId,
@@ -142,13 +140,13 @@ namespace Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "ReaderProfiles",
-                columns: new[] { "Id", "Address", "Phone", "ReaderId" },
+                columns: new[] { "ReaderId", "Address", "Phone" },
                 values: new object[,]
                 {
-                    { 1, "Kyiv, 1", "123456789", 1 },
-                    { 2, "Kyiv, 2", "456789123", 2 },
-                    { 3, "Kyiv, 3", "789123456", 3 },
-                    { 4, "Kyiv, 4", "326159487", 4 }
+                    { 1, "Kyiv, 1", "123456789" },
+                    { 2, "Kyiv, 2", "456789123" },
+                    { 3, "Kyiv, 3", "789123456" },
+                    { 4, "Kyiv, 4", "326159487" }
                 });
 
             migrationBuilder.InsertData(
@@ -180,12 +178,6 @@ namespace Data.Migrations
                 name: "IX_Histories_CardId",
                 table: "Histories",
                 column: "CardId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReaderProfiles_ReaderId",
-                table: "ReaderProfiles",
-                column: "ReaderId",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

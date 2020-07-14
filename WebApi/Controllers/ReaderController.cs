@@ -26,15 +26,7 @@ namespace WebApi.Controllers
         public ActionResult<IEnumerable<ReaderModel>> Get()
         {
             var readers = _readerService.GetAll();
-            return Ok(readers);
-        }
-
-        //GET: api/Reader/DontReturnBooks
-        [HttpGet("/DontReturnBooks", Name = "GetReadersThatDontReturnBooks")]
-        public ActionResult<IEnumerable<ReaderModel>> GetReadersThatDontReturnBooks()
-        {
-            var readers = _readerService.GetReadersThatDontReturnBooks();
-            return Ok(readers);
+            return readers.ToList();
         }
 
         // GET: api/Reader/5
@@ -42,7 +34,9 @@ namespace WebApi.Controllers
         public async Task<ActionResult<ReaderModel>> Get(int id)
         {
             var reader = await _readerService.GetByIdAsync(id);
-            return Ok(reader);
+            if (reader == null)
+                return NotFound(id);
+            return reader;
         }
 
         // POST: api/Reader
@@ -50,7 +44,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult> Post([FromBody] ReaderModel value)
         {
             await _readerService.AddAsync(value);
-            return Ok();
+            return CreatedAtAction(nameof(Post), value);
         }
 
         // PUT: api/Reader/5
@@ -58,7 +52,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult> Put([FromBody] ReaderModel value)
         {
             await _readerService.UpdateAsync(value);
-            return Ok();
+            return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
@@ -67,6 +61,14 @@ namespace WebApi.Controllers
         {
             await _readerService.DeleteByIdAsync(id);
             return Ok();
+        }
+
+        //GET: api/Reader/DontReturnBooks
+        [HttpGet("/DontReturnBooks", Name = "GetReadersThatDontReturnBooks")]
+        public ActionResult<IEnumerable<ReaderModel>> GetReadersThatDontReturnBooks()
+        {
+            var readers = _readerService.GetReadersThatDontReturnBooks();
+            return readers.ToList();
         }
     }
 }
