@@ -26,7 +26,7 @@ namespace Task6.Tests.ReaderTests
         [SetUp]
         public void Setup()
         {
-            _options = UnitTestHelper.SeedData();
+            _options = UnitTestHelper.GetDbContextOptions();
         }
 
         #region repository
