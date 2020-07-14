@@ -13,7 +13,7 @@ namespace Task6.BooksTests
         [Test]
         public void BookRepository_FindAll_ReturnsAllValues()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
 
@@ -26,7 +26,7 @@ namespace Task6.BooksTests
         [Test]
         public async Task BookRepository_GetById_ReturnsSingleValue()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
 
@@ -42,7 +42,7 @@ namespace Task6.BooksTests
         [Test]
         public async Task BookRepository_AddAsync_AddsValueToDatabase()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
                 var book = new Book(){Id = 2};
@@ -57,7 +57,7 @@ namespace Task6.BooksTests
         [Test]
         public async Task BookRepository_DeleteByIdAsync_DeletesEntity()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var bookRepository = new BookRepository(context);
                 
@@ -71,7 +71,7 @@ namespace Task6.BooksTests
         [Test]
         public async Task BookRepository_Update_UpdatesEntity()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
 
@@ -90,7 +90,7 @@ namespace Task6.BooksTests
         [Test]
         public async Task BooksRepository_GetByIdWithDetailsAsync_ReturnsWithIncludedEntities()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
@@ -105,7 +105,7 @@ namespace Task6.BooksTests
         [Test]
         public void BooksRepository_GetAllWithDetails_ReturnsWithIncludedEntities()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
