@@ -5,22 +5,12 @@ using Data.Entities;
 
 namespace Business.Interfaces
 {
-    public interface IBooksService
+    public interface IBooksService : ICrud<BookModel>
     {
         IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch);
         
         DateTime GetBookReturningDate(int bookId);
 
         bool IsBookReturned(int bookId);
-        
-        IEnumerable<BookModel> GetAll();
-        
-        BookModel GetById(int id);
-
-        void Add(BookModel book);
-
-        void Update(int bookId, BookModel book);
-
-        void Delete(int id);
     }
 }
