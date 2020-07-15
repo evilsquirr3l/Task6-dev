@@ -24,7 +24,7 @@ namespace Task6.IntegrationTests
         }
         
         [Test]
-        public async Task GetAll()
+        public async Task BooksController_GetByFilter_ReturnsAllWithNullFilter()
         {
             var httpResponse = await _client.GetAsync("api/books");
 
@@ -32,7 +32,7 @@ namespace Task6.IntegrationTests
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
             var books = JsonConvert.DeserializeObject<IEnumerable<Book>>(stringResponse);
             
-            Assert.AreEqual(1, books.Count());
+            Assert.AreEqual(2, books.Count());
         }
         
         [OneTimeTearDown]

@@ -19,7 +19,7 @@ namespace Task6.BooksTests
 
                 var books = booksRepository.FindAll();
 
-                Assert.AreEqual(1, books.Count());
+                Assert.AreEqual(2, books.Count());
             }
         }
 
@@ -45,12 +45,12 @@ namespace Task6.BooksTests
             using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
-                var book = new Book(){Id = 2};
+                var book = new Book(){Id = 3};
 
                 await booksRepository.AddAsync(book);
                 await context.SaveChangesAsync();
                 
-                Assert.AreEqual(2, context.Books.Count());
+                Assert.AreEqual(3, context.Books.Count());
             }
         }
 
@@ -64,7 +64,7 @@ namespace Task6.BooksTests
                 await bookRepository.DeleteByIdAsync(1);
                 await context.SaveChangesAsync();
                 
-                Assert.AreEqual(0, context.Books.Count());
+                Assert.AreEqual(1, context.Books.Count());
             }
         }
 
