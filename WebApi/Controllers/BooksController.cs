@@ -27,7 +27,7 @@ namespace WebApi.Controllers
         // }
         
         [HttpGet]
-        public ActionResult<IEnumerable<BookModel>> GetBooksByFilter([FromQuery] FilterSearchModel model)
+        public ActionResult<IEnumerable<BookModel>> GetByFilter([FromQuery] FilterSearchModel model)
         {
             var books = _booksService.GetByFilter(model);
 
