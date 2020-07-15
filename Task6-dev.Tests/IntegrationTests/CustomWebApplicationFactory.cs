@@ -37,7 +37,6 @@ namespace Task6.IntegrationTests
                 //TODO: Pool vs simple db context
                 services.AddDbContextPool<LibraryDbContext>(options =>
                 {
-                    UnitTestHelper.GetUnitTestDbOptions();
                     options.UseInMemoryDatabase("squirr3l");
                     options.UseInternalServiceProvider(serviceProvider);
                 });
