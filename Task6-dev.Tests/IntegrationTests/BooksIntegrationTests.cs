@@ -119,6 +119,7 @@ namespace Task6.IntegrationTests
         [OneTimeTearDown]
         public void TearDown()
         {
+            _factory.Dispose();
             _client.Dispose();
         }
     }
