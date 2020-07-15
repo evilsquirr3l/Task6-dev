@@ -22,7 +22,7 @@ namespace Task6.BooksTests
             var bookController = new BooksController(mockBookService.Object);
             
             //Act
-            var result = bookController.GetBooks();
+            var result = bookController.GetBooksByFilter(null);
             var values = result.Result as OkObjectResult;
             
             //Assert
