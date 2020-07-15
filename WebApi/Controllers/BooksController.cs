@@ -18,12 +18,28 @@ namespace WebApi.Controllers
             _booksService = booksService;
         }
 
+        // [HttpGet]
+        // public ActionResult<IEnumerable<BookModel>> GetBooks()
+        // {
+        //     var books = _booksService.GetAll();
+        //
+        //     return Ok(books);
+        // }
+        
         [HttpGet]
-        public ActionResult<IEnumerable<BookModel>> GetBooks()
+        public ActionResult<IEnumerable<BookModel>> GetBooksByFilter([FromQuery] FilterSearchModel model)
         {
-            var books = _booksService.GetAll();
+            var books = _booksService.GetByFilter(model);
 
             return Ok(books);
+        }
+        
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<BookModel>>> GetById(int id)
+        {
+            var book = await _booksService.GetByIdAsync(id);
+
+            return Ok(book);
         }
 
         [HttpPost]
@@ -32,6 +48,22 @@ namespace WebApi.Controllers
             await _booksService.AddAsync(bookModel);
 
             //return CreatedAtRoute("DefaultApi", new { id = bookModel.Id}, bookModel);
+            return Ok(bookModel);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update(BookModel bookModel)
+        {
+            await _booksService.UpdateAsync(bookModel);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            await _booksService.DeleteByIdAsync(id);
+
             return Ok();
         }
     }
