@@ -48,7 +48,7 @@ namespace Business.Services
         {
             var card = await unit.CardRepository.GetByIdWithBooksAsync(cardId);
 
-            return mapper.Map<IEnumerable<BookModel>>(card.Books);
+            return mapper.Map<IEnumerable<BookModel>>(card.Books.Select(x => x.Book));
         }
 
         public async Task<CardModel> GetByIdAsync(int id)
@@ -84,11 +84,24 @@ namespace Business.Services
             if (card == null)
                 throw new Exception($"Card with id '{cardId}' was not found");
 
-            var history = new History { BookId = bookId, CardId = cardId, Book = book, Card = card, TakeDate = DateTime.Now };
+            var history = GetLastHistoryWhenBookWasTaken(bookId);
+
+            if (history != null && history.ReturnDate > DateTime.Now)
+                throw new Exception($"Book with id '{bookId}' is already taken");
+
+            history = new History { BookId = bookId, CardId = cardId, Book = book, Card = card, TakeDate = DateTime.Now };
 
             card.Books.Add(history);
 
             await unit.SaveAsync();
+        }
+
+        private History GetLastHistoryWhenBookWasTaken(int bookId)
+        {
+            return unit.HistoryRepository
+                .FindAll()
+                .OrderByDescending(h => h.Id)
+                .FirstOrDefault(h => h.BookId == bookId);
         }
 
         public async Task UpdateAsync(CardModel model)
