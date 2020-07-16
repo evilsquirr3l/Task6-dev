@@ -41,16 +41,7 @@ namespace Task6.IntegrationTests
                     options.UseInternalServiceProvider(serviceProvider);
                 });
 
-                services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-                services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-                var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
-                services.AddSingleton(mapper);
-                services.AddTransient<IBooksService, BooksService>();
-
-                var sp = services.BuildServiceProvider();
-
-                using (var scope = sp.CreateScope())
+                using (var scope = services.BuildServiceProvider().CreateScope())
                 {
                     var scopedServices = scope.ServiceProvider;
                     var context = scopedServices.GetRequiredService<LibraryDbContext>();
