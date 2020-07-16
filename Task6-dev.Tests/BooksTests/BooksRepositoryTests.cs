@@ -88,7 +88,7 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public async Task BooksRepository_GetByIdWithDetailsAsync_ReturnsWithIncludedEntities()
+        public async Task BooksRepository_GetByIdAsync_ReturnsWithIncludedEntities()
         {
             using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
@@ -103,7 +103,7 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public void BooksRepository_GetAllWithDetails_ReturnsWithIncludedEntities()
+        public void BooksRepository_FindAll_ReturnsWithIncludedEntities()
         {
             using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
