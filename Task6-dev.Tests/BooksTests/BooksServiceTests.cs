@@ -51,7 +51,7 @@ namespace Task6.BooksTests
             var expected = GetTestBookModels().First();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(m => m.BookRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
+                .Setup(m => m.BookRepository.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(GetTestBookEntities().First);
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
@@ -129,7 +129,7 @@ namespace Task6.BooksTests
         public void BooksService_GetByFilter_ReturnsBooksByAuthor()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(x => x.BookRepository.GetAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
+            mockUnitOfWork.Setup(x => x.BookRepository.FindAll()).Returns(GetTestBookEntities().AsQueryable);
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Author = "Jack London"};
             
@@ -147,7 +147,7 @@ namespace Task6.BooksTests
         public void BooksService_GetByFilter_ReturnsBooksByYear()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(x => x.BookRepository.GetAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
+            mockUnitOfWork.Setup(x => x.BookRepository.FindAll()).Returns(GetTestBookEntities().AsQueryable);
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Year = 1994};
             

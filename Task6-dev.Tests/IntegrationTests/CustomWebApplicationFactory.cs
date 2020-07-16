@@ -41,7 +41,6 @@ namespace Task6.IntegrationTests
                     options.UseInternalServiceProvider(serviceProvider);
                 });
 
-                services.AddScoped<IBookRepository, BookRepository>();
                 services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
 

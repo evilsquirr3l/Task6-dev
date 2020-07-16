@@ -94,7 +94,7 @@ namespace Task6.BooksTests
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
-                var bookWithIncludes = await booksRepository.GetByIdWithDetailsAsync(1);
+                var bookWithIncludes = await booksRepository.GetByIdAsync(1);
                 
                 var actual = bookWithIncludes.Cards.Count;
                 
@@ -109,7 +109,7 @@ namespace Task6.BooksTests
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
-                var bookWithIncludes = booksRepository.GetAllWithDetails();
+                var bookWithIncludes = booksRepository.FindAll();
 
                 var actual = bookWithIncludes.FirstOrDefault().Cards.Count;
                 
