@@ -42,7 +42,7 @@ namespace WebApi
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IRepository<Book>), typeof(BookRepository));
-            //services.AddScoped<IRepository<Book>, BookRepository>();
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
