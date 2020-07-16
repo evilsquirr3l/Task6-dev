@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Business;
+using Business.Models;
 using Data;
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +13,6 @@ namespace Task6
 {
     internal static class UnitTestHelper
     {
-        public static IEqualityComparer<Card> CardEqualityComparer = new CardEqualityComparer();
-
-        public static IEqualityComparer<Book> BookEqualityComparer = new BookEqualityComparer();
-
-        public static IEqualityComparer<History> HistoryEqualityComparer = new HistoryEqualityComparer();
-
         public static DbContextOptions<LibraryDbContext> SeedData()
         {
             var options = new DbContextOptionsBuilder<LibraryDbContext>()
@@ -46,52 +41,5 @@ namespace Task6
             return new Mapper(configuration);
         }
 
-    }
-
-    internal class CardEqualityComparer : IEqualityComparer<Card>
-    {
-        public bool Equals([AllowNull] Card x, [AllowNull] Card y)
-        {
-            return x.Id == y.Id
-                && x.Created == y.Created
-                && x.ReaderId == y.ReaderId;
-        }
-
-        public int GetHashCode([DisallowNull] Card obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
-
-    internal class HistoryEqualityComparer : IEqualityComparer<History>
-    {
-        public bool Equals([AllowNull] History x, [AllowNull] History y)
-        {
-            return x.Id == y.Id
-                && x.BookId == y.BookId
-                && x.CardId == y.CardId
-                && x.TakeDate == y.TakeDate
-                && x.ReturnDate == y.ReturnDate;
-        }
-
-        public int GetHashCode([DisallowNull] History obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
-
-    internal class BookEqualityComparer : IEqualityComparer<Book>
-    {
-        public bool Equals([AllowNull] Book x, [AllowNull] Book y)
-        {
-            return x.Id == y.Id
-                && x.Year == y.Year
-                && x.Author == y.Author;
-        }
-
-        public int GetHashCode([DisallowNull] Book obj)
-        {
-            return obj.GetHashCode();
-        }
     }
 }

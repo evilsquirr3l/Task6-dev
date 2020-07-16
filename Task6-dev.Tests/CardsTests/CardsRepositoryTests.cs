@@ -26,8 +26,8 @@ namespace Task6.CardsTests
 
                 var card = await cardRepository.GetByIdWithBooksAsync(1);
 
-                Assert.That(card, Is.EqualTo(expectedCard).Using(UnitTestHelper.CardEqualityComparer));
-                Assert.That(card.Books, Is.EqualTo(expectedCard.Books).Using(UnitTestHelper.HistoryEqualityComparer));
+                Assert.That(card, Is.EqualTo(expectedCard).Using(new CardEqualityComparer()));
+                Assert.That(card.Books, Is.EqualTo(expectedCard.Books).Using(new HistoryEqualityComparer()));
             }
         }
     }
