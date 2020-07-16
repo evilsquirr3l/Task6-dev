@@ -7,18 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
-    public class BookRepository : Repository<Book>, IBookRepository
+    public class BookRepository : Repository<Book>
     {
         public BookRepository(LibraryDbContext context) : base(context)
         {
         }
 
-        public IQueryable<Book> GetAllWithDetails()
+        public override IQueryable<Book> FindAll()
         {
-            return FindAll().Include(b => b.Cards);
+            return DbSet.Include(b => b.Cards);
         }
 
-        public async Task<Book> GetByIdWithDetailsAsync(int id)
+        public override async Task<Book> GetByIdAsync(int id)
         {
             return await FindAll()
                 .Include(b => b.Cards)

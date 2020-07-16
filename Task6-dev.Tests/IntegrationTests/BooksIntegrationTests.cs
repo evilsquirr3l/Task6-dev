@@ -17,6 +17,12 @@ using WebApi;
 
 namespace Task6.IntegrationTests
 {
+    //TODO: not found? 
+    //dbcontextpool vs dbcontext
+    //model validation?
+    //getAll(filter)
+    //isBookReturned
+    
     [TestFixture]
     public class BooksIntegrationTests
     {

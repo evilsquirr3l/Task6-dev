@@ -38,7 +38,7 @@ namespace Business.Services
 
         public async Task<BookModel> GetByIdAsync(int id)
         {
-            var book = await _unit.BookRepository.GetByIdWithDetailsAsync(id);
+            var book = await _unit.BookRepository.GetByIdAsync(id);
 
             return _mapper.Map<BookModel>(book);
         }
@@ -59,7 +59,7 @@ namespace Business.Services
 
         public IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch)
         {
-            var books = _unit.BookRepository.GetAllWithDetails();
+            var books = _unit.BookRepository.FindAll();
 
             if (!string.IsNullOrEmpty(filterSearch.Author))
             {

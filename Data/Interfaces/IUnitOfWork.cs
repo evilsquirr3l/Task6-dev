@@ -5,7 +5,7 @@ namespace Data.Interfaces
 {
     public interface IUnitOfWork
     {
-        IBookRepository BookRepository { get; }
+        IRepository<Book> BookRepository { get; }
         
         IRepository<Card> CardRepository { get; }
         
