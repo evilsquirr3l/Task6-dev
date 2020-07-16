@@ -7,6 +7,7 @@ using Business;
 using Business.Interfaces;
 using Business.Services;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -40,6 +41,8 @@ namespace WebApi
                 opt.UseSqlServer(Configuration.GetConnectionString("Library")));
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IRepository<Book>), typeof(BookRepository));
+            //services.AddScoped<IRepository<Book>, BookRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
