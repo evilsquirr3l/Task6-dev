@@ -20,10 +20,9 @@ namespace Data.Repositories
 
         public override async Task<Book> GetByIdAsync(int id)
         {
-            return await FindAll()
+            return await DbSet
                 .Include(b => b.Cards)
-                .Where(b => b.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
     }
 }
