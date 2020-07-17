@@ -21,21 +21,10 @@ namespace Task6.IntegrationTests
         {
             builder.ConfigureServices(services =>
             {
-                //Remove the app's ApplicationDbContext registration.
-                var descriptor = services.SingleOrDefault(
-                    d => d.ServiceType ==
-                         typeof(DbContextOptions<LibraryDbContext>));
+                RemoveLibraryDbContextRegistration(services);
 
-                if (descriptor != null)
-                {
-                    services.Remove(descriptor);
-                }
+                var serviceProvider = GetInMemoryServiceProvider();
 
-                var serviceProvider = new ServiceCollection()
-                    .AddEntityFrameworkInMemoryDatabase()
-                    .BuildServiceProvider();
-
-                //TODO: Pool vs simple db context
                 services.AddDbContextPool<LibraryDbContext>(options =>
                 {
                     options.UseInMemoryDatabase(new Guid().ToString());
@@ -44,12 +33,30 @@ namespace Task6.IntegrationTests
 
                 using (var scope = services.BuildServiceProvider().CreateScope())
                 {
-                    var scopedServices = scope.ServiceProvider;
-                    var context = scopedServices.GetRequiredService<LibraryDbContext>();
+                    var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
 
                     UnitTestHelper.SeedData(context);
                 }
             });
+        }
+
+        private static ServiceProvider GetInMemoryServiceProvider()
+        {
+            return new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
+        }
+
+        private static void RemoveLibraryDbContextRegistration(IServiceCollection services)
+        {
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions<LibraryDbContext>));
+
+            if (descriptor != null)
+            {
+                services.Remove(descriptor);
+            }
         }
     }
 }
