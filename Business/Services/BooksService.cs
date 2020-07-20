@@ -20,10 +20,11 @@ namespace Business.Services
             _unit = unit;
             _mapper = mapper;
         }
-
+        
+        //TODO: this is not used
         public IEnumerable<BookModel> GetAll()
         {
-            var books = _unit.BookRepository.FindAll().ToList();
+            var books = _unit.BookRepository.FindAllWithDetails();
 
             return _mapper.Map<IEnumerable<BookModel>>(books);
         }
@@ -38,7 +39,7 @@ namespace Business.Services
 
         public async Task<BookModel> GetByIdAsync(int id)
         {
-            var book = await _unit.BookRepository.GetByIdAsync(id);
+            var book = await _unit.BookRepository.GetByIdWithDetailsAsync(id);
 
             return _mapper.Map<BookModel>(book);
         }
@@ -59,7 +60,7 @@ namespace Business.Services
 
         public IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch)
         {
-            var books = _unit.BookRepository.FindAll();
+            var books = _unit.BookRepository.FindAllWithDetails();
 
             if (!string.IsNullOrEmpty(filterSearch.Author))
             {

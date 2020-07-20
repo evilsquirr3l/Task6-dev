@@ -88,13 +88,13 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public async Task BooksRepository_GetByIdAsync_ReturnsWithIncludedEntities()
+        public async Task BooksRepository_GetByIdWithDetailsAsync_ReturnsWithIncludedEntities()
         {
             using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
-                var bookWithIncludes = await booksRepository.GetByIdAsync(1);
+                var bookWithIncludes = await booksRepository.GetByIdWithDetailsAsync(1);
                 
                 var actual = bookWithIncludes.Cards.Count;
                 
@@ -103,13 +103,13 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public void BooksRepository_FindAll_ReturnsWithIncludedEntities()
+        public void BooksRepository_FindAllWithDetails_ReturnsWithIncludedEntities()
         {
             using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
-                var bookWithIncludes = booksRepository.FindAll();
+                var bookWithIncludes = booksRepository.FindAllWithDetails();
 
                 var actual = bookWithIncludes.FirstOrDefault().Cards.Count;
                 

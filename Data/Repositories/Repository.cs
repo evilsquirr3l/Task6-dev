@@ -17,12 +17,12 @@ namespace Data.Repositories
             DbSet = context.Set<TEntity>();
         }
  
-        public virtual IQueryable<TEntity> FindAll()
+        public IQueryable<TEntity> FindAll()
         {
             return DbSet;
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
             return await DbSet.FindAsync(id);
         }

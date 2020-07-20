@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 
 namespace Data
 {
@@ -8,7 +9,7 @@ namespace Data
     {
         private readonly LibraryDbContext _context;
 
-        public UnitOfWork(LibraryDbContext context, IRepository<Card> cardRepository, IRepository<History> historyRepository, IRepository<Reader> readerRepository, IRepository<Book> bookRepository)
+        public UnitOfWork(LibraryDbContext context, IRepository<Card> cardRepository, IRepository<History> historyRepository, IRepository<Reader> readerRepository, IBookRepository bookRepository)
         {
             _context = context;
             CardRepository = cardRepository;
@@ -17,7 +18,7 @@ namespace Data
             BookRepository = bookRepository;
         }
 
-        public IRepository<Book> BookRepository { get; }
+        public IBookRepository BookRepository { get; }
         public IRepository<Card> CardRepository { get; }
         public IRepository<History> HistoryRepository { get; }
         public IRepository<Reader> ReaderRepository { get; }
