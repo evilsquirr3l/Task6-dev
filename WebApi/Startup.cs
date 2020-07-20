@@ -7,6 +7,7 @@ using Business;
 using Business.Interfaces;
 using Business.Services;
 using Data;
+using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -40,6 +41,9 @@ namespace WebApi
                 opt.UseSqlServer(Configuration.GetConnectionString("Library")));
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IBookRepository, BookRepository>();
+            //services.AddScoped(typeof(IBookRepository), typeof(BookRepository));
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IBookRepository, BookRepository>();
@@ -53,7 +57,7 @@ namespace WebApi
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Map", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Library", Version = "v1"});
             });
         }
 
@@ -69,7 +73,7 @@ namespace WebApi
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Production");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library");
                 c.RoutePrefix = string.Empty;
             });
             

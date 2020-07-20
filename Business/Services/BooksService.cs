@@ -20,10 +20,11 @@ namespace Business.Services
             _unit = unit;
             _mapper = mapper;
         }
-
+        
+        //TODO: this is not used
         public IEnumerable<BookModel> GetAll()
         {
-            var books = _unit.BookRepository.FindAll().ToList();
+            var books = _unit.BookRepository.FindAllWithDetails();
 
             return _mapper.Map<IEnumerable<BookModel>>(books);
         }
@@ -31,7 +32,7 @@ namespace Business.Services
         public async Task AddAsync(BookModel model)
         {
             var book = _mapper.Map<Book>(model);
-
+            
             await _unit.BookRepository.AddAsync(book);
             await _unit.SaveAsync();
         }
@@ -59,7 +60,7 @@ namespace Business.Services
 
         public IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch)
         {
-            var books = _unit.BookRepository.GetAllWithDetails();
+            var books = _unit.BookRepository.FindAllWithDetails();
 
             if (!string.IsNullOrEmpty(filterSearch.Author))
             {
@@ -72,38 +73,6 @@ namespace Business.Services
             }
 
             return _mapper.Map<IEnumerable<BookModel>>(books);
-        }
-
-        public DateTime GetBookReturningDate(int bookId)
-        {
-            var history = GetLastHistoryWhenBookWasTaken(bookId);
-
-            return history.ReturnDate ?? history.TakeDate.AddMonths(1);
-        }
-
-        public bool IsBookReturned(int bookId)
-        {
-            var history = GetLastHistoryWhenBookWasTaken(bookId);
-
-            if (history == null)
-            {
-                return false;
-            }
-
-            if (history.TakeDate == default)
-            {
-                return true;
-            }
-            
-            return history.ReturnDate < DateTime.Now;
-        }
-
-        private History GetLastHistoryWhenBookWasTaken(int bookId)
-        {
-            return _unit.HistoryRepository
-                .FindAll()
-                .OrderByDescending(h => h.Id)
-                .FirstOrDefault(h => h.BookId == bookId);
         }
     }
 }

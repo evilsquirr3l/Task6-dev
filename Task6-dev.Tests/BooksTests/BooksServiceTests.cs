@@ -129,7 +129,7 @@ namespace Task6.BooksTests
         public void BooksService_GetByFilter_ReturnsBooksByAuthor()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(x => x.BookRepository.GetAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
+            mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Author = "Jack London"};
             
@@ -147,7 +147,7 @@ namespace Task6.BooksTests
         public void BooksService_GetByFilter_ReturnsBooksByYear()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(x => x.BookRepository.GetAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
+            mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Year = 1994};
             
@@ -158,31 +158,6 @@ namespace Task6.BooksTests
             {
                 Assert.AreEqual(filter.Year, book.Year);
             }
-        }
-
-        [TestCase(1, true)]
-        [TestCase(2, false)]
-        [TestCase(3, true)]
-        [TestCase(999, false)]
-        public void BookService_IsBookReturned_ReturnsCorrectValue(int bookId, bool expectedResult)
-        {
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(GetTestHistories().AsQueryable);
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
-
-            var actual = bookService.IsBookReturned(bookId);
-            
-            Assert.AreEqual(expectedResult, actual);
-        }
-
-        private IEnumerable<History> GetTestHistories()
-        {
-            return new List<History>
-            {
-                new History{BookId = 1, CardId = 1, TakeDate = DateTime.Now.AddDays(-3), ReturnDate = DateTime.Now.AddDays(-1)},
-                new History{BookId = 2, CardId = 2, TakeDate = DateTime.Now.AddDays(-3)},
-                new History{BookId = 3, CardId = 3}
-            };
         }
     }
 }
