@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Models;
 using Business.Services;
+using Business.Validation;
 using Data;
 using Data.Entities;
 using Data.Interfaces;
@@ -80,7 +81,7 @@ namespace Task6.BooksTests
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
-            var book = new BookModel {Id = 100, Author = "@squirr3l"};
+            var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = "The Splendors and Miseries of Courtesans"};
             
             //Act
             await bookService.AddAsync(book);
@@ -88,6 +89,39 @@ namespace Task6.BooksTests
             //Assert
             mockUnitOfWork.Verify(x => x.BookRepository.AddAsync(It.Is<Book>(b => b.Author == book.Author && b.Id == book.Id)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
+        }
+
+        [Test] 
+        public void BooksService_AddAsync_ThrowsValidationExceptionWithEmptyBookTitle()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = ""};
+            
+            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
+        }
+        
+        [Test] 
+        public void BooksService_AddAsync_ThrowsValidationExceptionWithEmptyBookAuthor()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var book = new BookModel {Id = 100, Author = "", Title = "The Splendors and Miseries of Courtesans"};
+            
+            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
+        }
+        
+        [Test] 
+        public void BooksService_AddAsync_ThrowsValidationExceptionWithInvalidYear()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = "The Splendors and Miseries of Courtesans", Year = 9999};
+            
+            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
         }
 
         [TestCase(1)]

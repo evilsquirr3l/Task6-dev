@@ -1,19 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Business.Models;
 using Data;
 using Data.Entities;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using WebApi;
 
 namespace Task6.IntegrationTests
 {
@@ -30,7 +26,7 @@ namespace Task6.IntegrationTests
             _factory = new CustomWebApplicationFactory();
             _client = _factory.CreateClient();
         }
-        
+
         [Test]
         public async Task BooksController_GetByFilter_ReturnsAllWithNullFilter()
         {
@@ -79,6 +75,36 @@ namespace Task6.IntegrationTests
                 Assert.AreEqual(3, context.Books.Count());
             }
         }
+        
+        [Test]
+        public async Task BooksController_Add_ThrowsExceptionIfNameIsEmpty()
+        {
+            var book = new BookModel{Author = "", Title = "A Tale of Two Cities", Year = 1859};
+            var content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json");
+            var httpResponse = await _client.PostAsync(RequestUri, content);
+
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+        }
+        
+        [Test]
+        public async Task BooksController_Add_ThrowsExceptionIfTitleIsEmpty()
+        {
+            var book = new BookModel{Author = "Charles Dickens", Title = "", Year = 1859};
+            var content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json");
+            var httpResponse = await _client.PostAsync(RequestUri, content);
+
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+        }
+        
+        [Test]
+        public async Task BooksController_Add_ThrowsExceptionIfYearIsInvalid()
+        {
+            var book = new BookModel{Author = "Charles Dickens", Title = "A Tale of Two Cities", Year = 9999};
+            var content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json");
+            var httpResponse = await _client.PostAsync(RequestUri, content);
+
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+        }
 
         [Test]
         public async Task BooksController_Update_UpdatesBookInDatabase()
@@ -115,7 +141,7 @@ namespace Task6.IntegrationTests
                 Assert.AreEqual(2, context.Books.Count());
             }
         }
-        
+
         [OneTimeTearDown]
         public void TearDown()
         {
