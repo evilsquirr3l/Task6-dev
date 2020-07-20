@@ -45,10 +45,15 @@ namespace WebApi
             //services.AddScoped(typeof(IBookRepository), typeof(BookRepository));
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ICardRepository, CardRepository>();
+
             var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
             services.AddSingleton(mapper);
+
             services.AddTransient<IBooksService, BooksService>();
+            services.AddTransient<ICardService, CardService>();
 
             services.AddSwaggerGen(c =>
             {
