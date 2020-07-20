@@ -17,7 +17,7 @@ namespace Data.Repositories
 
         public async Task<Card> GetByIdWithBooksAsync(int id)
         {
-            return await _dbSet.Include(x => x.Books)
+            return await DbSet.Include(x => x.Books)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }

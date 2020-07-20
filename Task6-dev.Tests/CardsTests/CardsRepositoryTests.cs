@@ -17,7 +17,7 @@ namespace Task6.CardsTests
         [Test]
         public async Task CardRepository_GetByIdWithBooksAsync_ReturnsCardByIdAndIncludesBooks()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.SeedData()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var cardRepository = new CardRepository(context);
 
