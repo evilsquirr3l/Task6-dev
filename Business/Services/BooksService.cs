@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Business.Interfaces;
 using Business.Models;
+using Business.Validation;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -31,6 +32,8 @@ namespace Business.Services
 
         public async Task AddAsync(BookModel model)
         {
+            BookValidation.CheckBook(model);
+            
             var book = _mapper.Map<Book>(model);
             
             await _unit.BookRepository.AddAsync(book);
