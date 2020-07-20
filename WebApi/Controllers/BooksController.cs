@@ -18,14 +18,6 @@ namespace WebApi.Controllers
             _booksService = booksService;
         }
 
-        // [HttpGet]
-        // public ActionResult<IEnumerable<BookModel>> GetBooks()
-        // {
-        //     var books = _booksService.GetAll();
-        //
-        //     return Ok(books);
-        // }
-        
         [HttpGet]
         public ActionResult<IEnumerable<BookModel>> GetByFilter([FromQuery] FilterSearchModel model)
         {
@@ -38,6 +30,11 @@ namespace WebApi.Controllers
         public async Task<ActionResult<IEnumerable<BookModel>>> GetById(int id)
         {
             var book = await _booksService.GetByIdAsync(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
 
             return Ok(book);
         }
