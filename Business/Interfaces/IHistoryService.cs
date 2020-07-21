@@ -5,7 +5,7 @@ using Data.Entities;
 
 namespace Business.Interfaces
 {
-    public interface IHistoryService : ICrud<HistoryModel>
+    public interface IHistoryService
     {
         IEnumerable<BookModel> GetMostPopularBooks(int bookCount);
         

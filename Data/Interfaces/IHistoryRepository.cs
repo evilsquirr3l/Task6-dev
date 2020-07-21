@@ -7,7 +7,5 @@ namespace Data.Interfaces
     public interface IHistoryRepository : IRepository<History>
     {
         IQueryable<History> GetAllWithDetails();
-
-        Task<History> GetByIdWithDetailsAsync(int id);
     }
 }

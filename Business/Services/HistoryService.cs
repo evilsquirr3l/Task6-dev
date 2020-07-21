@@ -37,39 +37,5 @@ namespace Business.Services
                 .GroupBy(x => x.Card.Reader).OrderBy(x => x.Count())
                 .Take(readersCount)
                 .Select(x => new ReaderActivityModel { BooksCount = x.Count(), ReaderId = x.Key.Id, ReaderName = x.Key.Name});
-
-        public IEnumerable<HistoryModel> GetAll() =>
-            _mapper.Map<IEnumerable<History>, IEnumerable<HistoryModel>>(
-                _unit.HistoryRepository.FindAll()
-                );
-
-        public async Task<HistoryModel> GetByIdAsync(int id)
-        {
-            var history = await _unit.HistoryRepository.GetByIdWithDetailsAsync(id);
-
-            return _mapper.Map<History, HistoryModel>(history);
-        }
-
-        public async Task AddAsync(HistoryModel model)
-        {
-            var history = _mapper.Map<HistoryModel, History>(model);
-
-            await _unit.HistoryRepository.AddAsync(history);
-            await _unit.SaveAsync();
-        }
-
-        public async Task UpdateAsync(HistoryModel model)
-        {
-            var history = _mapper.Map<HistoryModel, History>(model);
-
-            _unit.HistoryRepository.Update(history);
-            await _unit.SaveAsync();
-        }
-
-        public async Task DeleteByIdAsync(int modelId)
-        {
-            await _unit.HistoryRepository.DeleteByIdAsync(modelId);
-            await _unit.SaveAsync();
-        }
     }
 }

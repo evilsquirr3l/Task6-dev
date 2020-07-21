@@ -18,10 +18,5 @@ namespace Data.Repositories
                 .Include(h => h.Card)
                 .ThenInclude(c => c.Reader);
         }
-
-        public async Task<History> GetByIdWithDetailsAsync(int id)
-        {
-            return await GetAllWithDetails().Where(x => x.Id == id).FirstOrDefaultAsync();
-        }
     }
 }
