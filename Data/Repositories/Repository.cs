@@ -10,45 +10,45 @@ namespace Data.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly DbSet<TEntity> DbSet;
         
         public Repository(LibraryDbContext context)
         {
-            _dbSet = context.Set<TEntity>();
+            DbSet = context.Set<TEntity>();
         }
  
         public IQueryable<TEntity> FindAll()
         {
-            return _dbSet;
+            return DbSet;
         }
 
         public async Task<TEntity> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await DbSet.FindAsync(id);
         }
 
         public async Task AddAsync(TEntity entity)
         {
-            await _dbSet.AddAsync(entity);
+            await DbSet.AddAsync(entity);
         }
  
         public void Update(TEntity entity)
         {
-            _dbSet.Update(entity);
+            DbSet.Update(entity);
         }
  
         public void Delete(TEntity entity)
         {
-            _dbSet.Remove(entity);
+            DbSet.Remove(entity);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var entity = await _dbSet.FindAsync(id);
+            var entity = await DbSet.FindAsync(id);
 
             if (entity != null)
             {
-                _dbSet.Remove(entity);
+                DbSet.Remove(entity);
             }
         }
     }

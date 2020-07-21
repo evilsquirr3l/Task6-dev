@@ -7,7 +7,7 @@ namespace Data.Interfaces
     {
         IBookRepository BookRepository { get; }
         
-        IRepository<Card> CardRepository { get; }
+        ICardRepository CardRepository { get; }
         
         IRepository<History> HistoryRepository { get; }
         

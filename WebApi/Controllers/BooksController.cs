@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Interfaces;
@@ -19,19 +20,54 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<BookModel>> GetBooks()
+        public ActionResult<IEnumerable<BookModel>> GetByFilter([FromQuery] FilterSearchModel model)
         {
-            var books = _booksService.GetAll();
+            var books = _booksService.GetByFilter(model);
 
             return Ok(books);
         }
+        
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<BookModel>>> GetById(int id)
+        {
+            var book = await _booksService.GetByIdAsync(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(book);
+        }
 
         [HttpPost]
-        public async Task<ActionResult> CreateBook([FromBody] BookModel bookModel)
+        public async Task<ActionResult> Add([FromBody] BookModel bookModel)
         {
-            await _booksService.AddAsync(bookModel);
+            try
+            {
+                await _booksService.AddAsync(bookModel);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
-            //return CreatedAtRoute("DefaultApi", new { id = bookModel.Id}, bookModel);
+            return CreatedAtAction(nameof(Add), bookModel);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update(BookModel bookModel)
+        {
+            await _booksService.UpdateAsync(bookModel);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            await _booksService.DeleteByIdAsync(id);
+
             return Ok();
         }
     }

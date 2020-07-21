@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Models;
 using Data.Entities;
 
@@ -6,10 +7,10 @@ namespace Business.Interfaces
 {
     public interface ICardService : ICrud<CardModel>
     {
-        IEnumerable<BookModel> GetBooksByCardId(int cardId);
+        Task<IEnumerable<BookModel>> GetBooksByCardIdAsync(int cardId);
 
-        void TakeBook(int cartId, int bookId);
+        Task TakeBookAsync(int cartId, int bookId);
 
-        void HandOverBook(int cartId, int bookId);
+        Task HandOverBookAsync(int cartId, int bookId);
     }
 }

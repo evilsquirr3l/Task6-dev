@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AutoMapper;
 using Business;
@@ -20,46 +21,42 @@ namespace Task6.IntegrationTests
         {
             builder.ConfigureServices(services =>
             {
-                //Remove the app's ApplicationDbContext registration.
-                var descriptor = services.SingleOrDefault(
-                    d => d.ServiceType ==
-                         typeof(DbContextOptions<LibraryDbContext>));
+                RemoveLibraryDbContextRegistration(services);
 
-                if (descriptor != null)
-                {
-                    services.Remove(descriptor);
-                }
+                var serviceProvider = GetInMemoryServiceProvider();
 
-                var serviceProvider = new ServiceCollection()
-                    .AddEntityFrameworkInMemoryDatabase()
-                    .BuildServiceProvider();
-
-                //TODO: Pool vs simple db context
                 services.AddDbContextPool<LibraryDbContext>(options =>
                 {
-                    UnitTestHelper.GetUnitTestDbOptions();
-                    options.UseInMemoryDatabase("squirr3l");
+                    options.UseInMemoryDatabase(new Guid().ToString());
                     options.UseInternalServiceProvider(serviceProvider);
                 });
 
-                services.AddScoped<IBookRepository, BookRepository>();
-                services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-                services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-                var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
-                services.AddSingleton(mapper);
-                services.AddTransient<IBooksService, BooksService>();
-
-                var sp = services.BuildServiceProvider();
-
-                using (var scope = sp.CreateScope())
+                using (var scope = services.BuildServiceProvider().CreateScope())
                 {
-                    var scopedServices = scope.ServiceProvider;
-                    var context = scopedServices.GetRequiredService<LibraryDbContext>();
+                    var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
 
                     UnitTestHelper.SeedData(context);
                 }
             });
+        }
+
+        private static ServiceProvider GetInMemoryServiceProvider()
+        {
+            return new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
+        }
+
+        private static void RemoveLibraryDbContextRegistration(IServiceCollection services)
+        {
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions<LibraryDbContext>));
+
+            if (descriptor != null)
+            {
+                services.Remove(descriptor);
+            }
         }
     }
 }
