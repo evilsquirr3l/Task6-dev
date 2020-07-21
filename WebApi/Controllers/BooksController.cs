@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Interfaces;
@@ -42,10 +43,16 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] BookModel bookModel)
         {
-            await _booksService.AddAsync(bookModel);
+            try
+            {
+                await _booksService.AddAsync(bookModel);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
-            //return CreatedAtRoute("DefaultApi", new { id = bookModel.Id}, bookModel);
-            return Ok(bookModel);
+            return CreatedAtAction(nameof(Add), bookModel);
         }
 
         [HttpPut]

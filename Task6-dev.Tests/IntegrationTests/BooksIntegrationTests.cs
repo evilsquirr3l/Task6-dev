@@ -83,7 +83,7 @@ namespace Task6.IntegrationTests
             var content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PostAsync(RequestUri, content);
 
-            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
         
         [Test]
@@ -93,7 +93,7 @@ namespace Task6.IntegrationTests
             var content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PostAsync(RequestUri, content);
 
-            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
         
         [Test]
@@ -103,7 +103,7 @@ namespace Task6.IntegrationTests
             var content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PostAsync(RequestUri, content);
 
-            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
         [Test]
