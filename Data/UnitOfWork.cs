@@ -10,7 +10,7 @@ namespace Data
         private readonly LibraryDbContext _context;
 
         public UnitOfWork(LibraryDbContext context, IBookRepository bookRepository, 
-            IRepository<Card> cardRepository, IRepository<History> historyRepository, 
+            ICardRepository cardRepository, IRepository<History> historyRepository, 
             IReaderRepository readerRepository)
         {
             _context = context;

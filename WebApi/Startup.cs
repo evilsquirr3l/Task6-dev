@@ -3,7 +3,6 @@ using Business;
 using Business.Interfaces;
 using Business.Services;
 using Data;
-using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -35,19 +34,17 @@ namespace WebApi
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBookRepository, BookRepository>();
-            //services.AddScoped(typeof(IBookRepository), typeof(BookRepository));
+            services.AddScoped<ICardRepository, CardRepository>();
+            services.AddScoped<IReaderRepository, ReaderRepository>();
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<ICardRepository, CardRepository>();
 
             var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
             services.AddSingleton(mapper);
 
             services.AddTransient<IBooksService, BooksService>();
-            services.AddTransient<IReaderService, ReaderService>();
             services.AddTransient<ICardService, CardService>();
+            services.AddTransient<IReaderService, ReaderService>();
 
             services.AddSwaggerGen(c =>
             {

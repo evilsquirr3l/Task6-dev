@@ -1,12 +1,6 @@
 using System;
 using System.Linq;
-using AutoMapper;
-using Business;
-using Business.Interfaces;
-using Business.Services;
 using Data;
-using Data.Interfaces;
-using Data.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
