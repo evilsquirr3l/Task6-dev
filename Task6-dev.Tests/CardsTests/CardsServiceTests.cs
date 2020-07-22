@@ -281,5 +281,56 @@ namespace Task6.CardsTests
             //Act/Assert
             Assert.ThrowsAsync<Exception>(async () => await cardService.TakeBookAsync(1, 1));
         }
+
+        private IEnumerable<History> GetHistories()
+        {
+            return new List<History>
+            {
+                new History { Id = 1, BookId = 1, CardId = 1, TakeDate = DateTime.Today },
+                new History { Id = 2, BookId = 2, CardId = 1, TakeDate = DateTime.Today },
+            };
+        }
+
+        [TestCase(1, 1)]
+        [TestCase(1, 2)]
+        public async Task CardsService_HandOverBookAsync_ReturnDateOfHistoryWasChanged(int cardId, int bookId)
+        {
+            //Arrange
+            var histories = GetHistories();
+
+            var history = histories.FirstOrDefault(x => x.BookId == bookId && x.CardId == cardId);
+            var expected = new History { Id = history.Id, BookId = history.BookId, CardId = history.CardId, TakeDate = history.TakeDate };
+
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(histories.AsQueryable());
+ 
+            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+
+            //Act
+            await cardService.HandOverBookAsync(cardId, bookId);
+            var actual = history;
+
+            //Assert
+            Assert.AreNotEqual(expected.ReturnDate, actual.ReturnDate);
+            mockUnitOfWork.Verify(x => x.HistoryRepository.Update(It.Is<History>(x => x.BookId == bookId && x.CardId == cardId)), Times.Once);
+            mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
+        }
+
+        [TestCase(4, 1)]
+        [TestCase(1, 5)]
+        [TestCase(5, 6)]
+        public void CardsService_HandOverBookAsync_ThrowsExceptionIfHistoryWasNotFound(int cardId, int bookId)
+        {
+            //Arrange
+            var histories = GetHistories();
+
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(histories.AsQueryable());
+
+            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+
+            //Act/Assert
+            Assert.ThrowsAsync<Exception>(async () => await cardService.HandOverBookAsync(cardId, bookId));
+        }
     }
 }
