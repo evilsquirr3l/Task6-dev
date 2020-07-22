@@ -43,7 +43,6 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ReaderModel value)
         {
-            //await _readerService.AddAsync(value);
             try
             {
                 await _readerService.AddAsync(value);

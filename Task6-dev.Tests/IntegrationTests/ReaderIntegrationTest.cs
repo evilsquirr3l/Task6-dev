@@ -13,12 +13,17 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Business.Models;
 using System.Text;
+using System.Net;
 
 namespace Task6.IntegrationTests
 {
     [TestFixture]
     public class ReaderIntegrationTest
     {
+        //TODO: test for validation
+        // ask about id and validation in put
+        // think about returning id in method Add
+
         private CustomWebApplicationFactory _factory;
         private HttpClient _client;
         private ReaderModelEqualityComparer _comparer;
@@ -32,7 +37,7 @@ namespace Task6.IntegrationTests
             _client = _factory.CreateClient();
         }
 
-        [Test]
+        [Test, Order(0)]
         public async Task ReaderController_GetAll_ReturnAllFromDb()
         {
             // arrange 
@@ -47,10 +52,10 @@ namespace Task6.IntegrationTests
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<IEnumerable<ReaderModel>>(stringResponse).ToList();
             Assert.AreEqual(expectedLength, actual.Count);
-            //for (int i = 0; i < expectedLength; i++)
-            //{
-            //    Assert.IsTrue(_comparer.Equals(expected[i], actual[i]));
-            //}
+            for (int i = 0; i < expectedLength; i++)
+            {
+                Assert.IsTrue(_comparer.Equals(expected[i], actual[i]));
+            }
         }
 
         [Test]
@@ -68,6 +73,19 @@ namespace Task6.IntegrationTests
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<ReaderModel>(stringResponse);
             Assert.IsTrue(_comparer.Equals(expected, actual));
+        }
+
+        [Test]
+        public async Task ReaderController_GetByIdAsync_ReturnNotFound()
+        {
+            // arrange 
+            var readerId = 999;
+
+            // act
+            var httpResponse = await _client.GetAsync(requestUri + readerId);
+
+            // assert
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
         [Test]
@@ -92,7 +110,89 @@ namespace Task6.IntegrationTests
             CheckReaderInfoIntoDb(reader, readerId, 3);
         }
 
-        //TODO: test for validation
+        [Test]
+        public void ReaderController_Add_ThrowsExceptionIfModelIsIncorrect()
+        {
+            // Name is empty
+            var reader = new ReaderModel { Name = "", Email = "only_money@gmail.com",
+                Phone = "999999999", Address = "Glasgow" };
+            CheckExceptionWhileAddNewModel(reader);
+
+            // Email is empty
+            reader.Name = "Scrooge McDuck";
+            reader.Email = "";
+            CheckExceptionWhileAddNewModel(reader);
+
+            // Phone is empty
+            reader.Email = "only_money@gmail.com";
+            reader.Phone = "";
+            CheckExceptionWhileAddNewModel(reader);
+
+            // Address is empty
+            reader.Phone = "999999999";
+            reader.Address = "";
+            CheckExceptionWhileAddNewModel(reader);
+        }
+
+        //[Test]
+        //public async Task ReaderController_Add_ThrowsExceptionIfEmailIsEmpty()
+        //{
+        //    // arrange
+        //    var reader = new ReaderModel
+        //    {
+        //        Name = "Test",
+        //        Email = "",
+        //        Phone = "999999999",
+        //        Address = "Glasgow"
+        //    };
+        //    var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
+
+        //    // act
+        //    var httpResponse = await _client.PostAsync(requestUri, content);
+
+        //    // assert
+        //    Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        //}
+
+        //[Test]
+        //public async Task ReaderController_Add_ThrowsExceptionIfPhoneIsEmpty()
+        //{
+        //    // arrange
+        //    var reader = new ReaderModel
+        //    {
+        //        Name = "Test",
+        //        Email = "only_money@gmail.com",
+        //        Phone = "",
+        //        Address = "Glasgow"
+        //    };
+        //    var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
+
+        //    // act
+        //    var httpResponse = await _client.PostAsync(requestUri, content);
+
+        //    // assert
+        //    Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        //}
+
+        //[Test]
+        //public async Task ReaderController_Add_ThrowsExceptionIfAddressIsEmpty()
+        //{
+        //    // arrange
+        //    var reader = new ReaderModel
+        //    {
+        //        Name = "Test",
+        //        Email = "only_money@gmail.com",
+        //        Phone = "999999999",
+        //        Address = ""
+        //    };
+        //    var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
+
+        //    // act
+        //    var httpResponse = await _client.PostAsync(requestUri, content);
+
+        //    // assert
+        //    Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        //}
 
         [Test]
         public async Task ReaderController_Update_UpdateReaderInDb()
@@ -109,7 +209,7 @@ namespace Task6.IntegrationTests
             var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
 
             // act
-            var httpResponse = await _client.PutAsync(requestUri, content);
+            var httpResponse = await _client.PutAsync(requestUri + reader.Id, content);
 
             //assert
             httpResponse.EnsureSuccessStatusCode();
@@ -134,13 +234,13 @@ namespace Task6.IntegrationTests
             }
         }
 
+        #region helpers
         private async void CheckReaderInfoIntoDb(ReaderModel reader, int readerId, int expectedLength)
         {
             using (var test = _factory.Services.CreateScope())
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
                 Assert.AreEqual(expectedLength, context.Readers.Count());
-                Assert.AreEqual(expectedLength, context.ReaderProfiles.Count());
 
                 var dbReader = await context.Readers.FindAsync(readerId);
                 Assert.AreEqual(readerId, dbReader.Id);
@@ -154,6 +254,14 @@ namespace Task6.IntegrationTests
             }
         }
 
+        private async void CheckExceptionWhileAddNewModel(ReaderModel reader)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
+            var httpResponse = await _client.PostAsync(requestUri, content);
+
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
+
         private IEnumerable<ReaderModel> GetReaderModels()
         {
             return new List<ReaderModel>()
@@ -164,6 +272,7 @@ namespace Task6.IntegrationTests
                     Phone = "telepathy", Address = "North" }
             };
         }
+        #endregion
 
         [OneTimeTearDown]
         public void TearDown()

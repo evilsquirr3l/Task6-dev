@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Interfaces;
 using Business.Models;
+using Business.Validation;
 using Data.Entities;
 using Data.Interfaces;
 using System;
@@ -23,16 +24,19 @@ namespace Business.Services
 
         public async Task AddAsync(ReaderModel model)
         {
-            var reader = _mapper.Map<Reader>(model);
+            ReaderValidation.CheckReader(model);
 
+            var reader = _mapper.Map<Reader>(model);
             await _unit.ReaderRepository.AddAsync(reader);
             await _unit.SaveAsync();
         }
 
         public async Task UpdateAsync(ReaderModel model)
         {
-            var reader = _mapper.Map<Reader>(model);
+            //Need?
+            //ReaderValidation.CheckReader(model);
 
+            var reader = _mapper.Map<Reader>(model);
             _unit.ReaderRepository.Update(reader);
             await _unit.SaveAsync();
         }
