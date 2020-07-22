@@ -43,16 +43,17 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] BookModel bookModel)
         {
+            int id;
             try
             {
-                await _booksService.AddAsync(bookModel);
+                id = await _booksService.AddAsync(bookModel);
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
 
-            return CreatedAtAction(nameof(Add), bookModel);
+            return CreatedAtAction(nameof(Add), new {id}, bookModel);
         }
 
         [HttpPut]

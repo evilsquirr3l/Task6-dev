@@ -9,7 +9,7 @@ namespace Business.Interfaces
 
         Task<TModel> GetByIdAsync(int id);
 
-        Task AddAsync(TModel model);
+        Task<int> AddAsync(TModel model);
 
         Task UpdateAsync(TModel model);
 

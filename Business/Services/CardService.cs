@@ -23,12 +23,14 @@ namespace Business.Services
         }
 
 
-        public async Task AddAsync(CardModel model)
+        public async Task<int> AddAsync(CardModel model)
         {
             var card = mapper.Map<Card>(model);
 
             await unit.CardRepository.AddAsync(card);
             await unit.SaveAsync();
+
+            return card.Id;
         }
 
         public async Task DeleteByIdAsync(int modelId)
