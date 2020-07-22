@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Models;
 using Business.Services;
+using Business.Validation;
 using Data;
 using Data.Entities;
 using Data.Interfaces;
@@ -80,7 +81,7 @@ namespace Task6.BooksTests
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
-            var book = new BookModel {Id = 100, Author = "@squirr3l"};
+            var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = "The Splendors and Miseries of Courtesans"};
             
             //Act
             await bookService.AddAsync(book);
@@ -88,6 +89,39 @@ namespace Task6.BooksTests
             //Assert
             mockUnitOfWork.Verify(x => x.BookRepository.AddAsync(It.Is<Book>(b => b.Author == book.Author && b.Id == book.Id)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
+        }
+
+        [Test] 
+        public void BooksService_AddAsync_ThrowsValidationExceptionWithEmptyBookTitle()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = ""};
+            
+            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
+        }
+        
+        [Test] 
+        public void BooksService_AddAsync_ThrowsValidationExceptionWithEmptyBookAuthor()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var book = new BookModel {Id = 100, Author = "", Title = "The Splendors and Miseries of Courtesans"};
+            
+            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
+        }
+        
+        [Test] 
+        public void BooksService_AddAsync_ThrowsValidationExceptionWithInvalidYear()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = "The Splendors and Miseries of Courtesans", Year = 9999};
+            
+            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
         }
 
         [TestCase(1)]
@@ -129,7 +163,7 @@ namespace Task6.BooksTests
         public void BooksService_GetByFilter_ReturnsBooksByAuthor()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(x => x.BookRepository.GetAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
+            mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Author = "Jack London"};
             
@@ -147,7 +181,7 @@ namespace Task6.BooksTests
         public void BooksService_GetByFilter_ReturnsBooksByYear()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(x => x.BookRepository.GetAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
+            mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Year = 1994};
             
@@ -158,31 +192,6 @@ namespace Task6.BooksTests
             {
                 Assert.AreEqual(filter.Year, book.Year);
             }
-        }
-
-        [TestCase(1, true)]
-        [TestCase(2, false)]
-        [TestCase(3, true)]
-        [TestCase(999, false)]
-        public void BookService_IsBookReturned_ReturnsCorrectValue(int bookId, bool expectedResult)
-        {
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(GetTestHistories().AsQueryable);
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
-
-            var actual = bookService.IsBookReturned(bookId);
-            
-            Assert.AreEqual(expectedResult, actual);
-        }
-
-        private IEnumerable<History> GetTestHistories()
-        {
-            return new List<History>
-            {
-                new History{BookId = 1, CardId = 1, TakeDate = DateTime.Now.AddDays(-3), ReturnDate = DateTime.Now.AddDays(-1)},
-                new History{BookId = 2, CardId = 2, TakeDate = DateTime.Now.AddDays(-3)},
-                new History{BookId = 3, CardId = 3}
-            };
         }
     }
 }

@@ -13,17 +13,16 @@ namespace Data.Repositories
         {
         }
 
-        public IQueryable<Book> GetAllWithDetails()
+        public IQueryable<Book> FindAllWithDetails()
         {
-            return FindAll().Include(b => b.Cards);
+            return DbSet.Include(b => b.Cards);
         }
 
         public async Task<Book> GetByIdWithDetailsAsync(int id)
         {
-            return await FindAll()
+            return await DbSet
                 .Include(b => b.Cards)
-                .Where(b => b.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
     }
 }

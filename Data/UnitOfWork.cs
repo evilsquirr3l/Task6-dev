@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Repositories;
 
 namespace Data
 {
@@ -20,7 +21,7 @@ namespace Data
         }
 
         public IBookRepository BookRepository { get; }
-        public IRepository<Card> CardRepository { get; }
+        public ICardRepository CardRepository { get; }
         public IRepository<History> HistoryRepository { get; }
         public IReaderRepository ReaderRepository { get; }
         

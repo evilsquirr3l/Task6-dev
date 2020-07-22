@@ -13,20 +13,20 @@ namespace Task6.BooksTests
         [Test]
         public void BookRepository_FindAll_ReturnsAllValues()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.GetDbContextOptions()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
 
                 var books = booksRepository.FindAll();
 
-                Assert.AreEqual(1, books.Count());
+                Assert.AreEqual(2, books.Count());
             }
         }
 
         [Test]
         public async Task BookRepository_GetById_ReturnsSingleValue()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.GetDbContextOptions()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
 
@@ -42,36 +42,36 @@ namespace Task6.BooksTests
         [Test]
         public async Task BookRepository_AddAsync_AddsValueToDatabase()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.GetDbContextOptions()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
-                var book = new Book(){Id = 2};
+                var book = new Book(){Id = 3};
 
                 await booksRepository.AddAsync(book);
                 await context.SaveChangesAsync();
                 
-                Assert.AreEqual(2, context.Books.Count());
+                Assert.AreEqual(3, context.Books.Count());
             }
         }
 
         [Test]
         public async Task BookRepository_DeleteByIdAsync_DeletesEntity()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.GetDbContextOptions()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var bookRepository = new BookRepository(context);
                 
                 await bookRepository.DeleteByIdAsync(1);
                 await context.SaveChangesAsync();
                 
-                Assert.AreEqual(0, context.Books.Count());
+                Assert.AreEqual(1, context.Books.Count());
             }
         }
 
         [Test]
         public async Task BookRepository_Update_UpdatesEntity()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.GetDbContextOptions()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var booksRepository = new BookRepository(context);
 
@@ -90,7 +90,7 @@ namespace Task6.BooksTests
         [Test]
         public async Task BooksRepository_GetByIdWithDetailsAsync_ReturnsWithIncludedEntities()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.GetDbContextOptions()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
@@ -103,13 +103,13 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public void BooksRepository_GetAllWithDetails_ReturnsWithIncludedEntities()
+        public void BooksRepository_FindAllWithDetails_ReturnsWithIncludedEntities()
         {
-            using (var context = new LibraryDbContext(UnitTestHelper.GetDbContextOptions()))
+            using (var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions()))
             {
                 var expectedCardsInBook = 1;
                 var booksRepository = new BookRepository(context);
-                var bookWithIncludes = booksRepository.GetAllWithDetails();
+                var bookWithIncludes = booksRepository.FindAllWithDetails();
 
                 var actual = bookWithIncludes.FirstOrDefault().Cards.Count;
                 

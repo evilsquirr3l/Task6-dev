@@ -1,6 +1,10 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Business;
+using Business.Models;
 using Data;
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +13,7 @@ namespace Task6
 {
     internal static class UnitTestHelper
     {
-        public static DbContextOptions<LibraryDbContext> GetDbContextOptions()
+        public static DbContextOptions<LibraryDbContext> GetUnitTestDbOptions()
         {
             var options = new DbContextOptionsBuilder<LibraryDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -19,9 +23,6 @@ namespace Task6
             {
                 SeedData(context);
             }
-
-            return options;
-        }
 
         public static void SeedData(LibraryDbContext context)
         {
