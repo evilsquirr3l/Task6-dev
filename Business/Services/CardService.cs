@@ -60,7 +60,7 @@ namespace Business.Services
 
         public async Task HandOverBookAsync(int cardId, int bookId)
         {
-            var history = unit.HistoryRepository.FindAll().Where(x => x.BookId == bookId && x.CardId == cardId).FirstOrDefault();
+            var history = unit.HistoryRepository.FindAll().FirstOrDefault(x => x.BookId == bookId && x.CardId == cardId);
 
             //TODO: discuss exceptions with team
             if (history == null)
