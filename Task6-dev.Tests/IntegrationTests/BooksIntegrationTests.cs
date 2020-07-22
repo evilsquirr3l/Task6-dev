@@ -59,19 +59,20 @@ namespace Task6.IntegrationTests
         public async Task BooksController_Add_AddsBookToDatabase()
         {
             var book = new BookModel{Author = "Charles Dickens", Title = "A Tale of Two Cities", Year = 1859};
-            var bookId = 3;
             var content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PostAsync(RequestUri, content);
 
             httpResponse.EnsureSuccessStatusCode();
-
+            var stringResponse = await httpResponse.Content.ReadAsStringAsync();
+            var bookInResponse = JsonConvert.DeserializeObject<BookModel>(stringResponse);
+            
             using (var test = _factory.Services.CreateScope())
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
-                var databaseBook = await context.Books.FindAsync(bookId);
-                Assert.AreEqual(bookId, databaseBook.Id);
-                Assert.AreEqual(book.Author, databaseBook.Author);
-                Assert.AreEqual(book.Title, databaseBook.Title);
+                var databaseBook = await context.Books.FindAsync(bookInResponse.Id);
+                Assert.AreEqual(bookInResponse.Id, databaseBook.Id);
+                Assert.AreEqual(bookInResponse.Author, databaseBook.Author);
+                Assert.AreEqual(bookInResponse.Title, databaseBook.Title);
                 Assert.AreEqual(3, context.Books.Count());
             }
         }
