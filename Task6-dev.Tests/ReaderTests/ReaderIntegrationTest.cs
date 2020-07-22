@@ -77,14 +77,6 @@ namespace Task6.Tests.ReaderTests
                     options.UseInternalServiceProvider(serviceProvider);
                 });
 
-                //services.AddScoped<IReaderRepository, ReaderRepository>();
-                //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-                //services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-                //var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
-                //services.AddSingleton(mapper);
-                //services.AddTransient<IReaderService, ReaderService>();
-
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
 
