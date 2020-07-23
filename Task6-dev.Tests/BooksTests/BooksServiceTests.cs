@@ -99,7 +99,7 @@ namespace Task6.BooksTests
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = ""};
             
-            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
+            Assert.ThrowsAsync<LibraryException>(() => bookService.AddAsync(book));
         }
         
         [Test] 
@@ -110,7 +110,7 @@ namespace Task6.BooksTests
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var book = new BookModel {Id = 100, Author = "", Title = "The Splendors and Miseries of Courtesans"};
             
-            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
+            Assert.ThrowsAsync<LibraryException>(() => bookService.AddAsync(book));
         }
         
         [Test] 
@@ -121,7 +121,7 @@ namespace Task6.BooksTests
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = "The Splendors and Miseries of Courtesans", Year = 9999};
             
-            Assert.ThrowsAsync<ValidationException>(() => bookService.AddAsync(book));
+            Assert.ThrowsAsync<LibraryException>(() => bookService.AddAsync(book));
         }
 
         [TestCase(1)]
