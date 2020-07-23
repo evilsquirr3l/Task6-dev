@@ -61,11 +61,16 @@ namespace Business.Services
 
         public async Task HandOverBookAsync(int cardId, int bookId)
         {
-            var history = unit.HistoryRepository.FindAll().FirstOrDefault(x => x.BookId == bookId && x.CardId == cardId);
+            var history = unit.HistoryRepository.FindAll()
+                .Where(x => x.BookId == bookId && x.CardId == cardId)
+                .OrderByDescending(x => x.ReturnDate)
+                .FirstOrDefault();
 
-            //TODO: discuss exceptions with team
             if (history == null)
-                throw new LibraryException($"History with book id '{bookId}' and card id '{cardId}' was not found");
+                throw new LibraryException($"Book with id '{bookId}' was never taken to card with id '{cardId}'");
+
+            if (history.ReturnDate == null || history.ReturnDate == default)
+                throw new LibraryException($"Book with id '{bookId}' is already returned");
 
             history.ReturnDate = DateTime.Now;
 
@@ -78,7 +83,6 @@ namespace Business.Services
             var book = await unit.BookRepository.GetByIdAsync(bookId);
             var card = await unit.CardRepository.GetByIdAsync(cardId);
 
-            //TODO: discuss exceptions with team
             if (book == null)
                 throw new LibraryException($"Book with id '{bookId}' was not found");
 
