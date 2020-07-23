@@ -45,7 +45,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                bookModel.Id = await _booksService.AddAsync(bookModel);
+                await _booksService.AddAsync(bookModel);
             }
             catch (Exception e)
             {

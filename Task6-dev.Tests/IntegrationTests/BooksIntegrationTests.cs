@@ -65,7 +65,7 @@ namespace Task6.IntegrationTests
             httpResponse.EnsureSuccessStatusCode();
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
             var bookInResponse = JsonConvert.DeserializeObject<BookModel>(stringResponse);
-            
+
             using (var test = _factory.Services.CreateScope())
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();

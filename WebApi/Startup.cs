@@ -42,7 +42,6 @@ namespace WebApi
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBookRepository, BookRepository>();
-            //services.AddScoped(typeof(IBookRepository), typeof(BookRepository));
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

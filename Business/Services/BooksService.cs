@@ -30,7 +30,7 @@ namespace Business.Services
             return _mapper.Map<IEnumerable<BookModel>>(books);
         }
 
-        public async Task<int> AddAsync(BookModel model)
+        public async Task AddAsync(BookModel model)
         {
             BookValidation.CheckBook(model);
             
@@ -39,7 +39,7 @@ namespace Business.Services
             await _unit.BookRepository.AddAsync(book);
             await _unit.SaveAsync();
 
-            return book.Id;
+            model.Id = book.Id;
         }
 
         public async Task<BookModel> GetByIdAsync(int id)
