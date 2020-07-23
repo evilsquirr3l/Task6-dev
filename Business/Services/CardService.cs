@@ -47,9 +47,9 @@ namespace Business.Services
 
         public async Task<IEnumerable<BookModel>> GetBooksByCardIdAsync(int cardId)
         {
-            var card = await unit.CardRepository.GetByIdWithBooksAsync(cardId);
+            var books = unit.BookRepository.FindAll().Where(x => x.Id == cardId).ToList();
 
-            return mapper.Map<IEnumerable<BookModel>>(card.Books.Select(x => x.Book));
+            return mapper.Map<IEnumerable<BookModel>>(books);
         }
 
         public async Task<CardModel> GetByIdAsync(int id)
@@ -69,7 +69,7 @@ namespace Business.Services
             if (history == null)
                 throw new LibraryException($"Book with id '{bookId}' was never taken to card with id '{cardId}'");
 
-            if (history.ReturnDate == null || history.ReturnDate == default)
+            if (history.ReturnDate != null || history.ReturnDate != default)
                 throw new LibraryException($"Book with id '{bookId}' is already returned");
 
             history.ReturnDate = DateTime.Now;
