@@ -51,6 +51,7 @@ namespace Business.Services
 
         public async Task UpdateAsync(BookModel model)
         {
+            BookValidation.CheckBook(model);
             var book = _mapper.Map<Book>(model);
             
             _unit.BookRepository.Update(book);

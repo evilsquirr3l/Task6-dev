@@ -58,7 +58,14 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(BookModel bookModel)
         {
-            await _booksService.UpdateAsync(bookModel);
+            try
+            {
+                await _booksService.UpdateAsync(bookModel);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
             return Ok();
         }
