@@ -7,11 +7,11 @@ namespace Data.Interfaces
     {
         IBookRepository BookRepository { get; }
         
-        IRepository<Card> CardRepository { get; }
+        ICardRepository CardRepository { get; }
         
         IHistoryRepository HistoryRepository { get; }
         
-        IRepository<Reader> ReaderRepository { get; }
+        IReaderRepository ReaderRepository { get; }
 
         Task<int> SaveAsync();
     }

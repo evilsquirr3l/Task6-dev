@@ -8,9 +8,5 @@ namespace Business.Interfaces
     public interface IBooksService : ICrud<BookModel>
     {
         IEnumerable<BookModel> GetByFilter(FilterSearchModel filterSearch);
-        
-        DateTime GetBookReturningDate(int bookId);
-
-        bool IsBookReturned(int bookId);
     }
 }
