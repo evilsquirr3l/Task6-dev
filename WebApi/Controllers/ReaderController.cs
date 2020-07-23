@@ -52,18 +52,25 @@ namespace WebApi.Controllers
                 return BadRequest(e.Message);
             }
 
-            return CreatedAtAction(nameof(Post), value);
+            return CreatedAtAction(nameof(Get), new { id = value.Id }, value);
         }
 
-        // PUT: api/Reader/5
-        [HttpPut("{id}")]
+        // PUT: api/Reader
+        [HttpPut]
         public async Task<ActionResult> Put([FromBody] ReaderModel value)
         {
-            await _readerService.UpdateAsync(value);
+            try
+            {
+                await _readerService.UpdateAsync(value);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
             return NoContent();
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Reader/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -72,7 +79,7 @@ namespace WebApi.Controllers
         }
 
         //GET: api/Reader/DontReturnBooks
-        [HttpGet("/DontReturnBooks", Name = "GetReadersThatDontReturnBooks")]
+        [HttpGet("DontReturnBooks", Name = "GetReadersThatDontReturnBooks")]
         public ActionResult<IEnumerable<ReaderModel>> GetReadersThatDontReturnBooks()
         {
             var readers = _readerService.GetReadersThatDontReturnBooks();

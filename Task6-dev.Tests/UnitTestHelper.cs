@@ -34,6 +34,9 @@ namespace Task6
             context.ReaderProfiles.Add(new ReaderProfile { ReaderId = 2, Phone = "telepathy", Address = "North" });
             context.Histories.Add(new History { BookId = 1, CardId = 1, Id = 1, TakeDate = DateTime.Now.AddDays(-2), ReturnDate = DateTime.Now.AddDays(-1) });
 
+            //for method GetReadersThatDontReturnBooks
+            context.Cards.Add(new Card { Id = 2, ReaderId = 2, Created = DateTime.Now });
+            context.Histories.Add(new History { Id = 2, BookId = 2, CardId = 2, TakeDate = DateTime.Now.AddDays(-1) });
             context.SaveChanges();
         }
 

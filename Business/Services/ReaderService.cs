@@ -4,7 +4,6 @@ using Business.Models;
 using Business.Validation;
 using Data.Entities;
 using Data.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,12 +28,13 @@ namespace Business.Services
             var reader = _mapper.Map<Reader>(model);
             await _unit.ReaderRepository.AddAsync(reader);
             await _unit.SaveAsync();
+
+            model.Id = reader.Id;
         }
 
         public async Task UpdateAsync(ReaderModel model)
         {
-            //Need?
-            //ReaderValidation.CheckReader(model);
+            ReaderValidation.CheckReader(model);
 
             var reader = _mapper.Map<Reader>(model);
             _unit.ReaderRepository.Update(reader);
