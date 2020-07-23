@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Interfaces;
 using Business.Models;
+using Business.Validation;
 using Data.Entities;
 using Data.Interfaces;
 using System;
@@ -64,7 +65,7 @@ namespace Business.Services
 
             //TODO: discuss exceptions with team
             if (history == null)
-                throw new Exception($"History with book id '{bookId}' and card id '{cardId}' was not found");
+                throw new LibraryException($"History with book id '{bookId}' and card id '{cardId}' was not found");
 
             history.ReturnDate = DateTime.Now;
 
@@ -79,15 +80,15 @@ namespace Business.Services
 
             //TODO: discuss exceptions with team
             if (book == null)
-                throw new Exception($"Book with id '{bookId}' was not found");
+                throw new LibraryException($"Book with id '{bookId}' was not found");
 
             if (card == null)
-                throw new Exception($"Card with id '{cardId}' was not found");
+                throw new LibraryException($"Card with id '{cardId}' was not found");
 
             var history = GetLastHistoryWhenBookWasTaken(bookId);
 
             if (history != null && history.ReturnDate > DateTime.Now)
-                throw new Exception($"Book with id '{bookId}' is already taken");
+                throw new LibraryException($"Book with id '{bookId}' is already taken");
 
             history = new History { BookId = bookId, CardId = cardId, Book = book, Card = card, TakeDate = DateTime.Now };
 

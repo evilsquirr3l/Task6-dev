@@ -1,5 +1,6 @@
 ﻿using Business.Models;
 using Business.Services;
+using Business.Validation;
 using Data.Entities;
 using Data.Interfaces;
 using Moq;
@@ -242,7 +243,7 @@ namespace Task6.CardsTests
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
-            Assert.ThrowsAsync<Exception>(async () => await cardService.TakeBookAsync(1, 1));
+            Assert.ThrowsAsync<LibraryException>(async () => await cardService.TakeBookAsync(1, 1));
         }
 
         [Test]
@@ -259,7 +260,7 @@ namespace Task6.CardsTests
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
-            Assert.ThrowsAsync<Exception>(async () => await cardService.TakeBookAsync(1, 1));
+            Assert.ThrowsAsync<LibraryException>(async () => await cardService.TakeBookAsync(1, 1));
         }
 
         [Test]
@@ -279,7 +280,7 @@ namespace Task6.CardsTests
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
-            Assert.ThrowsAsync<Exception>(async () => await cardService.TakeBookAsync(1, 1));
+            Assert.ThrowsAsync<LibraryException>(async () => await cardService.TakeBookAsync(1, 1));
         }
 
         private IEnumerable<History> GetHistories()
@@ -330,7 +331,7 @@ namespace Task6.CardsTests
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
-            Assert.ThrowsAsync<Exception>(async () => await cardService.HandOverBookAsync(cardId, bookId));
+            Assert.ThrowsAsync<LibraryException>(async () => await cardService.HandOverBookAsync(cardId, bookId));
         }
     }
 }

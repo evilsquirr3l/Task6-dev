@@ -8,22 +8,22 @@ namespace Business.Validation
         {
             if (string.IsNullOrEmpty(readerModel.Name))
             {
-                throw new ValidationException("Name is empty.");
+                throw new LibraryException("Name is empty.");
             }
 
             if (string.IsNullOrEmpty(readerModel.Email))
             {
-                throw new ValidationException("Email is empty.");
+                throw new LibraryException("Email is empty.");
             }
 
             if (string.IsNullOrEmpty(readerModel.Phone))
             {
-                throw new ValidationException("Phone is empty.");
+                throw new LibraryException("Phone is empty.");
             }
 
             if (string.IsNullOrEmpty(readerModel.Address))
             {
-                throw new ValidationException("Address is empty.");
+                throw new LibraryException("Address is empty.");
             }
         }
     }
