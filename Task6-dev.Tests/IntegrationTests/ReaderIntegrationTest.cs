@@ -116,31 +116,31 @@ namespace Task6.IntegrationTests
 
             // assert
             httpResponse.EnsureSuccessStatusCode();
-            CheckReaderInfoIntoDb(reader, readerId, 3);
+            await CheckReaderInfoIntoDb(reader, readerId, 3);
         }
 
         [Test]
-        public void ReaderController_Add_ThrowsExceptionIfModelIsIncorrect()
+        public async Task ReaderController_Add_ThrowsExceptionIfModelIsIncorrect()
         {
             // Name is empty
             var reader = new ReaderModel { Name = "", Email = "only_money@gmail.com",
                 Phone = "999999999", Address = "Glasgow" };
-            CheckExceptionWhileAddNewModel(reader);
+            await CheckExceptionWhileAddNewModel(reader);
 
             // Email is empty
             reader.Name = "Scrooge McDuck";
             reader.Email = "";
-            CheckExceptionWhileAddNewModel(reader);
+            await CheckExceptionWhileAddNewModel(reader);
 
             // Phone is empty
             reader.Email = "only_money@gmail.com";
             reader.Phone = "";
-            CheckExceptionWhileAddNewModel(reader);
+            await CheckExceptionWhileAddNewModel(reader);
 
             // Address is empty
             reader.Phone = "999999999";
             reader.Address = "";
-            CheckExceptionWhileAddNewModel(reader);
+            await CheckExceptionWhileAddNewModel(reader);
         }
 
         [Test]
@@ -162,31 +162,31 @@ namespace Task6.IntegrationTests
 
             //assert
             httpResponse.EnsureSuccessStatusCode();
-            CheckReaderInfoIntoDb(reader, reader.Id, 2);
+            await CheckReaderInfoIntoDb(reader, reader.Id, 2);
         }
 
         [Test]
-        public void ReaderController_Update_ThrowsExceptionIfModelIsIncorrect()
+        public async Task ReaderController_Update_ThrowsExceptionIfModelIsIncorrect()
         {
             // Name is empty
             var reader = new ReaderModel { Id = 1, Name = "",  Email = "scuderia_ferrari@gmail.com",
                 Phone = "165479823", Address = "Modena, Maranello" };
-            CheckExceptionWhileUpdateModel(reader);
+            await CheckExceptionWhileUpdateModel(reader);
 
             // Email is empty
             reader.Name = "Enzo Ferrari";
             reader.Email = "";
-            CheckExceptionWhileUpdateModel(reader);
+            await CheckExceptionWhileUpdateModel(reader);
 
             // Phone is empty
             reader.Email = "scuderia_ferrari@gmail.com";
             reader.Phone = "";
-            CheckExceptionWhileUpdateModel(reader);
+            await CheckExceptionWhileUpdateModel(reader);
 
             // Name is empty
             reader.Phone = "165479823";
             reader.Address = "";
-            CheckExceptionWhileUpdateModel(reader);
+            await CheckExceptionWhileUpdateModel(reader);
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace Task6.IntegrationTests
         }
 
         #region helpers
-        private async void CheckReaderInfoIntoDb(ReaderModel reader, int readerId, int expectedLength)
+        private async Task CheckReaderInfoIntoDb(ReaderModel reader, int readerId, int expectedLength)
         {
             using (var test = _factory.Services.CreateScope())
             {
@@ -227,7 +227,7 @@ namespace Task6.IntegrationTests
             }
         }
 
-        private async void CheckExceptionWhileAddNewModel(ReaderModel reader)
+        private async Task CheckExceptionWhileAddNewModel(ReaderModel reader)
         {
             var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PostAsync(requestUri, content);
@@ -235,7 +235,7 @@ namespace Task6.IntegrationTests
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
-        private async void CheckExceptionWhileUpdateModel(ReaderModel reader)
+        private async Task CheckExceptionWhileUpdateModel(ReaderModel reader)
         {
             var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PutAsync(requestUri, content);
