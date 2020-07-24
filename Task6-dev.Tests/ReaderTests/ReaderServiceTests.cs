@@ -105,7 +105,9 @@ namespace Task6.ReaderTests
             {
                 Id = 10,
                 Name = "Test_Updating",
-                Email = "test_adding_email@gmail.com"
+                Email = "test_adding_email@gmail.com", 
+                Phone = "88005553535", 
+                Address = "UA"
             };
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.ReaderRepository.Update(It.IsAny<Reader>()));

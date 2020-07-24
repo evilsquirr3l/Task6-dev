@@ -9,17 +9,17 @@ namespace Business.Validation
         {
             if (string.IsNullOrEmpty(bookModel.Title))
             {
-                throw new ValidationException("Title is empty.");
+                throw new LibraryException("Title is empty.");
             }
 
             if (string.IsNullOrEmpty(bookModel.Author))
             {
-                throw new ValidationException("Author is empty.");
+                throw new LibraryException("Author is empty.");
             }
 
             if (bookModel.Year > DateTime.Now.Year)
             {
-                throw new ValidationException("Year should be valid.");
+                throw new LibraryException("Year should be valid.");
             }
         }
     }
