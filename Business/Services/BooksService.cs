@@ -22,7 +22,6 @@ namespace Business.Services
             _mapper = mapper;
         }
         
-        //TODO: this is not used
         public IEnumerable<BookModel> GetAll()
         {
             var books = _unit.BookRepository.FindAllWithDetails();
@@ -38,6 +37,8 @@ namespace Business.Services
             
             await _unit.BookRepository.AddAsync(book);
             await _unit.SaveAsync();
+
+            model.Id = book.Id;
         }
 
         public async Task<BookModel> GetByIdAsync(int id)
@@ -49,6 +50,7 @@ namespace Business.Services
 
         public async Task UpdateAsync(BookModel model)
         {
+            BookValidation.CheckBook(model);
             var book = _mapper.Map<Book>(model);
             
             _unit.BookRepository.Update(book);

@@ -15,7 +15,6 @@ namespace Business
                     map => map.MapFrom(source => source.ReaderProfile.Phone))
                 .ForMember(destination => destination.Address,
                     map => map.MapFrom(source => source.ReaderProfile.Address));
-
             CreateMap<ReaderModel, Reader>()
                 .ForMember(p => p.Cards, c => c.MapFrom(card => card.CardsIds))
                 .ForMember(destination => destination.ReaderProfile,
