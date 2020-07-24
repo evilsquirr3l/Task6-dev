@@ -166,20 +166,27 @@ namespace Task6.IntegrationTests
         }
 
         [Test]
-        public async Task ReaderController_Update_ThrowsExceptionIfModelIsIncorrect()
+        public void ReaderController_Update_ThrowsExceptionIfModelIsIncorrect()
         {
-            var reader = new ReaderModel
-            {
-                Id = 1,
-                Name = "",
-                Email = "only_money@gmail.com",
-                Phone = "",
-                Address = "Glasgow"
-            };
-            var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
-            var httpResponse = await _client.PutAsync(requestUri, content);
+            // Name is empty
+            var reader = new ReaderModel { Id = 1, Name = "",  Email = "scuderia_ferrari@gmail.com",
+                Phone = "165479823", Address = "Modena, Maranello" };
+            CheckExceptionWhileUpdateModel(reader);
 
-            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            // Email is empty
+            reader.Name = "Enzo Ferrari";
+            reader.Email = "";
+            CheckExceptionWhileUpdateModel(reader);
+
+            // Phone is empty
+            reader.Email = "scuderia_ferrari@gmail.com";
+            reader.Phone = "";
+            CheckExceptionWhileUpdateModel(reader);
+
+            // Name is empty
+            reader.Phone = "165479823";
+            reader.Address = "";
+            CheckExceptionWhileUpdateModel(reader);
         }
 
         [Test]
@@ -224,6 +231,14 @@ namespace Task6.IntegrationTests
         {
             var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PostAsync(requestUri, content);
+
+            Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        }
+
+        private async void CheckExceptionWhileUpdateModel(ReaderModel reader)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
+            var httpResponse = await _client.PutAsync(requestUri, content);
 
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
