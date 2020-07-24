@@ -147,7 +147,7 @@ namespace Task6.IntegrationTests
             book.Year = 9999;
             CheckExceptionWhileUpdateModel(book);
         }
-        
+
         private async void CheckExceptionWhileAddNewModel(BookModel bookModel)
         {
             var content = new StringContent(JsonConvert.SerializeObject(bookModel), Encoding.UTF8, "application/json");
