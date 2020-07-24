@@ -9,9 +9,6 @@ namespace Business
     {
         public AutomapperProfile()
         {
-            CreateMap<Book, BookModel>().ReverseMap();
-            CreateMap<Card, CardModel>().ReverseMap();
-
             CreateMap<Reader, ReaderModel>()
                 .ForMember(destination => destination.Phone,
                     map => map.MapFrom(source => source.ReaderProfile.Phone))
