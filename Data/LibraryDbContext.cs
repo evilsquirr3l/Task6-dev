@@ -1,5 +1,6 @@
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Data
 {
@@ -7,8 +8,8 @@ namespace Data
     {
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {
-            
         }
+
 
         public DbSet<Book> Books { get; set; }
 

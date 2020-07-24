@@ -9,7 +9,9 @@ namespace Data
     {
         private readonly LibraryDbContext _context;
 
-        public UnitOfWork(LibraryDbContext context, ICardRepository cardRepository, IRepository<History> historyRepository, IRepository<Reader> readerRepository, IBookRepository bookRepository)
+        public UnitOfWork(LibraryDbContext context, IBookRepository bookRepository, 
+            ICardRepository cardRepository, IRepository<History> historyRepository, 
+            IReaderRepository readerRepository)
         {
             _context = context;
             CardRepository = cardRepository;
@@ -21,7 +23,7 @@ namespace Data
         public IBookRepository BookRepository { get; }
         public ICardRepository CardRepository { get; }
         public IRepository<History> HistoryRepository { get; }
-        public IRepository<Reader> ReaderRepository { get; }
+        public IReaderRepository ReaderRepository { get; }
         
         public async Task<int> SaveAsync()
         {

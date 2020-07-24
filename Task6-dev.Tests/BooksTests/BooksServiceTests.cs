@@ -146,7 +146,7 @@ namespace Task6.BooksTests
         public async Task BooksService_UpdateAsync_UpdatesBook()
         {
             //Arrange
-            var book = new BookModel{Id = 1, Author = "Jack London"};
+            var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "Father Goriot"};
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
             var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());

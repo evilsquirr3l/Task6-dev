@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Interfaces;
 using Business.Models;
+using Business.Validation;
 using Data.Entities;
 using Data.Interfaces;
 using System;
@@ -48,9 +49,9 @@ namespace Business.Services
 
         public async Task<IEnumerable<BookModel>> GetBooksByCardIdAsync(int cardId)
         {
-            var card = await unit.CardRepository.GetByIdWithBooksAsync(cardId);
+            var books = unit.BookRepository.FindAll().Where(x => x.Id == cardId).ToList();
 
-            return mapper.Map<IEnumerable<BookModel>>(card.Books.Select(x => x.Book));
+            return mapper.Map<IEnumerable<BookModel>>(books);
         }
 
         public async Task<CardModel> GetByIdAsync(int id)
@@ -62,11 +63,16 @@ namespace Business.Services
 
         public async Task HandOverBookAsync(int cardId, int bookId)
         {
-            var history = unit.HistoryRepository.FindAll().Where(x => x.BookId == bookId && x.CardId == cardId).FirstOrDefault();
+            var history = unit.HistoryRepository.FindAll()
+                .Where(x => x.BookId == bookId && x.CardId == cardId)
+                .OrderByDescending(x => x.ReturnDate)
+                .FirstOrDefault();
 
-            //TODO: discuss exceptions with team
             if (history == null)
-                throw new Exception($"History with book id '{bookId}' and card id '{cardId}' was not found");
+                throw new LibraryException($"Book with id '{bookId}' was never taken to card with id '{cardId}'");
+
+            if (history.ReturnDate != null || history.ReturnDate != default)
+                throw new LibraryException($"Book with id '{bookId}' is already returned");
 
             history.ReturnDate = DateTime.Now;
 
@@ -79,17 +85,16 @@ namespace Business.Services
             var book = await unit.BookRepository.GetByIdAsync(bookId);
             var card = await unit.CardRepository.GetByIdAsync(cardId);
 
-            //TODO: discuss exceptions with team
             if (book == null)
-                throw new Exception($"Book with id '{bookId}' was not found");
+                throw new LibraryException($"Book with id '{bookId}' was not found");
 
             if (card == null)
-                throw new Exception($"Card with id '{cardId}' was not found");
+                throw new LibraryException($"Card with id '{cardId}' was not found");
 
             var history = GetLastHistoryWhenBookWasTaken(bookId);
 
             if (history != null && history.ReturnDate > DateTime.Now)
-                throw new Exception($"Book with id '{bookId}' is already taken");
+                throw new LibraryException($"Book with id '{bookId}' is already taken");
 
             history = new History { BookId = bookId, CardId = cardId, Book = book, Card = card, TakeDate = DateTime.Now };
 
