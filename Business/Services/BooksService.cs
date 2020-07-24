@@ -22,7 +22,6 @@ namespace Business.Services
             _mapper = mapper;
         }
         
-        //TODO: this is not used
         public IEnumerable<BookModel> GetAll()
         {
             var books = _unit.BookRepository.FindAllWithDetails();
