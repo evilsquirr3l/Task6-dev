@@ -1,24 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Business;
 using Business.Interfaces;
 using Business.Services;
 using Data;
-using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace WebApi
@@ -42,18 +34,17 @@ namespace WebApi
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBookRepository, BookRepository>();
-            //services.AddScoped(typeof(IBookRepository), typeof(BookRepository));
+            services.AddScoped<ICardRepository, CardRepository>();
+            services.AddScoped<IReaderRepository, ReaderRepository>();
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<ICardRepository, CardRepository>();
 
             var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
             services.AddSingleton(mapper);
 
             services.AddTransient<IBooksService, BooksService>();
             services.AddTransient<ICardService, CardService>();
+            services.AddTransient<IReaderService, ReaderService>();
 
             services.AddSwaggerGen(c =>
             {

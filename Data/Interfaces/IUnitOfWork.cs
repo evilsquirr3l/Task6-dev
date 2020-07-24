@@ -11,7 +11,7 @@ namespace Data.Interfaces
         
         IRepository<History> HistoryRepository { get; }
         
-        IRepository<Reader> ReaderRepository { get; }
+        IReaderRepository ReaderRepository { get; }
 
         Task<int> SaveAsync();
     }
