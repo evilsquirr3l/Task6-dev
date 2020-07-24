@@ -21,7 +21,7 @@ namespace Task6.IntegrationTests
         private ReaderModelEqualityComparer _comparer;
         private string requestUri = "api/readers/";
 
-        [OneTimeSetUp]
+        [SetUp]
         public void Init()
         {
             _comparer = new ReaderModelEqualityComparer();
@@ -29,7 +29,7 @@ namespace Task6.IntegrationTests
             _client = _factory.CreateClient();
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task ReaderController_GetAll_ReturnAllFromDb()
         {
             // arrange 
@@ -80,7 +80,7 @@ namespace Task6.IntegrationTests
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task ReaderController_GetReadersThatDontReturnBooks_ReturnReader()
         {
             // arrange 
@@ -203,7 +203,7 @@ namespace Task6.IntegrationTests
             using (var test = _factory.Services.CreateScope())
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
-                Assert.AreEqual(2, context.Readers.Count());
+                Assert.AreEqual(1, context.Readers.Count());
             }
         }
 
@@ -255,7 +255,7 @@ namespace Task6.IntegrationTests
         }
         #endregion
 
-        [OneTimeTearDown]
+        [TearDown]
         public void TearDown()
         {
             _factory.Dispose();
