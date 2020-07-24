@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -183,22 +183,22 @@ namespace Task6.ReaderTests
             // Name is empty
             var reader = new ReaderModel { Name = "", Email = "only_money@gmail.com",
                 Phone = "999999999", Address = "Glasgow" };
-            Assert.ThrowsAsync<ValidationException>(async () => await readerService.AddAsync(reader));
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.AddAsync(reader));
 
             // Email is empty
             reader.Name = "Scrooge McDuck";
             reader.Email = "";
-            Assert.ThrowsAsync<ValidationException>(async () => await readerService.AddAsync(reader));
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.AddAsync(reader));
 
             // Phone is empty
             reader.Email = "only_money@gmail.com";
             reader.Phone = "";
-            Assert.ThrowsAsync<ValidationException>(async () => await readerService.AddAsync(reader));
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.AddAsync(reader));
 
             // Address is empty
             reader.Phone = "999999999";
             reader.Address = "";
-            Assert.ThrowsAsync<ValidationException>(async () => await readerService.AddAsync(reader));
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.AddAsync(reader));
         }
 
         [Test]
@@ -212,22 +212,22 @@ namespace Task6.ReaderTests
             // Name is empty
             var reader = new ReaderModel { Id = 1, Name = "", Email = "only_money@gmail.com",
                 Phone = "999999999", Address = "Glasgow" };
-            Assert.ThrowsAsync<ValidationException>(async () => await readerService.UpdateAsync(reader));
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.UpdateAsync(reader));
 
             // Email is empty
             reader.Name = "Scrooge McDuck";
             reader.Email = "";
-            Assert.ThrowsAsync<ValidationException>(async () => await readerService.UpdateAsync(reader));
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.UpdateAsync(reader));
 
             // Phone is empty
             reader.Email = "only_money@gmail.com";
             reader.Phone = "";
-            Assert.ThrowsAsync<ValidationException>(async () => await readerService.UpdateAsync(reader));
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.UpdateAsync(reader));
 
             // Address is empty
             reader.Phone = "999999999";
             reader.Address = "";
-            Assert.ThrowsAsync<ValidationException>(async () => await readerService.UpdateAsync(reader));
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.UpdateAsync(reader));
         }
 
         #region data for tests
