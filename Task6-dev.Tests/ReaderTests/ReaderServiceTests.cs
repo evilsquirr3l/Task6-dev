@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -106,9 +106,9 @@ namespace Task6.ReaderTests
             {
                 Id = 10,
                 Name = "Test_Updating",
-                Email = "test_adding_email@gmail.com", 
-                Phone = "88005553535", 
-                Address = "UA"
+                Email = "test_adding_email@gmail.com",
+                Phone = "159487263",
+                Address = "test address"
             };
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.ReaderRepository.Update(It.IsAny<Reader>()));

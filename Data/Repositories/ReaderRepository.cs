@@ -17,14 +17,14 @@ namespace Data.Repositories
         {
             return FindAll()
                 .Include(x => x.ReaderProfile)
-                .Include(x => x.Card);
+                .Include(x => x.Cards);
         }
 
         public async Task<Reader> GetByIdWithDetails(int id)
         {
             return await FindAll()
                 .Include(x => x.ReaderProfile)
-                .Include(x => x.Card)
+                .Include(x => x.Cards)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }
