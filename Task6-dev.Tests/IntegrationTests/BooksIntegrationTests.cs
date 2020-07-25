@@ -20,14 +20,14 @@ namespace Task6.IntegrationTests
         private CustomWebApplicationFactory _factory;
         private const string RequestUri = "api/books/";
         
-        [OneTimeSetUp]
-        public void Init()
+        [SetUp]
+        public void SetUp()
         {
             _factory = new CustomWebApplicationFactory();
             _client = _factory.CreateClient();
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task BooksController_GetByFilter_ReturnsAllWithNullFilter()
         {
             var httpResponse = await _client.GetAsync(RequestUri);
@@ -39,7 +39,7 @@ namespace Task6.IntegrationTests
             Assert.AreEqual(2, books.Count());
         }
         
-        [Test, Order(0)]
+        [Test]
         public async Task BooksController_GetByFilter_ReturnsBooksThatApplyFilter()
         {
             var httpResponse = await _client.GetAsync($"{RequestUri}?Author=Jon%20Snow&Year=1996");
@@ -55,7 +55,7 @@ namespace Task6.IntegrationTests
             }
         }
 
-        [Test, Order(1)]
+        [Test]
         public async Task BooksController_Add_AddsBookToDatabase()
         {
             var book = new BookModel{Author = "Charles Dickens", Title = "A Tale of Two Cities", Year = 1859};
@@ -77,7 +77,7 @@ namespace Task6.IntegrationTests
             }
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task BooksController_Update_UpdatesBookInDatabase()
         {
             var book = new BookModel{Id = 2, Author = "Honore de Balzac", Title = "Lost Illusions", Year = 1843};
@@ -97,7 +97,7 @@ namespace Task6.IntegrationTests
             }
         }
 
-        [Test, Order(2)]
+        [Test]
         public async Task BooksController_DeleteById_DeletesBookFromDatabase()
         {
             var bookId = 1;
@@ -109,46 +109,46 @@ namespace Task6.IntegrationTests
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
                 
-                Assert.AreEqual(2, context.Books.Count());
+                Assert.AreEqual(1, context.Books.Count());
             }
         }
         
-        [Test, Order(0)]
-        public void ReaderController_Add_ThrowsExceptionIfModelIsIncorrect()
+        [Test]
+        public async Task ReaderController_Add_ThrowsExceptionIfModelIsIncorrect()
         {
             // Author is empty
             var book = new BookModel{Author = "", Title = "Lost Illusions", Year = 1843};
-            CheckExceptionWhileAddNewModel(book);
+            await CheckExceptionWhileAddNewModel(book);
         
             // Title is empty
             book.Author = "Honore de Balzac";
             book.Title = "";
-            CheckExceptionWhileAddNewModel(book);
+            await CheckExceptionWhileAddNewModel(book);
         
             // Year is invalid
             book.Title = "Lost Illusions";
             book.Year = 9999;
-            CheckExceptionWhileAddNewModel(book);
+            await CheckExceptionWhileAddNewModel(book);
         }
         
-        [Test, Order(0)]
-        public void ReaderController_Update_ThrowsExceptionIfModelIsIncorrect()
+        [Test]
+        public async Task ReaderController_Update_ThrowsExceptionIfModelIsIncorrect()
         {
             // Author is empty
             var book = new BookModel{Author = "", Title = "Lost Illusions", Year = 1843};
-            CheckExceptionWhileUpdateModel(book);
+            await CheckExceptionWhileUpdateModel(book);
         
             // Title is empty
             book.Author = "Honore de Balzac";
             book.Title = "";
-            CheckExceptionWhileUpdateModel(book);
+            await CheckExceptionWhileUpdateModel(book);
         
             // Year is invalid
             book.Year = 9999;
-            CheckExceptionWhileUpdateModel(book);
+            await CheckExceptionWhileUpdateModel(book);
         }
-        
-        private async void CheckExceptionWhileAddNewModel(BookModel bookModel)
+
+        private async Task CheckExceptionWhileAddNewModel(BookModel bookModel)
         {
             var content = new StringContent(JsonConvert.SerializeObject(bookModel), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PostAsync(RequestUri, content);
@@ -156,7 +156,7 @@ namespace Task6.IntegrationTests
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
         
-        private async void CheckExceptionWhileUpdateModel(BookModel bookModel)
+        private async Task CheckExceptionWhileUpdateModel(BookModel bookModel)
         {
             var content = new StringContent(JsonConvert.SerializeObject(bookModel), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PutAsync(RequestUri, content);
@@ -164,7 +164,7 @@ namespace Task6.IntegrationTests
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         public void TearDown()
         {
             _factory.Dispose();

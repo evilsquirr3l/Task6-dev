@@ -12,11 +12,11 @@ namespace WebApi.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ReaderController : ControllerBase
+    public class ReadersController : ControllerBase
     {
         private readonly IReaderService _readerService;
 
-        public ReaderController(IReaderService service)
+        public ReadersController(IReaderService service)
         {
             _readerService = service;
         }
