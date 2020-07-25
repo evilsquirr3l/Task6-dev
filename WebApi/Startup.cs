@@ -35,6 +35,7 @@ namespace WebApi
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ICardRepository, CardRepository>();
+            services.AddScoped<IHistoryRepository, HistoryRepository>();
             services.AddScoped<IReaderRepository, ReaderRepository>();
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();

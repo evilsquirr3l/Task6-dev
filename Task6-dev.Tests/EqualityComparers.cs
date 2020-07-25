@@ -103,4 +103,24 @@ namespace Task6
             return obj.GetHashCode();
         }
     }
+
+    internal class ReaderEqualityComparer : IEqualityComparer<Reader>
+    {
+        public bool Equals([AllowNull] Reader x, [AllowNull] Reader y)
+        {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
+            return x.Id == y.Id
+                   && string.Equals(x.Name, y.Name)
+                   && string.Equals(x.Email, y.Email);
+        }
+
+        public int GetHashCode([DisallowNull] Reader obj)
+        {
+            return obj.GetHashCode();
+        }
+    }
 }

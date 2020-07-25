@@ -34,7 +34,8 @@ namespace Business.Services
             _unit.HistoryRepository
                 .GetAllWithDetails()
                 .Where(x => x.TakeDate >= firstDate && x.ReturnDate <= lastDate)
-                .GroupBy(x => x.Card.Reader).OrderBy(x => x.Count())
+                .GroupBy(x => x.Card.Reader)
+                .OrderBy(x => x.Count())
                 .Take(readersCount)
                 .Select(x => new ReaderActivityModel { BooksCount = x.Count(), ReaderId = x.Key.Id, ReaderName = x.Key.Name});
     }
