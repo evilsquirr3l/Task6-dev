@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Models;
 using Business.Services;
 using Business.Validation;
-using Data;
 using Data.Entities;
 using Data.Interfaces;
 using Moq;
@@ -92,7 +90,7 @@ namespace Task6.BooksTests
         }
 
         [Test] 
-        public void BooksService_AddAsync_ThrowsValidationExceptionWithEmptyBookTitle()
+        public void BooksService_AddAsync_ThrowsLibraryExceptionWithEmptyTitle()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
@@ -103,7 +101,7 @@ namespace Task6.BooksTests
         }
         
         [Test] 
-        public void BooksService_AddAsync_ThrowsValidationExceptionWithEmptyBookAuthor()
+        public void BooksService_AddAsync_ThrowsLibraryExceptionWithEmptyAuthor()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
@@ -114,7 +112,7 @@ namespace Task6.BooksTests
         }
         
         [Test] 
-        public void BooksService_AddAsync_ThrowsValidationExceptionWithInvalidYear()
+        public void BooksService_AddAsync_ThrowsLibraryExceptionWithInvalidYear()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
@@ -157,6 +155,42 @@ namespace Task6.BooksTests
             //Assert
             mockUnitOfWork.Verify(x => x.BookRepository.Update(It.Is<Book>(b => b.Author == book.Author && b.Id == book.Id)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
+        }
+        
+        [Test]
+        public async Task BooksService_UpdateAsync_ThrowsLibraryExceptionWithEmptyAuthor()
+        {
+            //Arrange
+            var book = new BookModel{Id = 1, Author = "", Title = "Father Goriot", Year = 1835};
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            
+            Assert.ThrowsAsync<LibraryException>(() => bookService.UpdateAsync(book));
+        }
+        
+        [Test]
+        public async Task BooksService_UpdateAsync_ThrowsLibraryExceptionWithEmptyTitle()
+        {
+            //Arrange
+            var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "", Year = 1835};
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            
+            Assert.ThrowsAsync<LibraryException>(() => bookService.UpdateAsync(book));
+        }
+        
+        [Test]
+        public async Task BooksService_UpdateAsync_ThrowsLibraryExceptionWithInvalidYear()
+        {
+            //Arrange
+            var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "Father Goriot", Year = 9999};
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
+            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            
+            Assert.ThrowsAsync<LibraryException>(() => bookService.UpdateAsync(book));
         }
 
         [Test]

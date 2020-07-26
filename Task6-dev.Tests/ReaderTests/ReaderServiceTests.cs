@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Models;
 using Business.Services;
+using Business.Validation;
 using Data;
 using Data.Entities;
 using Data.Interfaces;
@@ -105,9 +106,9 @@ namespace Task6.ReaderTests
             {
                 Id = 10,
                 Name = "Test_Updating",
-                Email = "test_adding_email@gmail.com", 
-                Phone = "88005553535", 
-                Address = "UA"
+                Email = "test_adding_email@gmail.com",
+                Phone = "159487263",
+                Address = "test address"
             };
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.ReaderRepository.Update(It.IsAny<Reader>()));
@@ -171,6 +172,63 @@ namespace Task6.ReaderTests
             }
         }
 
+        [Test]
+        public void ReaderService_AddAsync_ThrowsExceptionIfModelIsIncorrect()
+        {
+            //arrange
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(m => m.ReaderRepository.AddAsync(It.IsAny<Reader>()));
+            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+
+            // Name is empty
+            var reader = new ReaderModel { Name = "", Email = "only_money@gmail.com",
+                Phone = "999999999", Address = "Glasgow" };
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.AddAsync(reader));
+
+            // Email is empty
+            reader.Name = "Scrooge McDuck";
+            reader.Email = "";
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.AddAsync(reader));
+
+            // Phone is empty
+            reader.Email = "only_money@gmail.com";
+            reader.Phone = "";
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.AddAsync(reader));
+
+            // Address is empty
+            reader.Phone = "999999999";
+            reader.Address = "";
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.AddAsync(reader));
+        }
+
+        [Test]
+        public void ReaderService_UpdateAsync_ThrowsExceptionIfModelIsIncorrect()
+        {
+            //arrange
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(m => m.ReaderRepository.Update(It.IsAny<Reader>()));
+            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+
+            // Name is empty
+            var reader = new ReaderModel { Id = 1, Name = "", Email = "only_money@gmail.com",
+                Phone = "999999999", Address = "Glasgow" };
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.UpdateAsync(reader));
+
+            // Email is empty
+            reader.Name = "Scrooge McDuck";
+            reader.Email = "";
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.UpdateAsync(reader));
+
+            // Phone is empty
+            reader.Email = "only_money@gmail.com";
+            reader.Phone = "";
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.UpdateAsync(reader));
+
+            // Address is empty
+            reader.Phone = "999999999";
+            reader.Address = "";
+            Assert.ThrowsAsync<LibraryException>(async () => await readerService.UpdateAsync(reader));
+        }
 
         #region data for tests
         private IEnumerable<ReaderModel> GetTestReaderModels()

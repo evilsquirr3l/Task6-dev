@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +21,6 @@ namespace Business.Services
             _mapper = mapper;
         }
         
-        //TODO: this is not used
         public IEnumerable<BookModel> GetAll()
         {
             var books = _unit.BookRepository.FindAllWithDetails();

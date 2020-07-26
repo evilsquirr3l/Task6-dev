@@ -1,16 +1,15 @@
-﻿using Business.Models;
-using Data;
-using Data.Entities;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Models;
+using Data;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace Task6.IntegrationTests
 {
@@ -23,7 +22,7 @@ namespace Task6.IntegrationTests
         private IEqualityComparer<CardModel> cardModelComparer;
         private IEqualityComparer<BookModel> bookModelComparer;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void Init()
         {
             cardModelComparer = new CardModelEqualityComparer();
@@ -41,7 +40,7 @@ namespace Task6.IntegrationTests
             };
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task CardsController_GetAll_ReturnsAllCardsFromDb()
         {
             // arrange 
@@ -57,7 +56,7 @@ namespace Task6.IntegrationTests
             Assert.That(actual, Is.EqualTo(expected).Using(cardModelComparer));
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task CardsController_GetById_ReturnsCardFromDb()
         {
             // arrange 
@@ -74,7 +73,7 @@ namespace Task6.IntegrationTests
             Assert.That(actual, Is.EqualTo(expected).Using(cardModelComparer));
         }
 
-        [Test, Order(1)]
+        [Test]
         public async Task CardsController_Update_UpdatesBookInDatabase()
         {
             var expected = new CardModel { Id = 2, ReaderId = 1 };
@@ -95,7 +94,7 @@ namespace Task6.IntegrationTests
             }
         }
 
-        [Test, Order(2)]
+        [Test]
         public async Task CardsController_DeleteById_DeletesCardFromDatabase()
         {
             var cardId = 1;
@@ -107,11 +106,11 @@ namespace Task6.IntegrationTests
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
 
-                Assert.AreEqual(2, context.Cards.Count());
+                Assert.AreEqual(1, context.Cards.Count());
             }
         }
 
-        [Test, Order(1)]
+        [Test]
         public async Task CardsController_Add_AddsCardToDb()
         {
             //Arrange
@@ -135,7 +134,7 @@ namespace Task6.IntegrationTests
             Assert.AreEqual(card.Created, actual.Created);
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task CardsController_GetBooksByCardId_ReturnsBooksFromDatabaseByCardId()
         {
             var cardId = 1;
@@ -149,7 +148,7 @@ namespace Task6.IntegrationTests
             Assert.That(actual, Is.EqualTo(books).Using(bookModelComparer));
         }
 
-        [Test, Order(1)]
+        [Test]
         public async Task CardsController_TakeBook_CreatesHistoryWithCardAndBookIds()
         {
             var cardId = 1;
@@ -167,7 +166,7 @@ namespace Task6.IntegrationTests
             Assert.AreEqual(history.CardId, cardId);
         }
 
-        [Test, Order(1)]
+        [Test]
         public async Task CardsController_HandOverBook_UpdatesReturnDateInHistory()
         {
             var cardId = 2;
@@ -185,7 +184,7 @@ namespace Task6.IntegrationTests
             Assert.IsNotNull(history.ReturnDate);
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task CardsController_HandOverBook_ReturnsBadRequestIfLibraryExceptionWasThrown()
         {
             var cardId = 6;
@@ -196,7 +195,7 @@ namespace Task6.IntegrationTests
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task CardsController_TakeBook_ReturnsBadRequestIfLibraryExceptionWasThrown()
         {
             var cardId = 6;
@@ -208,7 +207,7 @@ namespace Task6.IntegrationTests
         }
 
 
-        [OneTimeTearDown]
+        [TearDown]
         public void TearDown()
         {
             factory.Dispose();

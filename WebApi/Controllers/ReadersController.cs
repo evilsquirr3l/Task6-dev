@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Interfaces;
 using Business.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -12,11 +11,11 @@ namespace WebApi.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ReaderController : ControllerBase
+    public class ReadersController : ControllerBase
     {
         private readonly IReaderService _readerService;
 
-        public ReaderController(IReaderService service)
+        public ReadersController(IReaderService service)
         {
             _readerService = service;
         }

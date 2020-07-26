@@ -1,7 +1,7 @@
-﻿using Business.Models;
-using Data.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Business.Models;
+using Data.Entities;
 
 namespace Task6
 {
