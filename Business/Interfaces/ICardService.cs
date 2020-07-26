@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Models;
-using Data.Entities;
 
 namespace Business.Interfaces
 {
