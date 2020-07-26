@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Data;
 using Data.Entities;
 using Data.Repositories;
-using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace Task6.HistoryTests
@@ -40,6 +39,54 @@ namespace Task6.HistoryTests
 
             Assert.That(histories,
                 Is.EqualTo(ExpectedHistories).Using(new HistoryEqualityComparer()));
+        }
+
+        [Test]
+        public async Task HistoryRepository_AddAsync_()
+        {
+            await using var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions());
+            
+            var historyRepository = new HistoryRepository(context);
+            var history = new History { Id = 3 };
+
+            await historyRepository.AddAsync(history);
+            await context.SaveChangesAsync();
+
+            Assert.That(context.Histories.Count(), Is.EqualTo(3));
+        }
+
+        [Test]
+        public async Task BookRepository_DeleteByIdAsync_DeletesEntity()
+        {
+            await using var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions());
+            
+            var historyRepository = new HistoryRepository(context);
+
+            await historyRepository.DeleteByIdAsync(1);
+            await context.SaveChangesAsync();
+
+            Assert.That(context.Histories.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task BookRepository_Update_UpdatesEntity()
+        {
+            await using var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions());
+            
+            var historyRepository = new HistoryRepository(context);
+
+            var history = new History
+            {
+                BookId = 2, CardId = 2, Id = 1, TakeDate = new DateTime(2020, 7, 20),
+                ReturnDate = new DateTime(2020, 7, 21)
+            };
+
+            historyRepository.Update(history);
+            await context.SaveChangesAsync();
+
+            Assert.That(history, Is.EqualTo(
+                new History { BookId = 2, CardId = 2, Id = 1, TakeDate = new DateTime(2020, 7, 20), ReturnDate = new DateTime(2020, 7, 21) })
+                .Using(new HistoryEqualityComparer()));
         }
 
         [Test]

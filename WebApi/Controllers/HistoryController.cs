@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("popularBooks")]
-        public ActionResult<IEnumerable<BookModel>> GetMostPopularBooks(int bookCount)
+        public ActionResult<IEnumerable<BookModel>> GetMostPopularBooks([FromQuery]int bookCount)
         {
             var books = _historyService.GetMostPopularBooks(bookCount);
 
@@ -30,7 +30,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("biggestReaders")]
-        public ActionResult<IEnumerable<ReaderActivityModel>> GetReadersWhoTookTheMostBooks(int readersCount, DateTime firstDate,
+        public ActionResult<IEnumerable<ReaderActivityModel>> GetReadersWhoTookTheMostBooks([FromQuery] int readersCount, DateTime firstDate,
             DateTime lastDate)
         {
             var readersActivity = _historyService.GetReadersWhoTookTheMostBooks(readersCount, firstDate, lastDate);

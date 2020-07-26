@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper;
 using Business.Interfaces;
 using Business.Models;
@@ -25,7 +24,7 @@ namespace Business.Services
             _unit.HistoryRepository
                 .GetAllWithDetails()
                 .GroupBy(x => x.BookId)
-                .OrderBy(x => x.Count())
+                .OrderByDescending(x => x.Count())
                 .Take(bookCount)
                 .Select(x => _mapper.Map<Book, BookModel>(x.FirstOrDefault().Book));
            
@@ -34,9 +33,9 @@ namespace Business.Services
             _unit.HistoryRepository
                 .GetAllWithDetails()
                 .Where(x => x.TakeDate >= firstDate && x.ReturnDate <= lastDate)
-                .GroupBy(x => x.Card.Reader)
-                .OrderBy(x => x.Count())
+                .GroupBy(x => x.Card.ReaderId)
+                .OrderByDescending(x => x.Count())
                 .Take(readersCount)
-                .Select(x => new ReaderActivityModel { BooksCount = x.Count(), ReaderId = x.Key.Id, ReaderName = x.Key.Name});
+                .Select(x => new ReaderActivityModel { BooksCount = x.Count(), ReaderId = x.Key, ReaderName = x.ElementAt(0).Card.Reader.Name});
     }
 }
