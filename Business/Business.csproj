@@ -10,7 +10,6 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.0.0" />
-      <PackageReference Include="SonarAnalyzer.CSharp" Version="8.10.0.19839" />
     </ItemGroup>
 
 </Project>
