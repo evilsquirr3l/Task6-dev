@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Models;
 using Data;
-using Data.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -34,9 +33,25 @@ namespace Task6.IntegrationTests
             
             httpResponse.EnsureSuccessStatusCode();
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
-            var books = JsonConvert.DeserializeObject<IEnumerable<Book>>(stringResponse);
+            var books = JsonConvert.DeserializeObject<IEnumerable<BookModel>>(stringResponse);
             
             Assert.AreEqual(2, books.Count());
+        }
+        
+        [Test]
+        public async Task BooksController_GetById_ReturnsBookModel()
+        {
+            var httpResponse = await _client.GetAsync(RequestUri + 1);
+            
+            httpResponse.EnsureSuccessStatusCode();
+            var stringResponse = await httpResponse.Content.ReadAsStringAsync();
+            var book = JsonConvert.DeserializeObject<BookModel>(stringResponse);
+            
+            Assert.AreEqual(1, book.Id);
+            Assert.AreEqual("Jon Snow", book.Author);
+            Assert.AreEqual("A song of ice and fire", book.Title);
+            Assert.AreEqual(1996, book.Year);
+            Assert.AreEqual(1, book.CardsIds.Count);
         }
         
         [Test]
@@ -46,7 +61,7 @@ namespace Task6.IntegrationTests
 
             httpResponse.EnsureSuccessStatusCode();
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
-            var books = JsonConvert.DeserializeObject<IEnumerable<Book>>(stringResponse);
+            var books = JsonConvert.DeserializeObject<IEnumerable<BookModel>>(stringResponse);
 
             foreach (var book in books)
             {
