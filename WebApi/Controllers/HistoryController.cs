@@ -26,6 +26,9 @@ namespace WebApi.Controllers
         {
             var books = _historyService.GetMostPopularBooks(bookCount);
 
+            if (books == null)
+                return NotFound();
+
             return Ok(books);
         }
 
@@ -34,6 +37,9 @@ namespace WebApi.Controllers
             DateTime lastDate)
         {
             var readersActivity = _historyService.GetReadersWhoTookTheMostBooks(readersCount, firstDate, lastDate);
+
+            if (readersActivity == null)
+                return NotFound();
 
             return Ok(readersActivity);
         }

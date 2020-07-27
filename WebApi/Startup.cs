@@ -46,6 +46,7 @@ namespace WebApi
             services.AddTransient<IBooksService, BooksService>();
             services.AddTransient<ICardService, CardService>();
             services.AddTransient<IReaderService, ReaderService>();
+            services.AddTransient<IHistoryService, HistoryService>();
 
             services.AddSwaggerGen(c =>
             {

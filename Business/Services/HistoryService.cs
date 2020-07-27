@@ -20,22 +20,38 @@ namespace Business.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<BookModel> GetMostPopularBooks(int bookCount) =>
-            _unit.HistoryRepository
+        public IEnumerable<BookModel> GetMostPopularBooks(int bookCount)
+        {
+            var histories =_unit.HistoryRepository
                 .GetAllWithDetails()
-                .GroupBy(x => x.BookId)
+                .AsEnumerable();
+
+            if (!histories.Any())
+                return null;
+
+            return histories.GroupBy(x => x.BookId)
                 .OrderByDescending(x => x.Count())
                 .Take(bookCount)
                 .Select(x => _mapper.Map<Book, BookModel>(x.FirstOrDefault().Book));
-           
+        }
 
-        public IEnumerable<ReaderActivityModel> GetReadersWhoTookTheMostBooks(int readersCount, DateTime firstDate, DateTime lastDate) =>
-            _unit.HistoryRepository
+        public IEnumerable<ReaderActivityModel> GetReadersWhoTookTheMostBooks(int readersCount, DateTime firstDate,
+            DateTime lastDate)
+        {
+            var histories = _unit.HistoryRepository
                 .GetAllWithDetails()
                 .Where(x => x.TakeDate >= firstDate && x.ReturnDate <= lastDate)
+                .AsEnumerable();
+
+            if (!histories.Any())
+                return null;
+
+            return histories
                 .GroupBy(x => x.Card.ReaderId)
                 .OrderByDescending(x => x.Count())
                 .Take(readersCount)
-                .Select(x => new ReaderActivityModel { BooksCount = x.Count(), ReaderId = x.Key, ReaderName = x.ElementAt(0).Card.Reader.Name});
+                .Select(x => new ReaderActivityModel
+                    {BooksCount = x.Count(), ReaderId = x.Key, ReaderName = x.ElementAt(0).Card.Reader.Name});
+        }
     }
 }

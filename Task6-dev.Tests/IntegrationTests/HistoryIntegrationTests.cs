@@ -14,37 +14,48 @@ namespace Task6.IntegrationTests
     {
         private CustomWebApplicationFactory _factory;
         private HttpClient _client;
-        private ReaderModelEqualityComparer _comparer;
+        private BookModelEqualityComparer _bookModelComparer;
+        private ReaderActivityModelEqualityComparer _readerActivityModelComparer;
         private string requestUri = "api/history/";
 
         [OneTimeSetUp]
         public void Init()
         {
-            _comparer = new ReaderModelEqualityComparer();
+            _bookModelComparer = new BookModelEqualityComparer();
+            _readerActivityModelComparer = new ReaderActivityModelEqualityComparer();
             _factory = new CustomWebApplicationFactory();
             _client = _factory.CreateClient();
         }
+
         //2020-07-24
         [Test, Order(0)]
         public async Task HistoryController_GetMostPopularBooks()
         {
             var httpResponse = await _client.GetAsync(requestUri + "popularBooks?bookCount=2");
 
-            httpResponse.EnsureSuccessStatusCode();
+
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
+            httpResponse.EnsureSuccessStatusCode();
             var actual = JsonConvert.DeserializeObject<IEnumerable<BookModel>>(stringResponse).ToList();
+
+            Assert.That(actual.OrderBy(x => x.Id),
+                Is.EqualTo(ExpectedMostPopularBooks).Using(_bookModelComparer));
         }
 
         [Test, Order(0)]
         public async Task HistoryController_GetReadersWhoTookTheMostBooks()
         {
-            var httpResponse = await _client.GetAsync($"{requestUri}biggestReaders?bookCount=1&" +
-                                                      $"firstDate={DateTime.Now.AddDays(-1).ToShortDateString()}&" +
-                                                      $"lastDate={DateTime.Now.ToShortDateString()}");
+            var httpResponse = await _client.GetAsync($"{requestUri}biggestReaders?readersCount=2&" +
+                                                      "firstDate=2020-7-21&" +
+                                                      "lastDate=2020-7-24");
 
-            httpResponse.EnsureSuccessStatusCode();
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
-            var actual = JsonConvert.DeserializeObject<IEnumerable<ReaderModel>>(stringResponse).ToList();
+            httpResponse.EnsureSuccessStatusCode();
+            var actual = JsonConvert.DeserializeObject<IEnumerable<ReaderActivityModel>>(stringResponse).ToList();
+
+            Assert.That(actual.OrderBy(x => x.ReaderId),
+                Is.EqualTo(ExpectedReadersWhoTookTheMostBooks)
+                    .Using(_readerActivityModelComparer));
         }
 
         [OneTimeTearDown]
@@ -53,5 +64,18 @@ namespace Task6.IntegrationTests
             _factory.Dispose();
             _client.Dispose();
         }
+
+        private IEnumerable<BookModel> ExpectedMostPopularBooks =>
+            new[]
+            {
+                new BookModel {Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996},
+                new BookModel {Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994},
+            };
+
+        private IEnumerable<ReaderActivityModel> ExpectedReadersWhoTookTheMostBooks =>
+            new[]
+            {
+                new ReaderActivityModel{ ReaderId = 1, BooksCount = 1, ReaderName = "Jon Snow" } 
+            };
     }
 }
