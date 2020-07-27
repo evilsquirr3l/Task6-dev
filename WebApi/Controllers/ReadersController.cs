@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Interfaces;
 using Business.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers

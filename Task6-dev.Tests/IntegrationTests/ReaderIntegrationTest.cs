@@ -1,15 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using NUnit.Framework;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Data;
+﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Business.Models;
-using System.Text;
+using System.Linq;
 using System.Net;
-using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Business.Models;
+using Data;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace Task6.IntegrationTests
 {

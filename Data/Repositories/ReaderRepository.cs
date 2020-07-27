@@ -1,8 +1,7 @@
-﻿using System;
-using Data.Interfaces;
-using Data.Entities;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Data.Entities;
+using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
