@@ -21,7 +21,7 @@ namespace Task6.CardsTests
             var expected = GetTestCardModels();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(m => m.CardRepository.FindAll())
+                .Setup(m => m.CardRepository.FindAllWithDetails())
                 .Returns(GetTestCardEntities().AsQueryable);
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 

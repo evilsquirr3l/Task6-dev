@@ -41,7 +41,7 @@ namespace Business.Services
 
         public IEnumerable<CardModel> GetAll()
         {
-            var cards = unit.CardRepository.FindAll().ToList();
+            var cards = unit.CardRepository.FindAllWithDetails().ToList();
 
             return mapper.Map<IEnumerable<CardModel>>(cards);
         }
