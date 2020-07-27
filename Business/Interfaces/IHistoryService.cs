@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Business.Models;
+using Data.Entities;
 
 namespace Business.Interfaces
 {
