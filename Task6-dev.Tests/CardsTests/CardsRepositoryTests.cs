@@ -38,7 +38,7 @@ namespace Task6.CardsTests
             var expectedCards = context.Cards.AsNoTracking().Include(x => x.Books).Include(x => x.Reader).ToList();
 
             //Act
-            var cards = cardRepository.GetAllWithDetails().ToList();
+            var cards = cardRepository.FindAllWithDetails().ToList();
 
             //Assert
             Assert.That(cards, Is.EqualTo(expectedCards).Using(new CardEqualityComparer()));

@@ -12,7 +12,7 @@ namespace Data.Repositories
         {
         }
 
-        public IQueryable<Card> GetAllWithDetails()
+        public IQueryable<Card> FindAllWithDetails()
         {
             return DbSet.Include(x => x.Books)
                 .Include(x => x.Reader);

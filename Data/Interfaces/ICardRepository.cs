@@ -7,6 +7,6 @@ namespace Data.Interfaces
     public interface ICardRepository : IRepository<Card>
     {
         Task<Card> GetByIdWithDetailsAsync(int id);
-        IQueryable<Card> GetAllWithDetails();
+        IQueryable<Card> FindAllWithDetails();
     }
 }
