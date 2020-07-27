@@ -10,12 +10,12 @@ using Data.Interfaces;
 
 namespace Business.Services
 {
-    public class BooksService : IBooksService
+    public class BookService : IBooksService
     {
         private readonly IUnitOfWork _unit;
         private readonly IMapper _mapper;
 
-        public BooksService(IUnitOfWork unit, IMapper mapper)
+        public BookService(IUnitOfWork unit, IMapper mapper)
         {
             _unit = unit;
             _mapper = mapper;

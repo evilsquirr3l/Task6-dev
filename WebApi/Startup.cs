@@ -43,7 +43,7 @@ namespace WebApi
             var mapper = new MapperConfiguration(c => c.AddProfile(new AutomapperProfile())).CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddTransient<IBooksService, BooksService>();
+            services.AddTransient<IBooksService, BookService>();
             services.AddTransient<ICardService, CardService>();
             services.AddTransient<IReaderService, ReaderService>();
             services.AddTransient<IHistoryService, HistoryService>();

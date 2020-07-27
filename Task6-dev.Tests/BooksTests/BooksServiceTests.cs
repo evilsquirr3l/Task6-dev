@@ -21,7 +21,7 @@ namespace Task6.BooksTests
             mockUnitOfWork
                 .Setup(m => m.BookRepository.FindAll())
                 .Returns(GetTestBookEntities().AsQueryable);
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             var actual = bookService.GetAll().ToList();
 
@@ -52,7 +52,7 @@ namespace Task6.BooksTests
             mockUnitOfWork
                 .Setup(m => m.BookRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(GetTestBookEntities().First);
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             var actual = await bookService.GetByIdAsync(1);
             
@@ -78,7 +78,7 @@ namespace Task6.BooksTests
             //Arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = "The Splendors and Miseries of Courtesans"};
             
             //Act
@@ -94,7 +94,7 @@ namespace Task6.BooksTests
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = ""};
             
             Assert.ThrowsAsync<LibraryException>(() => bookService.AddAsync(book));
@@ -105,7 +105,7 @@ namespace Task6.BooksTests
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var book = new BookModel {Id = 100, Author = "", Title = "The Splendors and Miseries of Courtesans"};
             
             Assert.ThrowsAsync<LibraryException>(() => bookService.AddAsync(book));
@@ -116,7 +116,7 @@ namespace Task6.BooksTests
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var book = new BookModel {Id = 100, Author = "Honore de Balzac", Title = "The Splendors and Miseries of Courtesans", Year = 9999};
             
             Assert.ThrowsAsync<LibraryException>(() => bookService.AddAsync(book));
@@ -130,7 +130,7 @@ namespace Task6.BooksTests
             //Arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.DeleteByIdAsync(It.IsAny<int>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             
             //Act
             await bookService.DeleteByIdAsync(bookId);
@@ -147,7 +147,7 @@ namespace Task6.BooksTests
             var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "Father Goriot"};
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             
             //Act
             await bookService.UpdateAsync(book);
@@ -164,7 +164,7 @@ namespace Task6.BooksTests
             var book = new BookModel{Id = 1, Author = "", Title = "Father Goriot", Year = 1835};
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             
             Assert.ThrowsAsync<LibraryException>(() => bookService.UpdateAsync(book));
         }
@@ -176,7 +176,7 @@ namespace Task6.BooksTests
             var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "", Year = 1835};
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             
             Assert.ThrowsAsync<LibraryException>(() => bookService.UpdateAsync(book));
         }
@@ -188,7 +188,7 @@ namespace Task6.BooksTests
             var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "Father Goriot", Year = 9999};
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.Update(It.IsAny<Book>()));
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             
             Assert.ThrowsAsync<LibraryException>(() => bookService.UpdateAsync(book));
         }
@@ -198,7 +198,7 @@ namespace Task6.BooksTests
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Author = "Jack London"};
             
             //Act
@@ -216,7 +216,7 @@ namespace Task6.BooksTests
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
-            var bookService = new BooksService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var bookService = new BookService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var filter = new FilterSearchModel{Year = 1994};
             
             var filteredBooks = bookService.GetByFilter(filter).ToList();
