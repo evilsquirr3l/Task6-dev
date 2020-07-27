@@ -1,15 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using NUnit.Framework;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Data;
+﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Business.Models;
-using System.Text;
+using System.Linq;
 using System.Net;
-using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Business.Models;
+using Data;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace Task6.IntegrationTests
 {
@@ -21,7 +21,7 @@ namespace Task6.IntegrationTests
         private ReaderModelEqualityComparer _comparer;
         private string requestUri = "api/readers/";
 
-        [OneTimeSetUp]
+        [SetUp]
         public void Init()
         {
             _comparer = new ReaderModelEqualityComparer();
@@ -29,7 +29,7 @@ namespace Task6.IntegrationTests
             _client = _factory.CreateClient();
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task ReaderController_GetAll_ReturnAllFromDb()
         {
             // arrange 
@@ -80,7 +80,7 @@ namespace Task6.IntegrationTests
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
-        [Test, Order(0)]
+        [Test]
         public async Task ReaderController_GetReadersThatDontReturnBooks_ReturnReader()
         {
             // arrange 
@@ -116,31 +116,31 @@ namespace Task6.IntegrationTests
 
             // assert
             httpResponse.EnsureSuccessStatusCode();
-            CheckReaderInfoIntoDb(reader, readerId, 3);
+            await CheckReaderInfoIntoDb(reader, readerId, 3);
         }
 
         [Test]
-        public void ReaderController_Add_ThrowsExceptionIfModelIsIncorrect()
+        public async Task ReaderController_Add_ThrowsExceptionIfModelIsIncorrect()
         {
             // Name is empty
             var reader = new ReaderModel { Name = "", Email = "only_money@gmail.com",
                 Phone = "999999999", Address = "Glasgow" };
-            CheckExceptionWhileAddNewModel(reader);
+            await CheckExceptionWhileAddNewModel(reader);
 
             // Email is empty
             reader.Name = "Scrooge McDuck";
             reader.Email = "";
-            CheckExceptionWhileAddNewModel(reader);
+            await CheckExceptionWhileAddNewModel(reader);
 
             // Phone is empty
             reader.Email = "only_money@gmail.com";
             reader.Phone = "";
-            CheckExceptionWhileAddNewModel(reader);
+            await CheckExceptionWhileAddNewModel(reader);
 
             // Address is empty
             reader.Phone = "999999999";
             reader.Address = "";
-            CheckExceptionWhileAddNewModel(reader);
+            await CheckExceptionWhileAddNewModel(reader);
         }
 
         [Test]
@@ -162,31 +162,31 @@ namespace Task6.IntegrationTests
 
             //assert
             httpResponse.EnsureSuccessStatusCode();
-            CheckReaderInfoIntoDb(reader, reader.Id, 2);
+            await CheckReaderInfoIntoDb(reader, reader.Id, 2);
         }
 
         [Test]
-        public void ReaderController_Update_ThrowsExceptionIfModelIsIncorrect()
+        public async Task ReaderController_Update_ThrowsExceptionIfModelIsIncorrect()
         {
             // Name is empty
             var reader = new ReaderModel { Id = 1, Name = "",  Email = "scuderia_ferrari@gmail.com",
                 Phone = "165479823", Address = "Modena, Maranello" };
-            CheckExceptionWhileUpdateModel(reader);
+            await CheckExceptionWhileUpdateModel(reader);
 
             // Email is empty
             reader.Name = "Enzo Ferrari";
             reader.Email = "";
-            CheckExceptionWhileUpdateModel(reader);
+            await CheckExceptionWhileUpdateModel(reader);
 
             // Phone is empty
             reader.Email = "scuderia_ferrari@gmail.com";
             reader.Phone = "";
-            CheckExceptionWhileUpdateModel(reader);
+            await CheckExceptionWhileUpdateModel(reader);
 
             // Name is empty
             reader.Phone = "165479823";
             reader.Address = "";
-            CheckExceptionWhileUpdateModel(reader);
+            await CheckExceptionWhileUpdateModel(reader);
         }
 
         [Test]
@@ -203,12 +203,12 @@ namespace Task6.IntegrationTests
             using (var test = _factory.Services.CreateScope())
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
-                Assert.AreEqual(2, context.Readers.Count());
+                Assert.AreEqual(1, context.Readers.Count());
             }
         }
 
         #region helpers
-        private async void CheckReaderInfoIntoDb(ReaderModel reader, int readerId, int expectedLength)
+        private async Task CheckReaderInfoIntoDb(ReaderModel reader, int readerId, int expectedLength)
         {
             using (var test = _factory.Services.CreateScope())
             {
@@ -227,7 +227,7 @@ namespace Task6.IntegrationTests
             }
         }
 
-        private async void CheckExceptionWhileAddNewModel(ReaderModel reader)
+        private async Task CheckExceptionWhileAddNewModel(ReaderModel reader)
         {
             var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PostAsync(requestUri, content);
@@ -235,7 +235,7 @@ namespace Task6.IntegrationTests
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
-        private async void CheckExceptionWhileUpdateModel(ReaderModel reader)
+        private async Task CheckExceptionWhileUpdateModel(ReaderModel reader)
         {
             var content = new StringContent(JsonConvert.SerializeObject(reader), Encoding.UTF8, "application/json");
             var httpResponse = await _client.PutAsync(requestUri, content);
@@ -255,7 +255,7 @@ namespace Task6.IntegrationTests
         }
         #endregion
 
-        [OneTimeTearDown]
+        [TearDown]
         public void TearDown()
         {
             _factory.Dispose();

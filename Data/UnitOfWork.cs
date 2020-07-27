@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
-using Data.Entities;
 using Data.Interfaces;
-using Data.Repositories;
 
 namespace Data
 {
@@ -10,7 +8,7 @@ namespace Data
         private readonly LibraryDbContext _context;
 
         public UnitOfWork(LibraryDbContext context, IBookRepository bookRepository, 
-            ICardRepository cardRepository, IRepository<History> historyRepository, 
+            ICardRepository cardRepository, IHistoryRepository historyRepository, 
             IReaderRepository readerRepository)
         {
             _context = context;
@@ -22,7 +20,7 @@ namespace Data
 
         public IBookRepository BookRepository { get; }
         public ICardRepository CardRepository { get; }
-        public IRepository<History> HistoryRepository { get; }
+        public IHistoryRepository HistoryRepository { get; }
         public IReaderRepository ReaderRepository { get; }
         
         public async Task<int> SaveAsync()
