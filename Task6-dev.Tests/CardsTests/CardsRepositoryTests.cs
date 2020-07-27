@@ -29,7 +29,7 @@ namespace Task6.CardsTests
         }
 
         [Test]
-        public async Task CardRepository_GetAllWithDetails_ReturnsCardByIdAndIncludesBooks()
+        public void CardRepository_GetAllWithDetails_ReturnsCardByIdAndIncludesBooks()
         {
             //Arrange
             using var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions());
