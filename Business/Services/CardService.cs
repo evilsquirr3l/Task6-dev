@@ -55,7 +55,7 @@ namespace Business.Services
 
         public async Task<CardModel> GetByIdAsync(int id)
         {
-            var card = await unit.CardRepository.GetByIdWithBooksAsync(id);
+            var card = await unit.CardRepository.GetByIdWithDetailsAsync(id);
 
             return mapper.Map<CardModel>(card);
         }

@@ -20,7 +20,7 @@ namespace Task6.CardsTests
                 //TODO: discuss to upgrade expected values
                 var expectedCard = context.Cards.AsNoTracking().Include(x => x.Books).FirstOrDefault(x => x.Id == 1);
 
-                var card = await cardRepository.GetByIdWithBooksAsync(1);
+                var card = await cardRepository.GetByIdWithDetailsAsync(1);
 
                 Assert.That(card, Is.EqualTo(expectedCard).Using(new CardEqualityComparer()));
                 Assert.That(card.Books, Is.EqualTo(expectedCard.Books).Using(new HistoryEqualityComparer()));

@@ -58,7 +58,7 @@ namespace Task6.CardsTests
             var expected = GetTestCardModels().First();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(m => m.CardRepository.GetByIdWithBooksAsync(It.IsAny<int>()))
+                .Setup(m => m.CardRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(GetTestCardEntities().First);
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
@@ -124,7 +124,7 @@ namespace Task6.CardsTests
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
 
-            mockUnitOfWork.Setup(x => x.CardRepository.GetByIdWithBooksAsync(It.IsAny<int>())).ReturnsAsync(() => GetTestCardWithHistoryById(cardId));
+            mockUnitOfWork.Setup(x => x.CardRepository.GetByIdWithDetailsAsync(It.IsAny<int>())).ReturnsAsync(() => GetTestCardWithHistoryById(cardId));
             mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(() => GetTestBooksWithHistoryByCardId(cardId));
 
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
