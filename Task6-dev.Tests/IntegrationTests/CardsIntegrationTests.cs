@@ -35,12 +35,12 @@ namespace Task6.IntegrationTests
         {
             return new List<CardModel>
             {
-                new CardModel { Id = 1, ReaderId = 1, Created = DateTime.Today },
-                new CardModel { Id = 2, ReaderId = 2, Created = DateTime.Today }
+                new CardModel { Id = 1, ReaderId = 1, Created = new DateTime(2020, 7, 21) },
+                new CardModel { Id = 2, ReaderId = 2, Created = new DateTime(2020, 7, 23) }
             };
         }
 
-        [Test]
+        [Test, Order(0)]
         public async Task CardsController_GetAll_ReturnsAllCardsFromDb()
         {
             // arrange 
@@ -56,7 +56,7 @@ namespace Task6.IntegrationTests
             Assert.That(actual, Is.EqualTo(expected).Using(cardModelComparer));
         }
 
-        [Test]
+        [Test, Order(0)]
         public async Task CardsController_GetById_ReturnsCardFromDb()
         {
             // arrange 
@@ -73,7 +73,7 @@ namespace Task6.IntegrationTests
             Assert.That(actual, Is.EqualTo(expected).Using(cardModelComparer));
         }
 
-        [Test]
+        [Test, Order(1)]
         public async Task CardsController_Update_UpdatesBookInDatabase()
         {
             var expected = new CardModel { Id = 2, ReaderId = 1 };
@@ -94,7 +94,7 @@ namespace Task6.IntegrationTests
             }
         }
 
-        [Test]
+        [Test, Order(2)]
         public async Task CardsController_DeleteById_DeletesCardFromDatabase()
         {
             var cardId = 1;
@@ -110,7 +110,7 @@ namespace Task6.IntegrationTests
             }
         }
 
-        [Test]
+        [Test, Order(1)]
         public async Task CardsController_Add_AddsCardToDb()
         {
             //Arrange
@@ -134,7 +134,7 @@ namespace Task6.IntegrationTests
             Assert.AreEqual(card.Created, actual.Created);
         }
 
-        [Test]
+        [Test, Order(0)]
         public async Task CardsController_GetBooksByCardId_ReturnsBooksFromDatabaseByCardId()
         {
             var cardId = 1;
@@ -148,7 +148,7 @@ namespace Task6.IntegrationTests
             Assert.That(actual, Is.EqualTo(books).Using(bookModelComparer));
         }
 
-        [Test]
+        [Test, Order(1)]
         public async Task CardsController_TakeBook_CreatesHistoryWithCardAndBookIds()
         {
             var cardId = 1;
@@ -166,7 +166,7 @@ namespace Task6.IntegrationTests
             Assert.AreEqual(history.CardId, cardId);
         }
 
-        [Test]
+        [Test, Order(1)]
         public async Task CardsController_HandOverBook_UpdatesReturnDateInHistory()
         {
             var cardId = 2;
@@ -184,7 +184,7 @@ namespace Task6.IntegrationTests
             Assert.IsNotNull(history.ReturnDate);
         }
 
-        [Test]
+        [Test, Order(0)]
         public async Task CardsController_HandOverBook_ReturnsBadRequestIfLibraryExceptionWasThrown()
         {
             var cardId = 6;
@@ -195,7 +195,7 @@ namespace Task6.IntegrationTests
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
-        [Test]
+        [Test, Order(0)]
         public async Task CardsController_TakeBook_ReturnsBadRequestIfLibraryExceptionWasThrown()
         {
             var cardId = 6;
