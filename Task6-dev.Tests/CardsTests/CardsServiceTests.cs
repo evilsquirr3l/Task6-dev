@@ -333,5 +333,24 @@ namespace Task6.CardsTests
             //Act/Assert
             Assert.ThrowsAsync<LibraryException>(async () => await cardService.HandOverBookAsync(cardId, bookId));
         }
+
+        [TestCase(1, 1)]
+        [TestCase(1, 2)]
+        public void CardsService_HandOverBookAsync_ThrowsExceptionIfBookIsAlreadyReturned(int cardId, int bookId)
+        {
+            //Arrange
+            var histories = GetHistories();
+
+            var history = histories.FirstOrDefault(x => x.BookId == bookId && x.CardId == cardId);
+            history.ReturnDate = DateTime.Today.AddHours(8);
+
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(histories.AsQueryable());
+
+            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+
+            //Act/Assert
+            Assert.ThrowsAsync<LibraryException>(async () => await cardService.HandOverBookAsync(cardId, bookId));
+        }
     }
 }
