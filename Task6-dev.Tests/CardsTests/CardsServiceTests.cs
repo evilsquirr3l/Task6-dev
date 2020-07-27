@@ -21,7 +21,7 @@ namespace Task6.CardsTests
             var expected = GetTestCardModels();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(m => m.CardRepository.FindAll())
+                .Setup(m => m.CardRepository.FindAllWithDetails())
                 .Returns(GetTestCardEntities().AsQueryable);
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
@@ -58,7 +58,7 @@ namespace Task6.CardsTests
             var expected = GetTestCardModels().First();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(m => m.CardRepository.GetByIdWithBooksAsync(It.IsAny<int>()))
+                .Setup(m => m.CardRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(GetTestCardEntities().First);
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
@@ -117,20 +117,19 @@ namespace Task6.CardsTests
         }
 
         [TestCase(1)]
-        public async Task CardsService_GetBooksByCardIdAsync_ReturnsCorrectBooks(int cardId)
+        public void CardsService_GetBooksByCardIdAsync_ReturnsCorrectBooks(int cardId)
         {
             //Arrange
             var expected = GetTestBookModels().Where(b => b.CardsIds.Contains(cardId)).ToList();
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
 
-            mockUnitOfWork.Setup(x => x.CardRepository.GetByIdWithBooksAsync(It.IsAny<int>())).ReturnsAsync(() => GetTestCardWithHistoryById(cardId));
             mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(() => GetTestBooksWithHistoryByCardId(cardId));
 
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act
-            var books = await cardService.GetBooksByCardIdAsync(cardId);
+            var books = cardService.GetBooksByCardId(cardId);
             var actual = books.ToList();
 
             //Assert
@@ -324,6 +323,25 @@ namespace Task6.CardsTests
         {
             //Arrange
             var histories = GetHistories();
+
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(histories.AsQueryable());
+
+            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+
+            //Act/Assert
+            Assert.ThrowsAsync<LibraryException>(async () => await cardService.HandOverBookAsync(cardId, bookId));
+        }
+
+        [TestCase(1, 1)]
+        [TestCase(1, 2)]
+        public void CardsService_HandOverBookAsync_ThrowsExceptionIfBookIsAlreadyReturned(int cardId, int bookId)
+        {
+            //Arrange
+            var histories = GetHistories();
+
+            var history = histories.FirstOrDefault(x => x.BookId == bookId && x.CardId == cardId);
+            history.ReturnDate = DateTime.Today.AddHours(8);
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(histories.AsQueryable());
