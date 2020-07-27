@@ -124,7 +124,6 @@ namespace Task6.CardsTests
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
 
-            mockUnitOfWork.Setup(x => x.CardRepository.GetByIdWithDetailsAsync(It.IsAny<int>())).ReturnsAsync(() => GetTestCardWithHistoryById(cardId));
             mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(() => GetTestBooksWithHistoryByCardId(cardId));
 
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
