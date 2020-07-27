@@ -6,7 +6,7 @@ namespace Business.Interfaces
 {
     public interface ICardService : ICrud<CardModel>
     {
-        Task<IEnumerable<BookModel>> GetBooksByCardIdAsync(int cardId);
+        IEnumerable<BookModel> GetBooksByCardId(int cardId);
 
         Task TakeBookAsync(int cartId, int bookId);
 

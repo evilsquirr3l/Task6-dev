@@ -46,7 +46,7 @@ namespace Business.Services
             return mapper.Map<IEnumerable<CardModel>>(cards);
         }
 
-        public async Task<IEnumerable<BookModel>> GetBooksByCardIdAsync(int cardId)
+        public IEnumerable<BookModel> GetBooksByCardId(int cardId)
         {
             var books = unit.BookRepository.FindAllWithDetails().Where(x => x.Id == cardId).ToList();
 

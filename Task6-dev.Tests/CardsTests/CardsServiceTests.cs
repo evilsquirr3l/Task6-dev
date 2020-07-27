@@ -117,7 +117,7 @@ namespace Task6.CardsTests
         }
 
         [TestCase(1)]
-        public async Task CardsService_GetBooksByCardIdAsync_ReturnsCorrectBooks(int cardId)
+        public void CardsService_GetBooksByCardIdAsync_ReturnsCorrectBooks(int cardId)
         {
             //Arrange
             var expected = GetTestBookModels().Where(b => b.CardsIds.Contains(cardId)).ToList();
@@ -130,7 +130,7 @@ namespace Task6.CardsTests
             var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act
-            var books = await cardService.GetBooksByCardIdAsync(cardId);
+            var books = cardService.GetBooksByCardId(cardId);
             var actual = books.ToList();
 
             //Assert
