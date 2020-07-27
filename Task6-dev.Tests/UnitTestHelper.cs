@@ -36,6 +36,7 @@ namespace Task6
             //for method GetReadersThatDontReturnBooks
             //ok, I'll use it also for cards integration tests
             // will change everything with dates, because it wont be unit tests
+            //do you understand that changing dates always make me change my test data in the integration tests because of GetAll method?
             context.Cards.Add(new Card { Id = 2, ReaderId = 2, Created = new DateTime(2020, 7, 23) });
             context.Histories.Add(new History { Id = 2, BookId = 2, CardId = 2, TakeDate = new DateTime(2020, 7, 23) });
             context.SaveChanges();
