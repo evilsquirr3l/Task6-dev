@@ -14,7 +14,7 @@ namespace Task6.BooksTests
     public class BooksServiceTests
     {
         [Test]
-        public void BooksService_GetAll_ReturnsBookModels()
+        public void BookService_GetAll_ReturnsBookModels()
         {
             var expected = GetTestBookModels().ToList();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -45,7 +45,7 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public async Task BooksService_GetByIdAsync_ReturnsBookModel()
+        public async Task BookService_GetByIdAsync_ReturnsBookModel()
         {
             var expected = GetTestBookModels().First();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -73,7 +73,7 @@ namespace Task6.BooksTests
         }
         
         [Test]
-        public async Task BooksService_AddAsync_AddsModel()
+        public async Task BookService_AddAsync_AddsModel()
         {
             //Arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -90,7 +90,7 @@ namespace Task6.BooksTests
         }
 
         [Test] 
-        public void BooksService_AddAsync_ThrowsLibraryExceptionWithEmptyTitle()
+        public void BookService_AddAsync_ThrowsLibraryExceptionWithEmptyTitle()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
@@ -101,7 +101,7 @@ namespace Task6.BooksTests
         }
         
         [Test] 
-        public void BooksService_AddAsync_ThrowsLibraryExceptionWithEmptyAuthor()
+        public void BookService_AddAsync_ThrowsLibraryExceptionWithEmptyAuthor()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
@@ -112,7 +112,7 @@ namespace Task6.BooksTests
         }
         
         [Test] 
-        public void BooksService_AddAsync_ThrowsLibraryExceptionWithInvalidYear()
+        public void BookService_AddAsync_ThrowsLibraryExceptionWithInvalidYear()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.AddAsync(It.IsAny<Book>()));
@@ -125,7 +125,7 @@ namespace Task6.BooksTests
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(100)]
-        public async Task BooksService_DeleteByIdAsync_DeletesBook(int bookId)
+        public async Task BookService_DeleteByIdAsync_DeletesBook(int bookId)
         {
             //Arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -141,7 +141,7 @@ namespace Task6.BooksTests
         }
         
         [Test]
-        public async Task BooksService_UpdateAsync_UpdatesBook()
+        public async Task BookService_UpdateAsync_UpdatesBook()
         {
             //Arrange
             var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "Father Goriot"};
@@ -158,7 +158,7 @@ namespace Task6.BooksTests
         }
         
         [Test]
-        public async Task BooksService_UpdateAsync_ThrowsLibraryExceptionWithEmptyAuthor()
+        public async Task BookService_UpdateAsync_ThrowsLibraryExceptionWithEmptyAuthor()
         {
             //Arrange
             var book = new BookModel{Id = 1, Author = "", Title = "Father Goriot", Year = 1835};
@@ -170,7 +170,7 @@ namespace Task6.BooksTests
         }
         
         [Test]
-        public async Task BooksService_UpdateAsync_ThrowsLibraryExceptionWithEmptyTitle()
+        public async Task BookService_UpdateAsync_ThrowsLibraryExceptionWithEmptyTitle()
         {
             //Arrange
             var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "", Year = 1835};
@@ -182,7 +182,7 @@ namespace Task6.BooksTests
         }
         
         [Test]
-        public async Task BooksService_UpdateAsync_ThrowsLibraryExceptionWithInvalidYear()
+        public async Task BookService_UpdateAsync_ThrowsLibraryExceptionWithInvalidYear()
         {
             //Arrange
             var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "Father Goriot", Year = 9999};
@@ -194,7 +194,7 @@ namespace Task6.BooksTests
         }
 
         [Test]
-        public void BooksService_GetByFilter_ReturnsBooksByAuthor()
+        public void BookService_GetByFilter_ReturnsBooksByAuthor()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
@@ -212,7 +212,7 @@ namespace Task6.BooksTests
         }
         
         [Test]
-        public void BooksService_GetByFilter_ReturnsBooksByYear()
+        public void BookService_GetByFilter_ReturnsBooksByYear()
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(GetTestBookEntities().AsQueryable);
