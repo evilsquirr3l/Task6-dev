@@ -71,9 +71,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}/books")]
-        public async Task<ActionResult> GetBooksByCardId(int id)
+        public ActionResult GetBooksByCardId(int id)
         {
-            var books = await cardsService.GetBooksByCardIdAsync(id);
+            var books = cardsService.GetBooksByCardId(id);
 
             return Ok(books);
         }
