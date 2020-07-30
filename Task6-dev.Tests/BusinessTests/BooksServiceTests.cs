@@ -9,7 +9,7 @@ using Data.Interfaces;
 using Moq;
 using NUnit.Framework;
 
-namespace Task6.BooksTests
+namespace Library.Tests.BusinessTests
 {
     public class BooksServiceTests
     {

@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Task6.IntegrationTests
+namespace Library.Tests.IntegrationTests
 {
     [TestFixture]
     public class CardsIntegrationTests

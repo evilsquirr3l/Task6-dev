@@ -5,7 +5,7 @@ using Data;
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Task6
+namespace Library.Tests
 {
     internal static class UnitTestHelper
     {

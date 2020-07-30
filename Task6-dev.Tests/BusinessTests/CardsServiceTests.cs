@@ -10,7 +10,7 @@ using Data.Interfaces;
 using Moq;
 using NUnit.Framework;
 
-namespace Task6.CardsTests
+namespace Library.Tests.BusinessTests
 {
     [TestFixture]
     public class CardsServiceTests

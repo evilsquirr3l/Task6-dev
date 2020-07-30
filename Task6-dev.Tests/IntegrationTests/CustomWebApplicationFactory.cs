@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WebApi;
 
-namespace Task6.IntegrationTests
+namespace Library.Tests.IntegrationTests
 {
     internal class CustomWebApplicationFactory : WebApplicationFactory<Startup>
     {

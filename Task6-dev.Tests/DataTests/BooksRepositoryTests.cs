@@ -5,7 +5,7 @@ using Data.Entities;
 using Data.Repositories;
 using NUnit.Framework;
 
-namespace Task6.BooksTests
+namespace Library.Tests.DataTests
 {
     [TestFixture]
     public class BooksRepositoryTests

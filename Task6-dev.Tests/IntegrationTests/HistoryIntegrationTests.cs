@@ -6,7 +6,7 @@ using Business.Models;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Task6.IntegrationTests
+namespace Library.Tests.IntegrationTests
 {
     [TestFixture]
     public class HistoryIntegrationTests

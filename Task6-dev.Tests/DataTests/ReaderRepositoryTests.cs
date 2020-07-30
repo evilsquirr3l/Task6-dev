@@ -5,7 +5,7 @@ using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace Task6.ReaderTests
+namespace Library.Tests.DataTests
 {
     [TestFixture]
     public class ReaderRepositoryTests

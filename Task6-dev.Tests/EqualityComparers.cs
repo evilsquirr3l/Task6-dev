@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Business.Models;
 using Data.Entities;
 
-namespace Task6
+namespace Library.Tests
 {
     internal class CardEqualityComparer : IEqualityComparer<Card>
     {
