@@ -24,7 +24,7 @@ namespace Business.Services
         {
             var histories =_unit.HistoryRepository
                 .GetAllWithDetails()
-                .AsEnumerable();
+                .ToList();
 
             if (!histories.Any())
                 return null;
