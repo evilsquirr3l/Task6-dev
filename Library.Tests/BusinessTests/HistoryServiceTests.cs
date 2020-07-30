@@ -16,7 +16,7 @@ namespace Library.Tests.BusinessTests
         [Test]
         public void HistoryService_GetMostPopularBooks()
         {
-            var actual = MockedHistoryService.GetMostPopularBooks(5);
+            var actual = MockedStatisticService.GetMostPopularBooks(5);
 
             Assert.That(actual, Is.InstanceOf<IEnumerable<BookModel>>());
             Assert.That(actual.OrderBy(x => x.Id), 
@@ -26,7 +26,7 @@ namespace Library.Tests.BusinessTests
         [Test]
         public void HistoryService_GetReadersWhoTookTheMostBooks()
         {
-            var actual = MockedHistoryService.GetReadersWhoTookTheMostBooks(5,
+            var actual = MockedStatisticService.GetReadersWhoTookTheMostBooks(5,
                 new DateTime(2020, 7, 21),
                 new DateTime(2020, 7, 24));
 
@@ -36,7 +36,7 @@ namespace Library.Tests.BusinessTests
                     .Using(new ReaderActivityModelEqualityComparer()));
         }
 
-        private static HistoryService MockedHistoryService
+        private static StatisticService MockedStatisticService
         {
             get
             {
@@ -44,7 +44,7 @@ namespace Library.Tests.BusinessTests
                 mockUnitOfWork
                     .Setup(m => m.HistoryRepository.GetAllWithDetails())
                     .Returns(Histories.AsQueryable());
-                return new HistoryService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+                return new StatisticService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             }
         }
 

@@ -16,19 +16,19 @@ namespace Library.Tests.IntegrationTests
     [TestFixture]
     public class CardsIntegrationTests
     {
-        private HttpClient client;
-        private CustomWebApplicationFactory factory;
+        private HttpClient _client;
+        private CustomWebApplicationFactory _factory;
         private const string RequestUri = "api/cards/";
-        private IEqualityComparer<CardModel> cardModelComparer;
-        private IEqualityComparer<BookModel> bookModelComparer;
+        private IEqualityComparer<CardModel> _cardModelComparer;
+        private IEqualityComparer<BookModel> _bookModelComparer;
 
         [SetUp]
         public void Init()
         {
-            cardModelComparer = new CardModelEqualityComparer();
-            bookModelComparer = new BookModelEqualityComparer();
-            factory = new CustomWebApplicationFactory();
-            client = factory.CreateClient();
+            _cardModelComparer = new CardModelEqualityComparer();
+            _bookModelComparer = new BookModelEqualityComparer();
+            _factory = new CustomWebApplicationFactory();
+            _client = _factory.CreateClient();
         }
 
         private List<CardModel> GetCardsModels()
@@ -47,13 +47,13 @@ namespace Library.Tests.IntegrationTests
             var expected = GetCardsModels();
 
             // act
-            var httpResponse = await client.GetAsync(RequestUri);
+            var httpResponse = await _client.GetAsync(RequestUri);
 
             // assert
             httpResponse.EnsureSuccessStatusCode();
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<IEnumerable<CardModel>>(stringResponse).ToList();
-            Assert.That(actual, Is.EqualTo(expected).Using(cardModelComparer));
+            Assert.That(actual, Is.EqualTo(expected).Using(_cardModelComparer));
         }
 
         [Test, Order(0)]
@@ -64,13 +64,13 @@ namespace Library.Tests.IntegrationTests
             var cardId = 1;
 
             // act
-            var httpResponse = await client.GetAsync(RequestUri + cardId);
+            var httpResponse = await _client.GetAsync(RequestUri + cardId);
 
             // assert
             httpResponse.EnsureSuccessStatusCode();
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<CardModel>(stringResponse);
-            Assert.That(actual, Is.EqualTo(expected).Using(cardModelComparer));
+            Assert.That(actual, Is.EqualTo(expected).Using(_cardModelComparer));
         }
 
         [Test, Order(1)]
@@ -78,11 +78,11 @@ namespace Library.Tests.IntegrationTests
         {
             var expected = new CardModel { Id = 2, ReaderId = 1 };
             var content = new StringContent(JsonConvert.SerializeObject(expected), Encoding.UTF8, "application/json");
-            var httpResponse = await client.PutAsync(RequestUri, content);
+            var httpResponse = await _client.PutAsync(RequestUri, content);
 
             httpResponse.EnsureSuccessStatusCode();
 
-            using (var test = factory.Services.CreateScope())
+            using (var test = _factory.Services.CreateScope())
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
                 var actual = await context.Cards.FindAsync(expected.Id);
@@ -98,11 +98,11 @@ namespace Library.Tests.IntegrationTests
         public async Task CardsController_DeleteById_DeletesCardFromDatabase()
         {
             var cardId = 1;
-            var httpResponse = await client.DeleteAsync(RequestUri + cardId);
+            var httpResponse = await _client.DeleteAsync(RequestUri + cardId);
 
             httpResponse.EnsureSuccessStatusCode();
 
-            using (var test = factory.Services.CreateScope())
+            using (var test = _factory.Services.CreateScope())
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
 
@@ -119,11 +119,11 @@ namespace Library.Tests.IntegrationTests
             var content = new StringContent(JsonConvert.SerializeObject(card), Encoding.UTF8, "application/json");
 
             //Act
-            var httpResponse = await client.PostAsync(RequestUri, content);
+            var httpResponse = await _client.PostAsync(RequestUri, content);
             httpResponse.EnsureSuccessStatusCode();
 
             //Assert
-            using var test = factory.Services.CreateScope();
+            using var test = _factory.Services.CreateScope();
 
             var context = test.ServiceProvider.GetService<LibraryDbContext>();
             var actual = context.Cards.Find(cardId);
@@ -140,12 +140,12 @@ namespace Library.Tests.IntegrationTests
             var cardId = 1;
             var books = new List<BookModel> { new BookModel { Id = 1, Author = "Jon Snow", Title = "A song of ice and fire", Year = 1996 } };
 
-            var httpResponse = await client.GetAsync(RequestUri + cardId + "/books");
+            var httpResponse = await _client.GetAsync(RequestUri + cardId + "/books");
             httpResponse.EnsureSuccessStatusCode();
 
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<IEnumerable<BookModel>>(stringResponse).ToList();
-            Assert.That(actual, Is.EqualTo(books).Using(bookModelComparer));
+            Assert.That(actual, Is.EqualTo(books).Using(_bookModelComparer));
         }
 
         [Test, Order(1)]
@@ -155,10 +155,10 @@ namespace Library.Tests.IntegrationTests
             var bookId = 2;
             var createdHistoryId = 3;
 
-            var httpResponse = await client.PostAsync(RequestUri + cardId + "/books/" + bookId, content: null);
+            var httpResponse = await _client.PostAsync(RequestUri + cardId + "/books/" + bookId, content: null);
             httpResponse.EnsureSuccessStatusCode();
 
-            using var test = factory.Services.CreateScope();
+            using var test = _factory.Services.CreateScope();
             var context = test.ServiceProvider.GetService<LibraryDbContext>();
 
             var history = context.Histories.Find(createdHistoryId);
@@ -173,10 +173,10 @@ namespace Library.Tests.IntegrationTests
             var bookId = 2;
             var historyId = 2;
 
-            var httpResponse = await client.DeleteAsync(RequestUri + cardId + "/books/" + bookId);
+            var httpResponse = await _client.DeleteAsync(RequestUri + cardId + "/books/" + bookId);
             httpResponse.EnsureSuccessStatusCode();
 
-            using var test = factory.Services.CreateScope();
+            using var test = _factory.Services.CreateScope();
             var context = test.ServiceProvider.GetService<LibraryDbContext>();
 
             var history = context.Histories.Find(historyId);
@@ -190,7 +190,7 @@ namespace Library.Tests.IntegrationTests
             var cardId = 6;
             var bookId = 2;
 
-            var httpResponse = await client.DeleteAsync(RequestUri + cardId + "/books/" + bookId);
+            var httpResponse = await _client.DeleteAsync(RequestUri + cardId + "/books/" + bookId);
 
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
@@ -201,7 +201,7 @@ namespace Library.Tests.IntegrationTests
             var cardId = 6;
             var bookId = 2;
 
-            var httpResponse = await client.PostAsync(RequestUri + cardId + "/books/" + bookId, content: null);
+            var httpResponse = await _client.PostAsync(RequestUri + cardId + "/books/" + bookId, content: null);
 
             Assert.That(httpResponse.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
@@ -210,8 +210,8 @@ namespace Library.Tests.IntegrationTests
         [TearDown]
         public void TearDown()
         {
-            factory.Dispose();
-            client.Dispose();
+            _factory.Dispose();
+            _client.Dispose();
         }
     }
 }

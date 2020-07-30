@@ -11,17 +11,17 @@ namespace WebApi.Controllers
     [ApiController]
     public class HistoryController : ControllerBase
     {
-        private readonly IHistoryService _historyService;
+        private readonly IStatisticService _statisticService;
 
-        public HistoryController(IHistoryService historyService)
+        public HistoryController(IStatisticService statisticService)
         {
-            _historyService = historyService;
+            _statisticService = statisticService;
         }
 
         [HttpGet("popularBooks")]
         public ActionResult<IEnumerable<BookModel>> GetMostPopularBooks([FromQuery]int bookCount)
         {
-            var books = _historyService.GetMostPopularBooks(bookCount);
+            var books = _statisticService.GetMostPopularBooks(bookCount);
 
             if (books == null)
                 return NotFound();
@@ -33,7 +33,7 @@ namespace WebApi.Controllers
         public ActionResult<IEnumerable<ReaderActivityModel>> GetReadersWhoTookTheMostBooks([FromQuery] int readersCount, DateTime firstDate,
             DateTime lastDate)
         {
-            var readersActivity = _historyService.GetReadersWhoTookTheMostBooks(readersCount, firstDate, lastDate);
+            var readersActivity = _statisticService.GetReadersWhoTookTheMostBooks(readersCount, firstDate, lastDate);
 
             if (readersActivity == null)
                 return NotFound();

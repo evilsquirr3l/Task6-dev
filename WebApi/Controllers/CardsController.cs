@@ -11,17 +11,17 @@ namespace WebApi.Controllers
     [ApiController]
     public class CardsController : ControllerBase
     {
-        private readonly ICardService cardsService;
+        private readonly ICardService _cardsService;
 
         public CardsController(ICardService cardsService)
         {
-            this.cardsService = cardsService;
+            _cardsService = cardsService;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<BookModel>> GetAll()
         {
-            var cards = cardsService.GetAll();
+            var cards = _cardsService.GetAll();
 
             return Ok(cards);
         }
@@ -29,7 +29,7 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<CardModel>>> GetById(int id)
         {
-            var card = await cardsService.GetByIdAsync(id);
+            var card = await _cardsService.GetByIdAsync(id);
 
             if (card == null)
             {
@@ -44,7 +44,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                await cardsService.AddAsync(cardModel);
+                await _cardsService.AddAsync(cardModel);
             }
             catch (LibraryException e)
             {
@@ -57,7 +57,7 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(CardModel cardModel)
         {
-            await cardsService.UpdateAsync(cardModel);
+            await _cardsService.UpdateAsync(cardModel);
 
             return Ok();
         }
@@ -65,7 +65,7 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await cardsService.DeleteByIdAsync(id);
+            await _cardsService.DeleteByIdAsync(id);
 
             return Ok();
         }
@@ -73,7 +73,7 @@ namespace WebApi.Controllers
         [HttpGet("{id}/books")]
         public ActionResult GetBooksByCardId(int id)
         {
-            var books = cardsService.GetBooksByCardId(id);
+            var books = _cardsService.GetBooksByCardId(id);
 
             return Ok(books);
         }
@@ -83,7 +83,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                await cardsService.TakeBookAsync(cardId, bookId);
+                await _cardsService.TakeBookAsync(cardId, bookId);
             }
             catch (LibraryException e)
             {
@@ -98,7 +98,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                await cardsService.HandOverBookAsync(cardId, bookId);
+                await _cardsService.HandOverBookAsync(cardId, bookId);
             }
             catch (LibraryException e)
             {

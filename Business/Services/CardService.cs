@@ -13,56 +13,56 @@ namespace Business.Services
 {
     public class CardService : ICardService
     {
-        private readonly IUnitOfWork unit;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork _unit;
+        private readonly IMapper _mapper;
 
         public CardService(IUnitOfWork unit, IMapper mapper)
         {
-            this.unit = unit;
-            this.mapper = mapper;
+            this._unit = unit;
+            this._mapper = mapper;
         }
 
 
         public async Task AddAsync(CardModel model)
         {
-            var card = mapper.Map<Card>(model);
+            var card = _mapper.Map<Card>(model);
 
-            await unit.CardRepository.AddAsync(card);
-            await unit.SaveAsync();
+            await _unit.CardRepository.AddAsync(card);
+            await _unit.SaveAsync();
 
             model.Id = card.Id;
         }
 
         public async Task DeleteByIdAsync(int modelId)
         {
-            await unit.CardRepository.DeleteByIdAsync(modelId);
-            await unit.SaveAsync();
+            await _unit.CardRepository.DeleteByIdAsync(modelId);
+            await _unit.SaveAsync();
         }
 
         public IEnumerable<CardModel> GetAll()
         {
-            var cards = unit.CardRepository.FindAllWithDetails().ToList();
+            var cards = _unit.CardRepository.FindAllWithDetails().ToList();
 
-            return mapper.Map<IEnumerable<CardModel>>(cards);
+            return _mapper.Map<IEnumerable<CardModel>>(cards);
         }
 
         public IEnumerable<BookModel> GetBooksByCardId(int cardId)
         {
-            var books = unit.BookRepository.FindAllWithDetails().Where(x => x.Id == cardId).ToList();
+            var books = _unit.BookRepository.FindAllWithDetails().Where(x => x.Id == cardId).ToList();
 
-            return mapper.Map<IEnumerable<BookModel>>(books);
+            return _mapper.Map<IEnumerable<BookModel>>(books);
         }
 
         public async Task<CardModel> GetByIdAsync(int id)
         {
-            var card = await unit.CardRepository.GetByIdWithDetailsAsync(id);
+            var card = await _unit.CardRepository.GetByIdWithDetailsAsync(id);
 
-            return mapper.Map<CardModel>(card);
+            return _mapper.Map<CardModel>(card);
         }
 
         public async Task HandOverBookAsync(int cardId, int bookId)
         {
-            var history = unit.HistoryRepository.FindAll()
+            var history = _unit.HistoryRepository.FindAll()
                 .Where(x => x.BookId == bookId && x.CardId == cardId)
                 .OrderByDescending(x => x.ReturnDate)
                 .FirstOrDefault();
@@ -75,14 +75,14 @@ namespace Business.Services
 
             history.ReturnDate = DateTime.Now;
 
-            unit.HistoryRepository.Update(history);
-            await unit.SaveAsync();
+            _unit.HistoryRepository.Update(history);
+            await _unit.SaveAsync();
         }
 
         public async Task TakeBookAsync(int cardId, int bookId)
         {
-            var book = await unit.BookRepository.GetByIdAsync(bookId);
-            var card = await unit.CardRepository.GetByIdAsync(cardId);
+            var book = await _unit.BookRepository.GetByIdAsync(bookId);
+            var card = await _unit.CardRepository.GetByIdAsync(cardId);
 
             if (book == null)
                 throw new LibraryException($"Book with id '{bookId}' was not found");
@@ -99,12 +99,12 @@ namespace Business.Services
 
             card.Books.Add(history);
 
-            await unit.SaveAsync();
+            await _unit.SaveAsync();
         }
 
         private History GetLastHistoryWhenBookWasTaken(int bookId)
         {
-            return unit.HistoryRepository
+            return _unit.HistoryRepository
                 .FindAll()
                 .OrderByDescending(h => h.Id)
                 .FirstOrDefault(h => h.BookId == bookId);
@@ -112,10 +112,10 @@ namespace Business.Services
 
         public async Task UpdateAsync(CardModel model)
         {
-            var card = mapper.Map<Card>(model);
+            var card = _mapper.Map<Card>(model);
 
-            unit.CardRepository.Update(card);
-            await unit.SaveAsync();
+            _unit.CardRepository.Update(card);
+            await _unit.SaveAsync();
         }
     }
 }
