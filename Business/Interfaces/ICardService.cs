@@ -8,8 +8,8 @@ namespace Business.Interfaces
     {
         IEnumerable<BookModel> GetBooksByCardId(int cardId);
 
-        Task TakeBookAsync(int cartId, int bookId);
+        Task TakeBookAsync(int cardId, int bookId);
 
-        Task HandOverBookAsync(int cartId, int bookId);
+        Task HandOverBookAsync(int cardId, int bookId);
     }
 }
