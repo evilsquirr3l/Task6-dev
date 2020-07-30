@@ -171,37 +171,6 @@ namespace Library.Tests.BusinessTests
             return books.Where(x => x.Cards.Any(c => c.CardId == cardId)).AsQueryable();
         }
 
-        private Card GetTestCardWithHistoryById(int cardId)
-        {
-            var cards = new List<Card>()
-            {
-                new Card
-                {
-                    Id = 1,
-                    Created = DateTime.Today.AddHours(2),
-                    ReaderId = 1,
-                    Books = new List<History>
-                    {
-                        new History { Book = new Book { Id = 1, Author = "Jack London", Title = "Martin Eden", Year = 1909 } }
-                    }
-                },
-                new Card
-                {
-                    Id = 2,
-                    Created = DateTime.Today.AddHours(4),
-                    ReaderId = 2,
-                    Books = new List<History>
-                    {
-                        new History { Book = new Book {Id = 2, Author = "John Travolta", Title = "Pulp Fiction", Year = 1994} },
-                        new History { Book = new Book {Id = 3, Author = "Jack London", Title = "The Call of the Wild", Year = 1903} }
-                    }
-                },
-                new Card {Id = 3, Created = DateTime.Today.AddHours(6), ReaderId = 1 },
-            };
-
-            return cards.FirstOrDefault(x => x.Id == cardId);
-        }
-
         [Test]
         public async Task CardsService_TakeBookAsync_CreatesHistoryWhereBookIsSignedToCard()
         {
@@ -312,7 +281,7 @@ namespace Library.Tests.BusinessTests
 
             //Assert
             Assert.AreNotEqual(expected.ReturnDate, actual.ReturnDate);
-            mockUnitOfWork.Verify(x => x.HistoryRepository.Update(It.Is<History>(x => x.BookId == bookId && x.CardId == cardId)), Times.Once);
+            mockUnitOfWork.Verify(x => x.HistoryRepository.Update(It.Is<History>(h => h.BookId == bookId && h.CardId == cardId)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
