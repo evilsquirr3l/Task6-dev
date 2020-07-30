@@ -43,7 +43,7 @@ namespace Library.Tests.BusinessTests
             //assert
             Assert.IsInstanceOf<IEnumerable<ReaderModel>>(actual);
             Assert.AreEqual(expected.Count, actual.Count);
-            for (int i = 0; i < expected.Count(); i++)
+            for (int i = 0; i < expected.Count; i++)
             {
                 var expectedReaderModel = expected[i];
                 var actualReaderModel = actual[i];
@@ -164,7 +164,7 @@ namespace Library.Tests.BusinessTests
             //assert
             Assert.IsInstanceOf<IEnumerable<ReaderModel>>(actual);
             Assert.AreEqual(expected.Count, actual.Count);
-            for (int i = 0; i < expected.Count(); i++)
+            for (int i = 0; i < expected.Count; i++)
             {
                 var expectedReaderModel = expected[i];
                 var actualReaderModel = actual[i];
