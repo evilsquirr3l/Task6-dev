@@ -158,7 +158,7 @@ namespace Library.Tests.BusinessTests
         }
         
         [Test]
-        public async Task BookService_UpdateAsync_ThrowsLibraryExceptionWithEmptyAuthor()
+        public void BookService_UpdateAsync_ThrowsLibraryExceptionWithEmptyAuthor()
         {
             //Arrange
             var book = new BookModel{Id = 1, Author = "", Title = "Father Goriot", Year = 1835};
@@ -170,7 +170,7 @@ namespace Library.Tests.BusinessTests
         }
         
         [Test]
-        public async Task BookService_UpdateAsync_ThrowsLibraryExceptionWithEmptyTitle()
+        public void BookService_UpdateAsync_ThrowsLibraryExceptionWithEmptyTitle()
         {
             //Arrange
             var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "", Year = 1835};
@@ -182,7 +182,7 @@ namespace Library.Tests.BusinessTests
         }
         
         [Test]
-        public async Task BookService_UpdateAsync_ThrowsLibraryExceptionWithInvalidYear()
+        public void BookService_UpdateAsync_ThrowsLibraryExceptionWithInvalidYear()
         {
             //Arrange
             var book = new BookModel{Id = 1, Author = "Honore de Balzac", Title = "Father Goriot", Year = 9999};
