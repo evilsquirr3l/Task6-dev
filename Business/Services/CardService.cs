@@ -41,21 +41,21 @@ namespace Business.Services
 
         public IEnumerable<CardModel> GetAll()
         {
-            var cards = unit.CardRepository.FindAll().ToList();
+            var cards = unit.CardRepository.FindAllWithDetails().ToList();
 
             return mapper.Map<IEnumerable<CardModel>>(cards);
         }
 
-        public async Task<IEnumerable<BookModel>> GetBooksByCardIdAsync(int cardId)
+        public IEnumerable<BookModel> GetBooksByCardId(int cardId)
         {
-            var books = unit.BookRepository.FindAll().Where(x => x.Id == cardId).ToList();
+            var books = unit.BookRepository.FindAllWithDetails().Where(x => x.Id == cardId).ToList();
 
             return mapper.Map<IEnumerable<BookModel>>(books);
         }
 
         public async Task<CardModel> GetByIdAsync(int id)
         {
-            var card = await unit.CardRepository.GetByIdWithBooksAsync(id);
+            var card = await unit.CardRepository.GetByIdWithDetailsAsync(id);
 
             return mapper.Map<CardModel>(card);
         }

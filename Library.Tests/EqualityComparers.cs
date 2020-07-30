@@ -3,12 +3,17 @@ using System.Diagnostics.CodeAnalysis;
 using Business.Models;
 using Data.Entities;
 
-namespace Task6
+namespace Library.Tests
 {
     internal class CardEqualityComparer : IEqualityComparer<Card>
     {
         public bool Equals([AllowNull] Card x, [AllowNull] Card y)
         {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
             return x.Id == y.Id
                 && x.Created == y.Created
                 && x.ReaderId == y.ReaderId;
@@ -24,6 +29,11 @@ namespace Task6
     {
         public bool Equals([AllowNull] CardModel x, [AllowNull] CardModel y)
         {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
             return x.Id == y.Id
                 && x.Created == y.Created
                 && x.ReaderId == y.ReaderId;
@@ -39,6 +49,11 @@ namespace Task6
     {
         public bool Equals([AllowNull] History x, [AllowNull] History y)
         {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
             return x.Id == y.Id
                 && x.BookId == y.BookId
                 && x.CardId == y.CardId
@@ -56,6 +71,11 @@ namespace Task6
     {
         public bool Equals([AllowNull] Book x, [AllowNull] Book y)
         {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
             return x.Id == y.Id
                 && x.Year == y.Year
                 && x.Author == y.Author;
@@ -71,6 +91,11 @@ namespace Task6
     {
         public bool Equals([AllowNull] BookModel x, [AllowNull] BookModel y)
         {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
             return x.Id == y.Id
                 && x.Year == y.Year
                 && x.Author == y.Author;
@@ -99,6 +124,46 @@ namespace Task6
         }
 
         public int GetHashCode([DisallowNull] ReaderModel obj)
+        {
+            return obj.GetHashCode();
+        }
+    }
+
+    internal class ReaderEqualityComparer : IEqualityComparer<Reader>
+    {
+        public bool Equals([AllowNull] Reader x, [AllowNull] Reader y)
+        {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
+            return x.Id == y.Id
+                   && string.Equals(x.Name, y.Name)
+                   && string.Equals(x.Email, y.Email);
+        }
+
+        public int GetHashCode([DisallowNull] Reader obj)
+        {
+            return obj.GetHashCode();
+        }
+    }
+
+    internal class ReaderActivityModelEqualityComparer : IEqualityComparer<ReaderActivityModel>
+    {
+        public bool Equals([AllowNull] ReaderActivityModel x, [AllowNull] ReaderActivityModel y)
+        {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
+            return x.ReaderId == y.ReaderId &&
+                   x.BooksCount == y.BooksCount &&
+                   string.Equals(x.ReaderName, y.ReaderName);
+        }
+
+        public int GetHashCode([DisallowNull] ReaderActivityModel obj)
         {
             return obj.GetHashCode();
         }

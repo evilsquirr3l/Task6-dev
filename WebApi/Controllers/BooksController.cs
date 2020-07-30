@@ -12,9 +12,9 @@ namespace WebApi.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IBooksService _booksService;
+        private readonly IBookService _booksService;
 
-        public BooksController(IBooksService booksService)
+        public BooksController(IBookService booksService)
         {
             _booksService = booksService;
         }

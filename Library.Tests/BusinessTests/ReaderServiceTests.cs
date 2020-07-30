@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
-namespace Task6.ReaderTests
+namespace Library.Tests.BusinessTests
 {
     [TestFixture]
     public class ReaderServiceTests
