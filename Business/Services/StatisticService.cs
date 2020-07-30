@@ -41,7 +41,7 @@ namespace Business.Services
             var histories = _unit.HistoryRepository
                 .GetAllWithDetails()
                 .Where(x => x.TakeDate >= firstDate && x.ReturnDate <= lastDate)
-                .AsEnumerable();
+                .ToList();
 
             if (!histories.Any())
                 return null;
