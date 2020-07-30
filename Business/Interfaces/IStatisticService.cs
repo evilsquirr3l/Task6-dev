@@ -4,7 +4,7 @@ using Business.Models;
 
 namespace Business.Interfaces
 {
-    public interface IHistoryService
+    public interface IStatisticService
     {
         IEnumerable<BookModel> GetMostPopularBooks(int bookCount);
         

@@ -9,12 +9,12 @@ using Data.Interfaces;
 
 namespace Business.Services
 {
-    public class HistoryService : IHistoryService
+    public class StatisticService : IStatisticService
     {
         private readonly IUnitOfWork _unit;
         private readonly IMapper _mapper;
 
-        public HistoryService(IUnitOfWork unit, IMapper mapper)
+        public StatisticService(IUnitOfWork unit, IMapper mapper)
         {
             _unit = unit;
             _mapper = mapper;
