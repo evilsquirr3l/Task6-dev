@@ -21,7 +21,7 @@ namespace Library.Tests.IntegrationTests
 
                 services.AddDbContextPool<LibraryDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+                    options.UseInMemoryDatabase(Guid.Empty.ToString());
                     options.UseInternalServiceProvider(serviceProvider);
                 });
 
