@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Business.Interfaces;
 using Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,11 @@ namespace WebApi.Controllers
     [Produces("application/json")]
     [Route("api/history")]
     [ApiController]
-    public class HistoryController : ControllerBase
+    public class StatisticController : ControllerBase
     {
         private readonly IStatisticService _statisticService;
 
-        public HistoryController(IStatisticService statisticService)
+        public StatisticController(IStatisticService statisticService)
         {
             _statisticService = statisticService;
         }
@@ -35,7 +36,7 @@ namespace WebApi.Controllers
         {
             var readersActivity = _statisticService.GetReadersWhoTookTheMostBooks(readersCount, firstDate, lastDate);
 
-            if (readersActivity == null)
+            if (!readersActivity.Any())
                 return NotFound();
 
             return Ok(readersActivity);
