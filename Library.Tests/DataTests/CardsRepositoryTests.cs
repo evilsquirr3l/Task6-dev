@@ -16,7 +16,6 @@ namespace Library.Tests.DataTests
             //Arrange
             using var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions());
             var cardRepository = new CardRepository(context);
-            //TODO: discuss to upgrade expected values
             var expectedCard = context.Cards.AsNoTracking().Include(x => x.Books).Include(x => x.Reader).FirstOrDefault(x => x.Id == 1);
 
             //Act
@@ -34,7 +33,6 @@ namespace Library.Tests.DataTests
             //Arrange
             using var context = new LibraryDbContext(UnitTestHelper.GetUnitTestDbOptions());
             var cardRepository = new CardRepository(context);
-            //TODO: discuss to upgrade expected values
             var expectedCards = context.Cards.AsNoTracking().Include(x => x.Books).Include(x => x.Reader).ToList();
 
             //Act

@@ -111,7 +111,6 @@ namespace Library.Tests.IntegrationTests
             
             // act
             var httpResponse = await _client.PostAsync(requestUri, content);
-            //expected readerId = 3;
             var readerId = Int32.Parse(httpResponse.Headers.Location.Segments[3]);
 
             // assert
