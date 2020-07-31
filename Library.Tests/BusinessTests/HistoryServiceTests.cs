@@ -16,7 +16,7 @@ namespace Library.Tests.BusinessTests
         [Test]
         public void HistoryService_GetMostPopularBooks()
         {
-            var actual = MockedStatisticService.GetMostPopularBooks(5);
+            var actual = MockedStatisticService.GetMostPopularBooks(5).ToList();
 
             Assert.That(actual, Is.InstanceOf<IEnumerable<BookModel>>());
             Assert.That(actual.OrderBy(x => x.Id), 
