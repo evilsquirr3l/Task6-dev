@@ -18,7 +18,7 @@ namespace Library.Tests.BusinessTests
     public class ReaderServiceTests
     {
         private DbContextOptions<LibraryDbContext> _options;
-        private ReaderModelEqualityComparer _readerModelComparer = new ReaderModelEqualityComparer();
+        private readonly ReaderModelEqualityComparer _readerModelComparer = new ReaderModelEqualityComparer();
 
         [SetUp]
         public void Setup()

@@ -19,7 +19,7 @@ namespace Library.Tests.IntegrationTests
         private CustomWebApplicationFactory _factory;
         private HttpClient _client;
         private ReaderModelEqualityComparer _comparer;
-        private string requestUri = "api/readers/";
+        private readonly string requestUri = "api/readers/";
 
         [SetUp]
         public void Init()
