@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Business.Interfaces;
 using Business.Models;
 using Business.Services;
 using Data.Entities;
@@ -36,7 +37,7 @@ namespace Library.Tests.BusinessTests
                     .Using(new ReaderActivityModelEqualityComparer()));
         }
 
-        private static StatisticService MockedStatisticService
+        private static IStatisticService MockedStatisticService
         {
             get
             {
