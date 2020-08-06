@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/history")]
+    [Route("api/[controller]")]
     [ApiController]
     public class StatisticController : ControllerBase
     {

@@ -15,7 +15,7 @@ namespace Library.Tests.IntegrationTests
         private HttpClient _client;
         private BookModelEqualityComparer _bookModelComparer;
         private ReaderActivityModelEqualityComparer _readerActivityModelComparer;
-        private readonly string requestUri = "api/history/";
+        private readonly string requestUri = "api/statistic/";
 
         [OneTimeSetUp]
         public void Init()
