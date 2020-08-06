@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Library.Tests.IntegrationTests
 {
     [TestFixture]
-    public class HistoryIntegrationTests
+    public class StatisticIntegrationTests
     {
         private CustomWebApplicationFactory _factory;
         private HttpClient _client;
