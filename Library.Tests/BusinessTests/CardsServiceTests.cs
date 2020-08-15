@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Interfaces;
 using Business.Models;
 using Business.Services;
 using Business.Validation;
@@ -23,7 +24,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork
                 .Setup(m => m.CardRepository.FindAllWithDetails())
                 .Returns(GetTestCardEntities().AsQueryable);
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             var actual = cardService.GetAll().ToList();
 
@@ -60,7 +61,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork
                 .Setup(m => m.CardRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(GetTestCardEntities().First);
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             var actual = await cardService.GetByIdAsync(1);
 
@@ -73,7 +74,7 @@ namespace Library.Tests.BusinessTests
             //Arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.CardRepository.AddAsync(It.IsAny<Card>()));
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var card = new CardModel { Id = 100, Created = DateTime.Today };
 
             //Act
@@ -91,7 +92,7 @@ namespace Library.Tests.BusinessTests
         {
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.CardRepository.DeleteByIdAsync(It.IsAny<int>()));
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             await cardService.DeleteByIdAsync(cardId);
 
@@ -106,7 +107,7 @@ namespace Library.Tests.BusinessTests
             var card = new CardModel { Id = 1, Created = DateTime.Today };
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.CardRepository.Update(It.IsAny<Card>()));
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act
             await cardService.UpdateAsync(card);
@@ -126,7 +127,7 @@ namespace Library.Tests.BusinessTests
 
             mockUnitOfWork.Setup(x => x.BookRepository.FindAllWithDetails()).Returns(() => GetTestBooksWithHistoryByCardId(cardId));
 
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act
             var books = cardService.GetBooksByCardId(cardId);
@@ -183,7 +184,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork.Setup(x => x.BookRepository.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(book);
             mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll());
 
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act
             await cardService.TakeBookAsync(1, 1);
@@ -208,7 +209,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork.Setup(x => x.BookRepository.GetByIdAsync(It.IsAny<int>()));
             mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll());
 
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
             Assert.ThrowsAsync<LibraryException>(async () => await cardService.TakeBookAsync(1, 1));
@@ -225,7 +226,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork.Setup(x => x.BookRepository.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(book);
             mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll());
 
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
             Assert.ThrowsAsync<LibraryException>(async () => await cardService.TakeBookAsync(1, 1));
@@ -245,7 +246,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork.Setup(x => x.HistoryRepository.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(history);
             mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(Enumerable.Repeat(history, 1).AsQueryable());
 
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
             Assert.ThrowsAsync<LibraryException>(async () => await cardService.TakeBookAsync(1, 1));
@@ -273,7 +274,7 @@ namespace Library.Tests.BusinessTests
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(histories.AsQueryable());
  
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act
             await cardService.HandOverBookAsync(cardId, bookId);
@@ -296,7 +297,7 @@ namespace Library.Tests.BusinessTests
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(histories.AsQueryable());
 
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
             Assert.ThrowsAsync<LibraryException>(async () => await cardService.HandOverBookAsync(cardId, bookId));
@@ -315,7 +316,7 @@ namespace Library.Tests.BusinessTests
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(x => x.HistoryRepository.FindAll()).Returns(histories.AsQueryable());
 
-            var cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            ICardService cardService = new CardService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //Act/Assert
             Assert.ThrowsAsync<LibraryException>(async () => await cardService.HandOverBookAsync(cardId, bookId));

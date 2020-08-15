@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Business.Interfaces;
 using Business.Models;
 using Business.Services;
 using Data.Entities;
@@ -16,7 +17,7 @@ namespace Library.Tests.BusinessTests
         [Test]
         public void HistoryService_GetMostPopularBooks()
         {
-            var actual = MockedStatisticService.GetMostPopularBooks(5);
+            var actual = MockedStatisticService.GetMostPopularBooks(5).ToList();
 
             Assert.That(actual, Is.InstanceOf<IEnumerable<BookModel>>());
             Assert.That(actual.OrderBy(x => x.Id), 
@@ -36,7 +37,7 @@ namespace Library.Tests.BusinessTests
                     .Using(new ReaderActivityModelEqualityComparer()));
         }
 
-        private static StatisticService MockedStatisticService
+        private static IStatisticService MockedStatisticService
         {
             get
             {

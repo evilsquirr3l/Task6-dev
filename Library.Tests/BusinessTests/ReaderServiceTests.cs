@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Interfaces;
 using Business.Models;
 using Business.Services;
 using Business.Validation;
@@ -18,7 +19,7 @@ namespace Library.Tests.BusinessTests
     public class ReaderServiceTests
     {
         private DbContextOptions<LibraryDbContext> _options;
-        private ReaderModelEqualityComparer _readerModelComparer = new ReaderModelEqualityComparer();
+        private readonly ReaderModelEqualityComparer _readerModelComparer = new ReaderModelEqualityComparer();
 
         [SetUp]
         public void Setup()
@@ -35,7 +36,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork
                 .Setup(m => m.ReaderRepository.GetAllWithDetails())
                 .Returns(GetTestReaderEntities().AsQueryable());
-            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            IReaderService readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //act
             var actual = readerService.GetAll().ToList();
@@ -61,7 +62,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork
                 .Setup(m => m.ReaderRepository.GetByIdWithDetails(It.IsAny<int>()))
                 .ReturnsAsync(GetTestReaderEntities().First());
-            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            IReaderService readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //act
             var actual = await readerService.GetByIdAsync(id);
@@ -77,7 +78,7 @@ namespace Library.Tests.BusinessTests
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.ReaderRepository.AddAsync(It.IsAny<Reader>()));
-            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            IReaderService readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
             var newReader = new ReaderModel()
             {
                 Id = 10,
@@ -112,7 +113,7 @@ namespace Library.Tests.BusinessTests
             };
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.ReaderRepository.Update(It.IsAny<Reader>()));
-            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            IReaderService readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //act
             await readerService.UpdateAsync(reader);
@@ -130,7 +131,7 @@ namespace Library.Tests.BusinessTests
             int readerId = 1;
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.ReaderRepository.DeleteByIdAsync(It.IsAny<int>()));
-            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            IReaderService readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //act
             await readerService.DeleteByIdAsync(readerId);
@@ -156,7 +157,7 @@ namespace Library.Tests.BusinessTests
             mockUnitOfWork
                 .Setup(m => m.CardRepository.FindAll())
                 .Returns(GetTestCardEntities().AsQueryable());
-            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            IReaderService readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             //act
             var actual = readerService.GetReadersThatDontReturnBooks().ToList();
@@ -178,7 +179,7 @@ namespace Library.Tests.BusinessTests
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.ReaderRepository.AddAsync(It.IsAny<Reader>()));
-            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            IReaderService readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             // Name is empty
             var reader = new ReaderModel { Name = "", Email = "only_money@gmail.com",
@@ -207,7 +208,7 @@ namespace Library.Tests.BusinessTests
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(m => m.ReaderRepository.Update(It.IsAny<Reader>()));
-            var readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            IReaderService readerService = new ReaderService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
 
             // Name is empty
             var reader = new ReaderModel { Id = 1, Name = "", Email = "only_money@gmail.com",

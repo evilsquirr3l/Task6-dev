@@ -85,9 +85,9 @@ namespace Library.Tests.IntegrationTests
             {
                 var context = test.ServiceProvider.GetService<LibraryDbContext>();
                 var databaseBook = await context.Books.FindAsync(bookInResponse.Id);
-                Assert.AreEqual(bookInResponse.Id, databaseBook.Id);
-                Assert.AreEqual(bookInResponse.Author, databaseBook.Author);
-                Assert.AreEqual(bookInResponse.Title, databaseBook.Title);
+                Assert.AreEqual(databaseBook.Id, bookInResponse.Id);
+                Assert.AreEqual(databaseBook.Author, bookInResponse.Author);
+                Assert.AreEqual(databaseBook.Title, bookInResponse.Title);
                 Assert.AreEqual(3, context.Books.Count());
             }
         }

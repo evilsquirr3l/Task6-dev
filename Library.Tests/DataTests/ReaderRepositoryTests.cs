@@ -30,7 +30,7 @@ namespace Library.Tests.DataTests
                 var readers = readerRepository.GetAllWithDetails().ToList();
 
                 //assert
-                Assert.AreEqual(2, readers.Count());
+                Assert.AreEqual(2, readers.Count);
                 Assert.IsNotNull(readers[0].ReaderProfile);
                 Assert.AreEqual("The night's watch", readers[0].ReaderProfile.Address);
                 Assert.AreEqual("golub", readers[0].ReaderProfile.Phone);

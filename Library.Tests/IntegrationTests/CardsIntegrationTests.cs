@@ -123,15 +123,19 @@ namespace Library.Tests.IntegrationTests
             httpResponse.EnsureSuccessStatusCode();
 
             //Assert
+            var stringResponse = await httpResponse.Content.ReadAsStringAsync();
+            var cardInResponse = JsonConvert.DeserializeObject<CardModel>(stringResponse);
+
             using var test = _factory.Services.CreateScope();
 
             var context = test.ServiceProvider.GetService<LibraryDbContext>();
-            var actual = context.Cards.Find(cardId);
+            var cardInDb = context.Cards.Find(cardId);
 
-            Assert.AreEqual(3, context.Cards.Count());
+            Assert.AreEqual(cardId, context.Cards.Count());
 
-            Assert.AreEqual(card.ReaderId, actual.ReaderId);
-            Assert.AreEqual(card.Created, actual.Created);
+            Assert.AreEqual(cardInResponse.Id, cardInDb.Id);
+            Assert.AreEqual(cardInResponse.ReaderId, cardInDb.ReaderId);
+            Assert.AreEqual(cardInResponse.Created, cardInDb.Created);
         }
 
         [Test, Order(0)]

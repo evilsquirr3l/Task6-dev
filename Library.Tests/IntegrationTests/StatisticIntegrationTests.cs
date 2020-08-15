@@ -9,13 +9,13 @@ using NUnit.Framework;
 namespace Library.Tests.IntegrationTests
 {
     [TestFixture]
-    public class HistoryIntegrationTests
+    public class StatisticIntegrationTests
     {
         private CustomWebApplicationFactory _factory;
         private HttpClient _client;
         private BookModelEqualityComparer _bookModelComparer;
         private ReaderActivityModelEqualityComparer _readerActivityModelComparer;
-        private string requestUri = "api/history/";
+        private readonly string requestUri = "api/statistic/";
 
         [OneTimeSetUp]
         public void Init()

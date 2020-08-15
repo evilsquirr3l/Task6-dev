@@ -27,7 +27,7 @@ namespace Business.Services
                 .ToList();
 
             if (!histories.Any())
-                return null;
+                return new List<BookModel>();
 
             return histories.GroupBy(x => x.BookId)
                 .OrderByDescending(x => x.Count())
@@ -44,7 +44,7 @@ namespace Business.Services
                 .ToList();
 
             if (!histories.Any())
-                return null;
+                return new List<ReaderActivityModel>();
 
             return histories
                 .GroupBy(x => x.Card.ReaderId)
